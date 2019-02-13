@@ -3,10 +3,21 @@ namespace ChatBox.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ini1 : DbMigration
+    public partial class initdb : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Users",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        ConnectionId = c.String(),
+                        Email = c.String(),
+                        IsOnline = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
             CreateTable(
                 "dbo.Messages",
                 c => new
@@ -41,17 +52,6 @@ namespace ChatBox.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
-            
-            CreateTable(
-                "dbo.Users",
-                c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        ConnectionId = c.String(),
-                        Email = c.String(),
-                        IsOnline = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -115,10 +115,10 @@ namespace ChatBox.Migrations
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.Users");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Messages");
+            DropTable("dbo.Users");
         }
     }
 }
