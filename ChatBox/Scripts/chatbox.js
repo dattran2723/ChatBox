@@ -1,10 +1,12 @@
 ﻿$(function () {
+    $('.chatbox-body').hide();
+    $('.chatbox-footer').hide();
     $('.chatbox-title').click(function () {
         $('.chatbox').toggleClass('chatbox-tray');
-    })
+    });
     $('.chatbox-close').click(function () {
         $('.chatbox').addClass('chatbox-closed');
-    })
+    });
 
     var chatHub = $.connection.chatHub;
     $.connection.hub.start().done(function () {
@@ -17,6 +19,7 @@
                     $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
                     chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val())
                     $('#txtMsg').val('').focus();
+                    $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
                 }
             }
         });
@@ -28,13 +31,32 @@
                 $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
                 chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                 $('#txtMsg').val('').focus();
+                $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
             }
-        })
-    })
-    console.log($('.chatbox-body > .chatbox-body-msg-right').length)
-})
+        });
+    });
+    console.log($('.chatbox-body > .chatbox-body-msg-right').length);
+    $('.customer-info').submit(function (e) {
+        e.preventDefault();
+        var email = $('.customer-info input').val();
+        if (email.length > 0) {
+            chatHub.server.connect(email);
+        }
+        $('.customer-info').hide();
+        $('.chatbox-body').show();
+        $('.chatbox-footer').show();
+        //chatHub.connection.connect(email);
+    });
+});
 //code using append when client send message
 function AddMsgOfClient(msg) {
     var code = '<li class="float-right mt-1 chatbox-body-msg-right">' + msg + '</li>';
     return code;
 }
+    //var chatHub = $.connection.myHub;
+    //$.connection.hub.start().done(function () {
+    //    if ($('#btn-StartChat').click(function () {
+    //        chatHub.server.connected($('#txtEmail').val());
+    //        $('.login').hide();
+    //    }));
+    //})

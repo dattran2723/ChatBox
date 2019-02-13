@@ -25,6 +25,8 @@ namespace ChatBox.Models
         {
         }
         public DbSet<Message> messages { get; set; }
+        public DbSet<User> account { get; set; }
+        
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

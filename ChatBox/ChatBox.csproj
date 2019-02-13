@@ -186,22 +186,19 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Migrations\201902130330323_InitialCreate.cs" />
-    <Compile Include="Migrations\201902130330323_InitialCreate.Designer.cs">
-      <DependentUpon>201902130330323_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201902130357307_InitialCreate.cs" />
+    <Compile Include="Migrations\201902130357307_InitialCreate.Designer.cs">
+      <DependentUpon>201902130357307_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201902130447051_add-tb-message.cs" />
-    <Compile Include="Migrations\201902130447051_add-tb-message.Designer.cs">
-      <DependentUpon>201902130447051_add-tb-message.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902130647479_change-tb-message.cs" />
-    <Compile Include="Migrations\201902130647479_change-tb-message.Designer.cs">
-      <DependentUpon>201902130647479_change-tb-message.cs</DependentUpon>
+    <Compile Include="Migrations\201902130932533_init-db.cs" />
+    <Compile Include="Migrations\201902130932533_init-db.Designer.cs">
+      <DependentUpon>201902130932533_init-db.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
