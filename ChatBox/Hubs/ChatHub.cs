@@ -4,13 +4,36 @@ using System.Linq;
 using System.Web;
 using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
-using System;
 
 namespace ChatBox.Hubs
 {
     public class ChatHub : Hub
     {
+        static List<User> ConnectedUser = new List<User>();
         public ApplicationDbContext db = new ApplicationDbContext();
+
+        public void Connect(string email)
+        {
+            var id = Context.ConnectionId;
+            var item = db.account.FirstOrDefault(x => x.Email == email);
+            if (item == null)
+            {
+                db.account.Add(new User
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ConnectionId = id,
+                    Email = email,
+                    IsOnline = true
+                });
+                db.SaveChanges();
+            }
+            else
+            {
+                item.ConnectionId = id;
+                db.SaveChanges();
+            }
+            
+        }
         /// <summary>
         /// gui tin nhan cho admin
         /// </summary>
@@ -27,24 +50,13 @@ namespace ChatBox.Hubs
             db.messages.Add(item);
             db.SaveChanges();
             Clients.User("admin@gmail.com").SendMsgForAdmin();
-        static List<User> ConnectedUser = new List<User>();
-        public void Connect(string email)
-        {
-            var id = Context.ConnectionId;
-            if (ConnectedUser.Count(x => x.Email == email) == 0)
-            {
-                ConnectedUser.Add(new User { ConnectionId = id, Email = email });
-            }
-            else
-            {
-                var connetedUser = new User { Email = email };
-                connetedUser.ConnectionId = id;
-            }
+
+
         }
+
         public void SendPrivateMessage(string from)
         {
 
         }
-
     }
 }

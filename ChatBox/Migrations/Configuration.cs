@@ -10,7 +10,6 @@ namespace ChatBox.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "ChatBox.Models.ApplicationDbContext";
         }
 
         protected override void Seed(ChatBox.Models.ApplicationDbContext context)

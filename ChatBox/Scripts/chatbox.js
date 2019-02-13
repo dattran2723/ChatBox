@@ -31,10 +31,21 @@
                 chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                 $('#txtMsg').val('').focus();
             }
-        })
-    })
-    console.log($('.chatbox-body > .chatbox-body-msg-right').length)
-})
+        });
+    });
+    console.log($('.chatbox-body > .chatbox-body-msg-right').length);
+    $('.customer-info').submit(function (e) {
+        e.preventDefault();
+        var email = $('.customer-info input').val();
+        if (email.length > 0) {
+            chatHub.server.connect(email);
+        }
+        $('.customer-info').hide();
+        $('.chatbox-body').show();
+        $('.chatbox-footer').show();
+        //chatHub.connection.connect(email);
+    });
+});
 //code using append when client send message
 function AddMsgOfClient(msg) {
     var code = '<li class="float-right mt-1 chatbox-body-msg-right">' + msg + '</li>';
@@ -47,17 +58,3 @@ function AddMsgOfClient(msg) {
     //        $('.login').hide();
     //    }));
     //})
-    var chatHub = $.connection.chatHub;
-    $.connection.hub.start().done(function () {
-        $('.customer-info').submit(function (e) {
-            e.preventDefault();
-            var email = $('.customer-info input').val();
-            $('.customer-info').hide();
-            $('.chatbox-body').show();
-            $('.chatbox-footer').show();
-            //chatHub.connection.connect(email);
-        });
-    });
-    
-    
-});
