@@ -186,10 +186,24 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Migrations\201902130330323_InitialCreate.cs" />
+    <Compile Include="Migrations\201902130330323_InitialCreate.Designer.cs">
+      <DependentUpon>201902130330323_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902130447051_add-tb-message.cs" />
+    <Compile Include="Migrations\201902130447051_add-tb-message.Designer.cs">
+      <DependentUpon>201902130447051_add-tb-message.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902130647479_change-tb-message.cs" />
+    <Compile Include="Migrations\201902130647479_change-tb-message.Designer.cs">
+      <DependentUpon>201902130647479_change-tb-message.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -201,6 +215,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\chatbox.css" />
+    <Content Include="Content\ManageChat.css" />
     <Content Include="favicon.ico" />
     <Content Include="fontawesome-free-5.7.1-web\css\all.css" />
     <Content Include="fontawesome-free-5.7.1-web\css\all.min.css" />
@@ -1608,6 +1623,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\manageChat.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1643,6 +1659,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\ManageChat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1655,6 +1672,17 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201902130330323_InitialCreate.resx">
+      <DependentUpon>201902130330323_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902130447051_add-tb-message.resx">
+      <DependentUpon>201902130447051_add-tb-message.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902130647479_change-tb-message.resx">
+      <DependentUpon>201902130647479_change-tb-message.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

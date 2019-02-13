@@ -24,7 +24,7 @@ namespace ChatBox.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-
+        public DbSet<Message> messages { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

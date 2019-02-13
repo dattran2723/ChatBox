@@ -26,5 +26,10 @@ namespace ChatBox.Controllers
 
             return View();
         }
+
+        public ActionResult ManageChat()
+        {
+            return View();
+        }
     }
 }
