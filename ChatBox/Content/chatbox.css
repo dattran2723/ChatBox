@@ -1,4 +1,8 @@
-﻿.chatbox {
+﻿.jumbotron {
+    margin-top: 10%;
+}
+
+.chatbox {
     background: #fff;
     width: 300px;
     height: 400px;
@@ -59,47 +63,35 @@
     border-right: 1px solid #ddd;
 }
 
-.chatbox-body-msg {
+.chatbox-body-msg li {
+    clear: both;
+    font-size: 14px;
+    line-height: 26px;
+}
+
+.chatbox-body-msg img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
     display: inline-flex;
-    width: 100%;
 }
 
-    .chatbox-body-msg img {
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-        display: inline-flex;
-    }
-
-chatbox-body-msg-right img {
-    float: right;
+.chatbox-body-msg-left {
+    background-color: beige;
+    border-radius: 25px;
+    padding: 0 10% 0 7%;
 }
 
-.chatbox-body-msg ul {
-    list-style: none;
-    margin-bottom: 0;
-    width: 100%;
+.chatbox-body-msg-right {
+    background-color: aliceblue;
+    border-radius: 25px;
+    padding: 0 7% 0 10%;
 }
-
-.chatbox-body-msg-left, .chatbox-body-msg-right {
-    padding-left: 5%;
-    padding-right: 5%;
-}
-
-    .chatbox-body-msg-left ul {
-        padding-left: 5%;
-        padding-right: 10%;
-    }
-
-    .chatbox-body-msg-right ul {
-        padding-left: 10%;
-        padding-right: 5%;
-    }
 
 .chatbox-footer {
     padding: 10px 15px;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
+    background-color: #fcfcfc;
+    border-top: 1px solid #dddddd30;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     border-left: 1px solid #ddd;
@@ -123,11 +115,3 @@ chatbox-body-msg-right img {
         font-size: 20px;
         padding-top: 3px;
     }
-
-.login {
-    width: 200px;
-    margin: auto;
-    text-align: center;
-    border: 1px solid;
-    margin-top: 10%;
-}
