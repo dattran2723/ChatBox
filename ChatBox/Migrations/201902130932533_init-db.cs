@@ -3,7 +3,7 @@ namespace ChatBox.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class addtbmessage : DbMigration
+    public partial class initdb : DbMigration
     {
         public override void Up()
         {
@@ -15,7 +15,7 @@ namespace ChatBox.Migrations
                         FromEmail = c.String(),
                         ToEmail = c.String(),
                         Msg = c.String(),
-                        DateSend = c.String(),
+                        DateSend = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             

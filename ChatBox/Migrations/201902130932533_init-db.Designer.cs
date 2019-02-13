@@ -7,13 +7,13 @@ namespace ChatBox.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class addtbmessage : IMigrationMetadata
+    public sealed partial class initdb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addtbmessage));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initdb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201902130447051_add-tb-message"; }
+            get { return "201902130932533_init-db"; }
         }
         
         string IMigrationMetadata.Source

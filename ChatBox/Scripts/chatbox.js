@@ -17,6 +17,7 @@
                     $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
                     chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val())
                     $('#txtMsg').val('').focus();
+                    $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
                 }
             }
         });
@@ -28,6 +29,7 @@
                 $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
                 chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                 $('#txtMsg').val('').focus();
+                $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
             }
         })
     })

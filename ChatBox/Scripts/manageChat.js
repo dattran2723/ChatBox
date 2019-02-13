@@ -16,8 +16,7 @@
         //$('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendto($('.message ul'));
         $('textarea').val(null);
         $('.list-msg').append(code);
-        //$('.contact.active .preview').html('<span>you: </span>' + message);
-        $(".list-msg").animate({ scrolltop: $('.list-msg').height() }, "fast");
+        $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     };
 
     $('.send').click(function () {

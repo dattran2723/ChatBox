@@ -186,17 +186,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Migrations\201902130330323_InitialCreate.cs" />
-    <Compile Include="Migrations\201902130330323_InitialCreate.Designer.cs">
-      <DependentUpon>201902130330323_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201902130357307_InitialCreate.cs" />
+    <Compile Include="Migrations\201902130357307_InitialCreate.Designer.cs">
+      <DependentUpon>201902130357307_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201902130447051_add-tb-message.cs" />
-    <Compile Include="Migrations\201902130447051_add-tb-message.Designer.cs">
-      <DependentUpon>201902130447051_add-tb-message.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902130647479_change-tb-message.cs" />
-    <Compile Include="Migrations\201902130647479_change-tb-message.Designer.cs">
-      <DependentUpon>201902130647479_change-tb-message.cs</DependentUpon>
+    <Compile Include="Migrations\201902130932533_init-db.cs" />
+    <Compile Include="Migrations\201902130932533_init-db.Designer.cs">
+      <DependentUpon>201902130932533_init-db.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1673,14 +1669,11 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902130330323_InitialCreate.resx">
-      <DependentUpon>201902130330323_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902130357307_InitialCreate.resx">
+      <DependentUpon>201902130357307_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902130447051_add-tb-message.resx">
-      <DependentUpon>201902130447051_add-tb-message.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902130647479_change-tb-message.resx">
-      <DependentUpon>201902130647479_change-tb-message.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902130932533_init-db.resx">
+      <DependentUpon>201902130932533_init-db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
