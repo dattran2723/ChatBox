@@ -115,6 +115,7 @@ textarea {
     bottom: -15px;
     color: black;
     font-size: 10px;
+    width: 200px;
 }
 
 .msg_cotainer {
@@ -136,8 +137,10 @@ textarea {
 
 .cm .msg_time {
     right: 0;
+    text-align: right;
 }
 
 .cy .msg_time {
     left: 0;
+    text-align: left;
 }

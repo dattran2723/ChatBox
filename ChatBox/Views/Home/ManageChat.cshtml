@@ -5,8 +5,7 @@
 }
 @section css{
     <link href="~/Content/ManageChat.css" rel="stylesheet" />
-}
-<hr />
+} <br />
 <div class="row mt-5 container manage">
     <div class="col-4 left p-0">
         <h5 class="pl-5">Admin</h5>
@@ -116,7 +115,7 @@
     <div class="col-8 right chat">
         <h4 class="text-center" id="name-chat">Tran dat</h4>
         <hr />
-        <ul class="list-unstyled">
+        <ul class="list-unstyled list-msg">
             <li class="cy">
                 <div class="msg_cotainer">
                     Hi, how are you samim?
@@ -151,11 +150,22 @@
                 <div class="msg_cotainer">
                     Hi, how are you samim?
                     <span class="msg_time">8:40 AM, Today</span>
+                </div>
+            </li>
+            <li class="cm">
+                <div class="msg_cotainer">
+                    Hi
+                    <span class="msg_time">8:40 AM, Today</span>
+                </div>
+            </li>
+            <li class="cm">
+                <div class="msg_cotainer">
+                    hello <span class="msg_time">8:40 AM, Today</span>
                 </div>
             </li>
         </ul>
         <div class="row input-group w-100 ml-0">
-            <textarea></textarea>
+            <textarea placeholder="Nhập nội dung tin nhắn..."></textarea>
             <button class="send"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
