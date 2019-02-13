@@ -1,4 +1,8 @@
-﻿.chatbox {
+﻿.jumbotron {
+    margin-top: 10%;
+}
+
+.chatbox {
     background: #fff;
     width: 300px;
     height: 400px;
@@ -87,14 +91,23 @@ chatbox-body-msg-right img {
 }
 
     .chatbox-body-msg-left ul {
-        padding-left: 5%;
         padding-right: 10%;
+        padding-left: 5%;
     }
+
+        .chatbox-body-msg-left ul li {
+            font-size: 14px;
+        }
 
     .chatbox-body-msg-right ul {
         padding-left: 10%;
         padding-right: 5%;
+        padding-top: 2%;
     }
+
+        .chatbox-body-msg-right ul li {
+            font-size: 14px;
+        }
 
 .chatbox-footer {
     padding: 10px 15px;
