@@ -52,7 +52,7 @@
 }
 
 .chatbox-body {
-    background:#fff;
+    background: #fff;
     padding: 15px;
     overflow-y: auto;
     height: 300px;
@@ -81,6 +81,18 @@ chatbox-body-msg-right img {
     margin-bottom: 0;
     width: 100%;
 }
+
+.chatbox .customer-info {
+    padding-top: 5px;
+    position: absolute;
+    padding: 5px 0;
+    margin-top: 50%;
+    margin-left: 6%;
+}
+
+    .chatbox .customer-info button {
+        cursor: pointer;
+    }
 
 .chatbox-body-msg-left, .chatbox-body-msg-right {
     padding-left: 5%;

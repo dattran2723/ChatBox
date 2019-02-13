@@ -34,19 +34,23 @@
 
 <div class="row">
     @*<div class="login">
-        <div>
-            Vui lòng nhập Email:<br />
-            <input id="txtEmail" type="text" />
-        </div>
-        <div id="divButton">
-            <input id="btn-StartChat" type="button" class="" value="Bắt đầu" />
-        </div>
-    </div>*@
+            <div>
+                Vui lòng nhập Email:<br />
+                <input id="txtEmail" type="text" />
+            </div>
+            <div id="divButton">
+                <input id="btn-StartChat" type="button" class="" value="Bắt đầu" />
+            </div>
+        </div>*@
     <div class="chatbox chatbox-tray">
         <div class="chatbox-title">
             <a href="javascript:;">Trò chuyện trực tuyến</a>
             <button class="chatbox-close"><i class="fas fa-times"></i></button>
         </div>
+        <form class="customer-info">
+            <input type="email" placeholder="Email" required />
+            <button id="btnCus" type="submit" value="submit">Bắt đầu</button>
+        </form>
         <div class="chatbox-body">
             <div class="chatbox-body-msg chatbox-body-msg-left">
                 <img src="~/Imgs/avatar3.png" />

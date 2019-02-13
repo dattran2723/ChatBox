@@ -13,6 +13,8 @@ namespace ChatBox
         {
             ConfigureAuth(app);
             CreateAccountDefault();
+            app.MapSignalR();
+            
         }
         public void CreateAccountDefault()
         {
