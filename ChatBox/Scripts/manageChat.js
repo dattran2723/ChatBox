@@ -17,7 +17,7 @@
         $('textarea').val(null);
         $('.list-msg').append(code);
         //$('.contact.active .preview').html('<span>you: </span>' + message);
-        $(".list-msg").animate({ scrolltop: $(document).height() }, "fast");
+        $(".list-msg").animate({ scrolltop: $('.list-msg').height() }, "fast");
     };
 
     $('.send').click(function () {
