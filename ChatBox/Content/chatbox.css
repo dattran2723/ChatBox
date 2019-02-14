@@ -62,8 +62,6 @@
     padding: 15px;
     overflow-y: auto;
     height: 300px;
-    /*border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;*/
 }
 
 .chatbox-body-msg li {
@@ -104,8 +102,8 @@
 .chatbox-footer-content textarea {
     width: 87%;
     height: 27px;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .chatbox-footer-content button {

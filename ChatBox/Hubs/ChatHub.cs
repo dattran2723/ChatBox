@@ -6,6 +6,7 @@ using ChatBox.DataBinding;
 using System.Web.Script.Serialization;
 using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
+using System.Threading.Tasks;
 
 namespace ChatBox.Hubs
 {
@@ -75,6 +76,19 @@ namespace ChatBox.Hubs
                 string listMsg = new JavaScriptSerializer().Serialize(msg);
                 Clients.Caller.LoadAllMsgOfClient(listMsg);
             }
+        }
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+            if (item != null)
+            {
+                item.IsOnline = false;
+                db.SaveChanges();
+            }
+            // Add your own code here.
+            // For example: in a chat application, mark the user as offline, 
+            // delete the association between the current connection id and user name.
+            return base.OnDisconnected(stopCalled);
         }
     }
 }
