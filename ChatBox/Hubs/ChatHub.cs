@@ -28,13 +28,13 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
-                Clients.Caller.onConnected(id, email, ConnectedUser);
+                Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
             }
             else
             {
                 item.ConnectionId = id;
                 db.SaveChanges();
-                Clients.Caller.onConnected(id, email, ConnectedUser);
+                Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
 
             }
             
