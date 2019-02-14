@@ -2,6 +2,11 @@
     var chatHub = $.connection.chatHub;
 
     chatHub.client.onConnected = function (id, email, allUsers) {
+        $(".contact").each(function () {
+            if ($(this).find('.name').text() == email) {
+                this.remove();
+            }
+        });
         AddUser(email, id);
     };
     //OnDisconnected
