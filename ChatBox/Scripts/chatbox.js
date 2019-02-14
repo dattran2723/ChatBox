@@ -7,8 +7,16 @@
     $('.chatbox-close').click(function () {
         $('.chatbox').addClass('chatbox-closed');
     });
-
     var chatHub = $.connection.chatHub;
+    chatHub.client.loadAllMsgOfClient = function (msg) {
+        var jsonMsg = JSON.parse(msg);
+        for (var i = 0; i < jsonMsg.length; i++) {
+            if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
+                $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
+            }
+            //$('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
+        }
+    }
     $.connection.hub.start().done(function () {
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
@@ -34,19 +42,20 @@
                 $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
             }
         });
+        $('.customer-info').submit(function (e) {
+            e.preventDefault();
+            var email = $('.customer-info input').val();
+            if (email.length > 0) {
+                chatHub.server.connect(email);
+                chatHub.server.loadMsgOfClient(email);
+            }
+            $('.customer-info').hide();
+            $('.chatbox-body').show();
+            $('.chatbox-footer').show();
+            //chatHub.connection.connect(email);
+        });
     });
-    console.log($('.chatbox-body > .chatbox-body-msg-right').length);
-    $('.customer-info').submit(function (e) {
-        e.preventDefault();
-        var email = $('.customer-info input').val();
-        if (email.length > 0) {
-            chatHub.server.connect(email);
-        }
-        $('.customer-info').hide();
-        $('.chatbox-body').show();
-        $('.chatbox-footer').show();
-        //chatHub.connection.connect(email);
-    });
+
 });
 //code using append when client send message
 function AddMsgOfClient(msg) {

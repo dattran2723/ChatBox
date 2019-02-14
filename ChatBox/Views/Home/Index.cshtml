@@ -47,32 +47,20 @@
             <button class="chatbox-close"><i class="fas fa-times"></i></button>
         </div>
         <form class="customer-info">
-            <input type="email" placeholder="Email" required />
-            <button id="btnCus" type="submit" value="submit">Bắt đầu</button>
+            <input type="email" placeholder="Email" class="form-control mx-auto" required />
+            <input type="hidden" id="txtNameEmail" name="name" value="" />
+            <button id="btnCus" type="submit" class="btn btn-primary mt-2" value="submit">Bắt đầu</button>
         </form>
         <div class="chatbox-body">
             <ul class="chatbox-body-msg list-unstyled">
                 <li class="float-left mt-1 chatbox-body-msg-left">
-                    xin chao
-                </li>
-                <li class="float-left mt-1 chatbox-body-msg-left">
-                    xin chao
-                </li>
-                <li class="float-right mt-1 chatbox-body-msg-right">
-                    hi
-                </li>
-                <li class="float-right mt-1 chatbox-body-msg-right">
-                    hi
-                </li>
-                <li class="float-left mt-1 chatbox-body-msg-right">
-                    How can I set multiple CSS styles in JavaScript? - Stack Overflow
+                    Xin chào. Bạn cần tư vấn gì...
                 </li>
             </ul>
         </div>
         <div class="chatbox-footer">
             <div class="chatbox-footer-content">
                 <textarea type="text" name="name" id="txtMsg" placeholder="Nhập tin nhắn..."></textarea>
-                <input type="hidden" name="name" id="displayEmail" value="" />
                 <button id="btn-Send"><i class="fas fa-location-arrow"></i></button>
             </div>
         </div>

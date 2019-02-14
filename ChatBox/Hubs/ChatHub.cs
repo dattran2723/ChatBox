@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ChatBox.DataBinding;
+using System.Web.Script.Serialization;
 using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
 
@@ -54,6 +55,16 @@ namespace ChatBox.Hubs
         public void SendPrivateMessage(string from)
         {
 
+        }
+        public void LoadMsgOfClient(string email)
+        {
+            var item = db.account.FirstOrDefault(x => x.Email == email);
+            if (item != null)
+            {
+                var msg = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email);
+                string listMsg = new JavaScriptSerializer().Serialize(msg);
+                Clients.Caller.LoadAllMsgOfClient(listMsg);
+            }
         }
     }
 }
