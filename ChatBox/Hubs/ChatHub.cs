@@ -49,7 +49,6 @@ namespace ChatBox.Hubs
 
             Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId);
 
-
         }
 
         public void SendPrivateMessage(string from)
