@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ChatBox.Models.User>
+﻿@model IEnumerable<ChatBox.ViewModel.UserViewModel>
 @{
     ViewBag.Title = "ManageChat";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-10 meta">
                             <p class="name">@item.Email</p>
-                            <small class="preview">hello</small>
+                            <small class="preview">@item.LastMsg</small>
                         </div>
                     </div>
                 </li>

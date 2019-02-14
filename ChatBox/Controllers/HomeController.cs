@@ -1,4 +1,6 @@
-﻿using ChatBox.Models;
+﻿using ChatBox.DataBinding;
+using ChatBox.Models;
+using ChatBox.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,18 @@ namespace ChatBox.Controllers
         public ActionResult ManageChat()
         {
             var user = db.account.OrderByDescending(x => x.IsOnline).ToList();
-            return View(user);
+            List<UserViewModel> listUser = new List<UserViewModel>();
+            MessageDb messageDb = new MessageDb();
+            foreach (var item in user)
+            {
+                UserViewModel userView = new UserViewModel();
+                userView.ConnectionId = item.ConnectionId;
+                userView.Email = item.Email;
+                userView.IsOnline = item.IsOnline;
+                userView.LastMsg = messageDb.GetLastMessageByEmail(item.Email);
+                listUser.Add(userView);
+            }
+            return View(listUser);
         }
 
     }
