@@ -33,6 +33,14 @@ namespace ChatBox.Hubs
             }
             else
             {
+                if (item.ConnectionId != id && item.IsOnline == true)
+                {
+                    var a = true;
+                    Clients.Caller.SendA(a);
+                    item.ConnectionId = id;
+                    db.SaveChanges();
+                    Clients.Caller.sameEmail();
+                }
                 item.ConnectionId = id;
                 item.IsOnline = true;
                 var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
@@ -50,14 +58,19 @@ namespace ChatBox.Hubs
         /// </summary>
         public void SendMsg(string fromEmail, string toEmail, string msg)
         {
-            MessageDb messageDb = new MessageDb();
-            var createDate = DateTime.Now;
-            messageDb.AddMessage(fromEmail.ToLower(), toEmail.ToLower(), msg, createDate);
+            var id = Context.ConnectionId;
+            var item = db.account.FirstOrDefault(x => x.Email == fromEmail);
+            if (id == item.ConnectionId)
+            {
+                MessageDb messageDb = new MessageDb();
+                var createDate = DateTime.Now;
+                messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
 
-            var connectionId = Context.ConnectionId;
+                var connectionId = Context.ConnectionId;
 
-            Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail.ToLower());
-
+                Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
+            }
+            
         }
 
         public void SendPrivateMessage(string toEmail, string msg, string connectionId)
