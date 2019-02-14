@@ -9,10 +9,11 @@
     });
     var chatHub = $.connection.chatHub;
 
-    chatHub.client.onConnected = function (id, email,allUsers) {
+    chatHub.client.onConnected = function (id, email, allUsers) {
+        LoadUser(email, id);
         AddUser(email, id);
     };
-    function AddUser(email, connectionId) {
+    function LoadUser(email, connectionId) {
         var code = $('<li class="contact">\
                 <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
                 <div class="wrap row">\
@@ -27,6 +28,21 @@
             </li >');
         $('.listUser').append(code);
     }
+    function AddUser(email, connectionId) {
+        var code = $('<li class="contact">\
+                <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
+                <div class="wrap row">\
+                    <div class="col-2 contact-status">\
+                        <span class="online"></span>\
+                    </div>\
+                    <div class="col-10 meta">\
+                        <p class="name">'+ email + '</p>\
+                        <small class="preview">hello</small>\
+                    </div>\
+                </div>\
+            </li >');
+        $(code).insertBefore('.contact');
+    };
     $.connection.hub.start().done(function () {
 
 
