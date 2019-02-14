@@ -30,11 +30,12 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").onConnected(id, email,ConnectedUser);
+                Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
             }
             else
             {
                 item.ConnectionId = id;
+                item.IsOnline = true;
                 var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email);
                 foreach (var i in itemMsg)
                 {
@@ -44,7 +45,7 @@ namespace ChatBox.Hubs
                 Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
 
             }
-            
+
         }
 
         /// <summary>
@@ -84,6 +85,7 @@ namespace ChatBox.Hubs
             {
                 item.IsOnline = false;
                 db.SaveChanges();
+                Clients.User("admin@gmail.com").SendMsgForAdmin(item.Email, item.IsOnline, item.ConnectionId);
             }
             // Add your own code here.
             // For example: in a chat application, mark the user as offline, 

@@ -9,9 +9,19 @@
     });
     var chatHub = $.connection.chatHub;
 
-    chatHub.client.onConnected = function (id, email,allUsers) {
+    chatHub.client.onConnected = function (id, email, allUsers) {
         AddUser(email, id);
     };
+    //OnDisconnected
+    chatHub.client.sendMsgForAdmin = function (email, isOnline, connectionId) {
+        $(".contact").each(function (index) {
+            if ($(this).find('.name').text() == email) {
+                this.remove();
+                $('.listUser').append(AddUser(email, connectionId));
+            }
+            console.log(index + ": " + $(this).find('.name').text());
+        });
+    }
     function AddUser(email, connectionId) {
         var code = $('<li class="contact">\
                 <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
