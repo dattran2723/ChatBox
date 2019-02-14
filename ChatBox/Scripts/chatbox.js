@@ -10,6 +10,7 @@
 
     var chatHub = $.connection.chatHub;
     $.connection.hub.start().done(function () {
+        
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {
@@ -45,6 +46,7 @@
         $('.chatbox-footer').show();
         //chatHub.connection.connect(email);
     });
+    
 });
 //code using append when client send message
 function AddMsgOfClient(msg) {

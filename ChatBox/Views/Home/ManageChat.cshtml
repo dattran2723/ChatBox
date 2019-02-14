@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<ChatBox.Models.User>
 @{
     ViewBag.Title = "ManageChat";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,18 +11,21 @@
         <h4 class="pl-5">Admin</h4>
         <hr />
         <ul class="list-unstyled">
+            @*@foreach (var item in Model)
+            {
             <li class="contact active">
                 <div class="wrap row">
                     <div class="col-2 contact-status">
                         <span class="online"></span>
                     </div>
                     <div class="col-10 meta">
-                        <p class="name">Tran Dat</p>
+                        <p class="name">@item.Email</p>
                         <small class="preview">hello</small>
                     </div>
                 </div>
             </li>
-            <li class="contact">
+            }*@
+            @*<li class="contact">
                 <div class="wrap row">
                     <div class="col-2 contact-status">
                         <span class="offline"></span>
@@ -109,7 +112,7 @@
                         <small class="preview">hello</small>
                     </div>
                 </div>
-            </li>
+            </li>*@
         </ul>
     </div>
     <div class="col-8 right chat">
@@ -172,4 +175,5 @@
 </div>
 @section scripts{
     <script src="~/Scripts/manageChat.js"></script>
+
 }

@@ -9,11 +9,11 @@ namespace ChatBox.Hubs
 {
     public class ChatHub : Hub
     {
-        static List<User> ConnectedUser = new List<User>();
         public ApplicationDbContext db = new ApplicationDbContext();
-
+        static List<User> ConnectedUser = new List<User>();
         public void Connect(string email)
         {
+
             var id = Context.ConnectionId;
             var item = db.account.FirstOrDefault(x => x.Email == email);
             if (item == null)
@@ -26,14 +26,20 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
+                Clients.Caller.onConnected(id, email, ConnectedUser);
             }
             else
             {
                 item.ConnectionId = id;
                 db.SaveChanges();
+                Clients.Caller.onConnected(id, email, ConnectedUser);
+
             }
-            
+
+
+
         }
+
         /// <summary>
         /// gui tin nhan cho admin
         /// </summary>
