@@ -17,7 +17,14 @@
                     <input type="hidden" name="connectionId" value="id" />
                     <div class="wrap row">
                         <div class="col-2 contact-status">
-                            <span class="online"></span>
+                            @if (item.IsOnline == true)
+                            {
+                                <span class="online"></span>
+                            }
+                            else
+                            {
+                                <span class="offline"></span>
+                            }
                         </div>
                         <div class="col-10 meta">
                             <p class="name">@item.Email</p>

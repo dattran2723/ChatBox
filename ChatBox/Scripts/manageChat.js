@@ -25,7 +25,7 @@
                     </div>\
                 </div>\
             </li >');
-        $('.listUser').append(code);
+        $(code).insertBefore('.contact');
     }
     $.connection.hub.start().done(function () {
 
