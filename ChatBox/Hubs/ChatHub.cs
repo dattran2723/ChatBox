@@ -89,7 +89,7 @@ namespace ChatBox.Hubs
             {
                 item.IsOnline = false;
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").SendMsgForAdmin(item.Email, item.IsOnline, item.ConnectionId);
+                Clients.User("admin@gmail.com").OnUserDisconnected(item.Email, item.IsOnline, item.ConnectionId);
             }
             // Add your own code here.
             // For example: in a chat application, mark the user as offline, 

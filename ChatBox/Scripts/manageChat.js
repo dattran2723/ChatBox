@@ -17,8 +17,9 @@
         AddUser(email, id);
     };
     //OnDisconnected
-    chatHub.client.sendMsgForAdmin = function (email, isOnline, connectionId) {
+    chatHub.client.onUserDisconnected = function (email, isOnline, connectionId) {
         $(".contact").each(function (index) {
+            console.log(index)
             if ($(this).find('.name').text() == email) {
                 this.remove();
                 AddUserDisconnected(email, connectionId)
@@ -31,7 +32,7 @@
                 <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
                 <div class="wrap row">\
                     <div class="col-2 contact-status">\
-                        <span class="online"></span>\
+                        <span class="offline"></span>\
                     </div>\
                     <div class="col-10 meta">\
                         <p class="name">'+ email + '</p>\
@@ -73,5 +74,4 @@
         $('.list-msg').append(code);
         $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     };
-    
 });
