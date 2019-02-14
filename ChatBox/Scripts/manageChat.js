@@ -50,7 +50,8 @@
                     </div>\
                 </div>\
             </li >');
-        $(code).insertBefore('.contact');
+        var p01 = document.getElementsByClassName("contact");
+        $(code).insertBefore(p01[0]);
     }
     $.connection.hub.start().done(function () {
 
@@ -68,15 +69,5 @@
         $('.list-msg').append(code);
         $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     };
-
-    $('.send').click(function () {
-        newMessage();
-    });
-
-    $(window).on('keydown', function (e) {
-        if (e.which == 13) {
-            newMessage();
-            return false;
-        }
-    });
+    
 });
