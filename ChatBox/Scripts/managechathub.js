@@ -16,7 +16,6 @@
     }
 
     chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
-        debugger
         var jsonMsg = JSON.parse(listMsg);
         for (var i = 0; i < jsonMsg.length; i++) {
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
