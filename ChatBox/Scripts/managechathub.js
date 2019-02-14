@@ -7,9 +7,6 @@
             $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
         }
         addMsgInListContact(email, msg);
-        //appendListMsg(msg, date, 'cy');
-        //$('#name-chat').html(email);
-        //$('input[name="connectionIdActive"').val(connectionId);
     }
     function addMsgInListContact(email, msg) {
         $(".contact").each(function () {
@@ -26,7 +23,7 @@
     function appendListMsg(msg, date, className) {
         var codeHtml = '<li class="' + className + '">\
             <div class="msg_cotainer" >'+ msg + ' \
-            <span class="msg_time">'+ date + '</span>\
+            <span class="msg_time d-none">'+ date + '</span>\
             </div ></li >';
         $('.list-msg').append(codeHtml);
     }
@@ -36,18 +33,20 @@
         var jsonMsg = JSON.parse(listMsg);
         var codeHtml = '';
         for (var i = 0; i < jsonMsg.length; i++) {
-            var getDate = jsonMsg[i].DateSend
-            var date = new Date(parseInt(getDate.substr(6)));
-            var formatted = date.getFullYear() + "-" +
-                ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
-                ("0" + date.getDate()).slice(-2) + " " + date.getHours() + ":" +
-                date.getMinutes();
-            console.log(formatted)
+            //formart datetime 
+            var DateJson = jsonMsg[i].DateSend
+            var dateFormart = new Date(parseInt(DateJson.substr(6)));
+            var formatted = dateFormart.getHours() + ":" +
+                dateFormart.getMinutes() + 's' + " " +
+                ("0" + dateFormart.getDate()).slice(-2) + "-" +
+                ("0" + (dateFormart.getMonth() + 1)).slice(-2) + "-" +
+                dateFormart.getFullYear();
+
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
-                appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend, 'cy');
+                appendListMsg(jsonMsg[i].Msg, formatted, 'cy');
             }
             else {
-                appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend, 'cm');
+                appendListMsg(jsonMsg[i].Msg, formatted, 'cm');
             }
         }
         $('.list-msg').append(codeHtml);
