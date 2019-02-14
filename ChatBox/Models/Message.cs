@@ -10,6 +10,7 @@ namespace ChatBox.Models
     {
         [Key]
         public string Id { get; set; }
+        public string FromConnectionId { get; set; }
         public string FromEmail { get; set; }
         public string ToEmail { get; set; }
         public string Msg { get; set; }
