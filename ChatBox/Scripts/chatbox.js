@@ -25,8 +25,19 @@
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     }
+    chatHub.client.sendA = function (a) {
+        if (a == true) {
+            if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
+                Clients.Caller.sameEmail();
+            } else {
+                $('.customer-info').show();
+                $('.chatbox-body').hide();
+                $('.chatbox-footer').hide();
+            }
+        }
+    }
     $.connection.hub.start().done(function () {
-        
+
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {
