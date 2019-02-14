@@ -19,33 +19,30 @@ namespace ChatBox.Hubs
         {
 
             var id = Context.ConnectionId;
-            var item = db.account.FirstOrDefault(x => x.Email == email);
+            var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
             if (item == null)
             {
                 db.account.Add(new User
                 {
                     Id = Guid.NewGuid().ToString(),
                     ConnectionId = id,
-                    Email = email,
+                    Email = email.ToLower(),
                     IsOnline = true
                 });
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").onConnected(id, email, "true");
             }
             else
             {
                 item.ConnectionId = id;
                 item.IsOnline = true;
-                var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email);
+                var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
                 foreach (var i in itemMsg)
                 {
                     i.FromConnectionId = id;
                 }
                 db.SaveChanges();
             }
-
-
-
+            Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
         }
 
         /// <summary>
@@ -55,11 +52,11 @@ namespace ChatBox.Hubs
         {
             MessageDb messageDb = new MessageDb();
             var createDate = DateTime.Now;
-            messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
+            messageDb.AddMessage(fromEmail.ToLower(), toEmail.ToLower(), msg, createDate);
 
             var connectionId = Context.ConnectionId;
 
-            Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
+            Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail.ToLower());
 
         }
 
@@ -67,19 +64,19 @@ namespace ChatBox.Hubs
         {
             var createDate = DateTime.Now;
             var fromEmail = "admin@gmail.com";
-            messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
+            messageDb.AddMessage(fromEmail.ToLower(), toEmail.ToLower(), msg, createDate);
             Clients.Client(connectionId).AdminSendMsg(msg);
         }
         public void LoadMsgOfClient(string email)
         {
-            string listMsg = messageDb.GetMessagesByEmail(email);
+            string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.Caller.LoadAllMsgOfClient(listMsg);
         }
 
         public void LoadMsgByEmailOfAdmin(string email)
         {
 
-            string listMsg = messageDb.GetMessagesByEmail(email);
+            string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.User("admin@gmail.com").loadAllMsgByEmailOfAdmin(listMsg);
         }
         public override Task OnDisconnected(bool stopCalled)
@@ -89,7 +86,7 @@ namespace ChatBox.Hubs
             {
                 item.IsOnline = false;
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").OnUserDisconnected(item.Email, item.IsOnline, item.ConnectionId);
+                Clients.User("admin@gmail.com").OnUserDisconnected(item.Email.ToLower(), item.IsOnline, item.ConnectionId);
             }
             // Add your own code here.
             // For example: in a chat application, mark the user as offline, 
