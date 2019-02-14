@@ -11,7 +11,10 @@
     chatHub.client.loadAllMsgOfClient = function (msg) {
         var jsonMsg = JSON.parse(msg);
         for (var i = 0; i < jsonMsg.length; i++) {
-            $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
+            if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
+                $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
+            }
+            //$('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
         }
     }
     $.connection.hub.start().done(function () {
