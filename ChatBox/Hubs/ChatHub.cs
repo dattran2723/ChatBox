@@ -33,6 +33,11 @@ namespace ChatBox.Hubs
             else
             {
                 item.ConnectionId = id;
+                var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email);
+                foreach (var i in itemMsg)
+                {
+                    i.FromConnectionId = id;
+                }
                 db.SaveChanges();
                 Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
 
@@ -65,7 +70,7 @@ namespace ChatBox.Hubs
             var item = db.account.FirstOrDefault(x => x.Email == email);
             if (item != null)
             {
-                var msg = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email);
+                var msg = db.messages.ToList().Where(x => x.FromConnectionId == Context.ConnectionId || x.ToEmail == email);
                 string listMsg = new JavaScriptSerializer().Serialize(msg);
                 Clients.Caller.LoadAllMsgOfClient(listMsg);
             }
