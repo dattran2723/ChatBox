@@ -1,9 +1,16 @@
 ﻿$(function () {
     var chatHub = $.connection.chatHub;
     chatHub.client.sendMsgForAdmin = function (msg, date, connectionId, email) {
-        appendListMsg(msg, date, 'cy');
-        $('#name-chat').html(email);
-        $('input[name="connectionIdActive"').val(connectionId);
+        var connectionIdActive = $('input[name="connectionIdActive"').val();
+        if (connectionId == connectionIdActive) {
+            appendListMsg(msg, date, 'cy');
+        } else {
+
+        }
+
+        //appendListMsg(msg, date, 'cy');
+        //$('#name-chat').html(email);
+        //$('input[name="connectionIdActive"').val(connectionId);
     }
 
     function appendListMsg(msg, date, className) {
