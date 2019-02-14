@@ -14,12 +14,16 @@
     var chatHub = $.connection.chatHub;
 
     chatHub.client.onConnected = function (id, email, allUsers) {
+        $(".contact").each(function () {
+            if ($(this).find('.name').text() == email) {
+                this.remove();
+            }
+        });
         AddUser(email, id);
     };
     //OnDisconnected
     chatHub.client.onUserDisconnected = function (email, isOnline, connectionId) {
-        $(".contact").each(function (index) {
-            console.log(index)
+        $(".contact").each(function () {
             if ($(this).find('.name').text() == email) {
                 this.remove();
                 AddUserDisconnected(email, connectionId)
