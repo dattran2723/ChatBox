@@ -4,6 +4,7 @@
         var connectionIdActive = $('input[name="connectionIdActive"').val();
         if (connectionId == connectionIdActive) {
             appendListMsg(msg, date, 'cy');
+            $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
         }
         addMsgInListContact(email, msg);
         //appendListMsg(msg, date, 'cy');
@@ -28,7 +29,6 @@
             <span class="msg_time">'+ date + '</span>\
             </div ></li >';
         $('.list-msg').append(codeHtml);
-        $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     }
 
     chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
@@ -36,17 +36,18 @@
         var jsonMsg = JSON.parse(listMsg);
         var codeHtml = '';
         for (var i = 0; i < jsonMsg.length; i++) {
+            var getDate = jsonMsg[i].DateSend
+            var date = new Date(parseInt(getDate.substr(6)));
+            var formatted = date.getFullYear() + "-" +
+                ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
+                ("0" + date.getDate()).slice(-2) + " " + date.getHours() + ":" +
+                date.getMinutes();
+            console.log(formatted)
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
-                codeHtml = codeHtml + '<li class="cy">\
-                            <div class="msg_cotainer" >'+ jsonMsg[i].Msg + ' \
-                            <span class="msg_time">'+ jsonMsg[i].DateSend + '</span>\
-                            </div ></li >';
+                appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend, 'cy');
             }
             else {
-                codeHtml = codeHtml + '<li class="cm">\
-                            <div class="msg_cotainer" >'+ jsonMsg[i].Msg + ' \
-                            <span class="msg_time">'+ jsonMsg[i].DateSend + '</span>\
-                            </div ></li >';
+                appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend, 'cm');
             }
         }
         $('.list-msg').append(codeHtml);
@@ -58,7 +59,7 @@
         function sendMessge() {
             var email = $('#name-chat').text();
             var msg = $('textarea').val();
-            if (msg == "") {
+            if (msg == false) {
                 return false;
             }
             var connectionId = $('input[name="connectionIdActive"').val();

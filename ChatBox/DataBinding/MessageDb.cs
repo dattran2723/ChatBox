@@ -36,5 +36,15 @@ namespace ChatBox.DataBinding
             }
             return listMsg;
         }
+
+        public string GetLastMessageByEmail(string email)
+        {
+            var message = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
+            var last = message.LastOrDefault();
+            var msg = "";
+            if (last != null)
+                msg = last.Msg;
+            return msg;
+        }
     }
 }
