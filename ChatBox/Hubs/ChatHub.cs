@@ -14,12 +14,12 @@ namespace ChatBox.Hubs
     {
         public ApplicationDbContext db = new ApplicationDbContext();
         static List<User> ConnectedUser = new List<User>();
+       
         public void Connect(string email)
         {
 
             var id = Context.ConnectionId;
-            var item = db.account.FirstOrDefault(x => x.Email == email);
-            var isOnline = db.account.FirstOrDefault(x => x.IsOnline);
+            var item = db.account.FirstOrDefault(x => x.Email == email);            
             if (item == null)
             {
                 db.account.Add(new User
@@ -30,7 +30,7 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").onConnected(id, email,ConnectedUser);
+                Clients.User("admin@gmail.com").onConnected(id, email, "true");
             }
             else
             {
@@ -41,10 +41,12 @@ namespace ChatBox.Hubs
                     i.FromConnectionId = id;
                 }
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
+                
 
             }
-            
+            var item2 = db.account.FirstOrDefault(x => x.Email == email);
+
+
         }
 
         /// <summary>

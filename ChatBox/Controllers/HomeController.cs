@@ -31,9 +31,9 @@ namespace ChatBox.Controllers
 
         public ActionResult ManageChat()
         {
-            var user = db.account.ToList();
+            var user = db.account.OrderByDescending(x => x.IsOnline).ToList();
             return View(user);
         }
-       
+
     }
 }
