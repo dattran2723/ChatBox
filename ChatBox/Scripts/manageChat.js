@@ -9,13 +9,12 @@
     });
     var chatHub = $.connection.chatHub;
 
-    $.connection.hub.start().done(function () {
-        chatHub.client.onConnected = function (id, email, allUsers) {
-            AddUser(email, id);
-        };
-        function AddUser(email, connectionId) {
-            var code = $('<li class="contact">\
-                < input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
+    chatHub.client.onConnected = function (id, email,allUsers) {
+        AddUser(email, id);
+    };
+    function AddUser(email, connectionId) {
+        var code = $('<li class="contact">\
+                <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
                 <div class="wrap row">\
                     <div class="col-2 contact-status">\
                         <span class="online"></span>\
@@ -26,8 +25,11 @@
                     </div>\
                 </div>\
             </li >');
-            $('.listUser').append(code);
-        }
+        $('.listUser').append(code);
+    }
+    $.connection.hub.start().done(function () {
+
+
     });
 
     function newMessage() {

@@ -18,6 +18,7 @@ namespace ChatBox.Hubs
 
             var id = Context.ConnectionId;
             var item = db.account.FirstOrDefault(x => x.Email == email);
+            var isOnline = db.account.FirstOrDefault(x => x.IsOnline);
             if (item == null)
             {
                 db.account.Add(new User
@@ -28,7 +29,7 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
+                Clients.User("admin@gmail.com").onConnected(id, email,ConnectedUser);
             }
             else
             {
