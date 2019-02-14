@@ -56,7 +56,11 @@
                 </div>\
             </li >');
         var p01 = document.getElementsByClassName("contact");
-        $(code).insertBefore(p01[0]);
+        if (p01.length == "0") {
+            $('.listUser').append(code);
+        } else {
+            $(code).insertBefore(p01[0]);
+        }
     }
     $.connection.hub.start().done(function () {
 
@@ -74,4 +78,5 @@
         $('.list-msg').append(code);
         $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     };
+
 });
