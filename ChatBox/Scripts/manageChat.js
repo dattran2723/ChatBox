@@ -17,10 +17,25 @@
         $(".contact").each(function (index) {
             if ($(this).find('.name').text() == email) {
                 this.remove();
-                $('.listUser').append(AddUser(email, connectionId));
+                AddUserDisconnected(email, connectionId)
             }
-            console.log(index + ": " + $(this).find('.name').text());
         });
+    }
+    //add user khi Disconnected
+    function AddUserDisconnected(email, connectionId) {
+        var code = $('<li class="contact">\
+                <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
+                <div class="wrap row">\
+                    <div class="col-2 contact-status">\
+                        <span class="online"></span>\
+                    </div>\
+                    <div class="col-10 meta">\
+                        <p class="name">'+ email + '</p>\
+                        <small class="preview">hello</small>\
+                    </div>\
+                </div>\
+            </li >');
+        $('.listUser').append(code);
     }
     function AddUser(email, connectionId) {
         var code = $('<li class="contact">\
