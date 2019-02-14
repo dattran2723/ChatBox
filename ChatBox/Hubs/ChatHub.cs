@@ -14,12 +14,12 @@ namespace ChatBox.Hubs
     {
         public ApplicationDbContext db = new ApplicationDbContext();
         static List<User> ConnectedUser = new List<User>();
-       
+
         public void Connect(string email)
         {
 
             var id = Context.ConnectionId;
-            var item = db.account.FirstOrDefault(x => x.Email == email);            
+            var item = db.account.FirstOrDefault(x => x.Email == email);
             if (item == null)
             {
                 db.account.Add(new User
@@ -34,17 +34,20 @@ namespace ChatBox.Hubs
             }
             else
             {
-                item.ConnectionId = id;
+                //if (item.ConnectionId != id &&item.)
+                {
+
+                    item.ConnectionId = id;
+                    Clients.User("admin@gmail.com").sameEmail();
+                }
                 var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email);
                 foreach (var i in itemMsg)
                 {
                     i.FromConnectionId = id;
                 }
                 db.SaveChanges();
-                
-
             }
-            var item2 = db.account.FirstOrDefault(x => x.Email == email);
+
 
 
         }

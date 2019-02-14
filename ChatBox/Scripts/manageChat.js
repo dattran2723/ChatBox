@@ -9,7 +9,7 @@
     });
     var chatHub = $.connection.chatHub;
 
-    chatHub.client.onConnected = function (id, email,allUsers) {
+    chatHub.client.onConnected = function (id, email, allUsers) {
         AddUser(email, id);
     };
     function AddUser(email, connectionId) {
@@ -25,7 +25,8 @@
                     </div>\
                 </div>\
             </li >');
-        $(code).insertBefore('.contact');
+        var p01 = document.getElementsByClassName("contact");
+        $(code).insertBefore(p01[0]);
     }
     $.connection.hub.start().done(function () {
 
