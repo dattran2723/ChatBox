@@ -16,7 +16,7 @@
     }
 
     chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
-        debugger
+        $('.list-msg').html('');
         var jsonMsg = JSON.parse(listMsg);
         for (var i = 0; i < jsonMsg.length; i++) {
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
@@ -26,6 +26,7 @@
                 appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend, 'cm')
             }
         }
+        $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     }
 
     $.connection.hub.start().done(function () {
