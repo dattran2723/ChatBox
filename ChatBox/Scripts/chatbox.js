@@ -22,6 +22,7 @@
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     }
     $.connection.hub.start().done(function () {
+        
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {

@@ -6,18 +6,20 @@ using ChatBox.DataBinding;
 using System.Web.Script.Serialization;
 using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
+using System.Threading.Tasks;
 
 namespace ChatBox.Hubs
 {
     public class ChatHub : Hub
     {
-        static List<User> ConnectedUser = new List<User>();
         public ApplicationDbContext db = new ApplicationDbContext();
-
+        static List<User> ConnectedUser = new List<User>();
         public void Connect(string email)
         {
+
             var id = Context.ConnectionId;
             var item = db.account.FirstOrDefault(x => x.Email == email);
+            var isOnline = db.account.FirstOrDefault(x => x.IsOnline);
             if (item == null)
             {
                 db.account.Add(new User
@@ -28,6 +30,7 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
+                Clients.User("admin@gmail.com").onConnected(id, email,ConnectedUser);
             }
             else
             {
@@ -38,9 +41,12 @@ namespace ChatBox.Hubs
                     i.FromConnectionId = id;
                 }
                 db.SaveChanges();
-            }
+                Clients.User("admin@gmail.com").onConnected(id, email, ConnectedUser);
 
+            }
+            
         }
+
         /// <summary>
         /// gui tin nhan cho admin
         /// </summary>
@@ -69,6 +75,19 @@ namespace ChatBox.Hubs
                 string listMsg = new JavaScriptSerializer().Serialize(msg);
                 Clients.Caller.LoadAllMsgOfClient(listMsg);
             }
+        }
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+            if (item != null)
+            {
+                item.IsOnline = false;
+                db.SaveChanges();
+            }
+            // Add your own code here.
+            // For example: in a chat application, mark the user as offline, 
+            // delete the association between the current connection id and user name.
+            return base.OnDisconnected(stopCalled);
         }
     }
 }

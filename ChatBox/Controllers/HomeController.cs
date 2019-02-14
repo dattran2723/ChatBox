@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBox.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ namespace ChatBox.Controllers
 {
     public class HomeController : Controller
     {
+        public ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
             return View();
@@ -29,7 +31,9 @@ namespace ChatBox.Controllers
 
         public ActionResult ManageChat()
         {
-            return View();
+            var user = db.account.ToList();
+            return View(user);
         }
+       
     }
 }

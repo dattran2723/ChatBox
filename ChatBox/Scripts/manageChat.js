@@ -6,7 +6,32 @@
             var name = $(this).find('.name').text();
             $('#name-chat').html(name);
         }
-    })
+    });
+    var chatHub = $.connection.chatHub;
+
+    chatHub.client.onConnected = function (id, email,allUsers) {
+        AddUser(email, id);
+    };
+    function AddUser(email, connectionId) {
+        var code = $('<li class="contact">\
+                <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
+                <div class="wrap row">\
+                    <div class="col-2 contact-status">\
+                        <span class="online"></span>\
+                    </div>\
+                    <div class="col-10 meta">\
+                        <p class="name">'+ email + '</p>\
+                        <small class="preview">hello</small>\
+                    </div>\
+                </div>\
+            </li >');
+        $('.listUser').append(code);
+    }
+    $.connection.hub.start().done(function () {
+
+
+    });
+
     function newMessage() {
         var message = $("textarea").val();
         if ($.trim(message) == '') {
