@@ -14,15 +14,19 @@
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
             }
-            //$('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
+            else {
+                console.log(jsonMsg[i].Msg)
+                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</li >');
+            }
         }
+        $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     }
     $.connection.hub.start().done(function () {
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {
                 if ($('#txtMsg').val() != false) {
-                    var fromemail = 'long@gmail.com';
+                    var fromemail = document.getElementById("txtNameEmail").value;
                     var toemail = 'admin@gmail.com';
                     $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
                     chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val())
@@ -48,6 +52,7 @@
             if (email.length > 0) {
                 chatHub.server.connect(email);
                 chatHub.server.loadMsgOfClient(email);
+                document.getElementById("txtNameEmail").value = email;
             }
             $('.customer-info').hide();
             $('.chatbox-body').show();
@@ -62,10 +67,3 @@ function AddMsgOfClient(msg) {
     var code = '<li class="float-right mt-1 chatbox-body-msg-right">' + msg + '</li>';
     return code;
 }
-    //var chatHub = $.connection.myHub;
-    //$.connection.hub.start().done(function () {
-    //    if ($('#btn-StartChat').click(function () {
-    //        chatHub.server.connected($('#txtEmail').val());
-    //        $('.login').hide();
-    //    }));
-    //})
