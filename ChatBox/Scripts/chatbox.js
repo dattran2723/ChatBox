@@ -21,6 +21,10 @@
         }
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     }
+
+    chatHub.client.adminSendMsg = function (msg) {
+        $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
+    }
     $.connection.hub.start().done(function () {
         
         var input = document.getElementById("txtMsg");

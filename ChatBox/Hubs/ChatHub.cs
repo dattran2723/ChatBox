@@ -14,7 +14,7 @@ namespace ChatBox.Hubs
     {
         public ApplicationDbContext db = new ApplicationDbContext();
         static List<User> ConnectedUser = new List<User>();
-
+        MessageDb messageDb = new MessageDb();
         public void Connect(string email)
         {
 
@@ -58,29 +58,33 @@ namespace ChatBox.Hubs
         public void SendMsg(string fromEmail, string toEmail, string msg)
         {
             MessageDb messageDb = new MessageDb();
-            var createDate = DateTime.Today;
+            var createDate = DateTime.Now;
             messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
 
             var connectionId = Context.ConnectionId;
 
-            Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId);
-
+            Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
 
         }
 
-        public void SendPrivateMessage(string from)
+        public void SendPrivateMessage(string toEmail, string msg, string connectionId)
         {
-
+            var createDate = DateTime.Now;
+            var fromEmail = "admin@gmail.com";
+            messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
+            Clients.Client(connectionId).AdminSendMsg(msg);
         }
         public void LoadMsgOfClient(string email)
         {
-            var item = db.account.FirstOrDefault(x => x.Email == email);
-            if (item != null)
-            {
-                var msg = db.messages.ToList().Where(x => x.FromConnectionId == Context.ConnectionId || x.ToEmail == email);
-                string listMsg = new JavaScriptSerializer().Serialize(msg);
-                Clients.Caller.LoadAllMsgOfClient(listMsg);
-            }
+            string listMsg = messageDb.GetMessagesByEmail(email);
+            Clients.Caller.LoadAllMsgOfClient(listMsg);
+        }
+
+        public void LoadMsgByEmailOfAdmin(string email)
+        {
+
+            string listMsg = messageDb.GetMessagesByEmail(email);
+            Clients.User("admin@gmail.com").loadAllMsgByEmailOfAdmin(listMsg);
         }
         public override Task OnDisconnected(bool stopCalled)
         {
