@@ -4,15 +4,24 @@
         var connectionIdActive = $('input[name="connectionIdActive"').val();
         if (connectionId == connectionIdActive) {
             appendListMsg(msg, date, 'cy');
-        } else {
-
         }
-
+        addMsgInListContact(email, msg);
         //appendListMsg(msg, date, 'cy');
         //$('#name-chat').html(email);
         //$('input[name="connectionIdActive"').val(connectionId);
     }
-
+    function addMsgInListContact(email, msg) {
+        $(".contact").each(function () {
+            if ($(this).find('.name').text() == email) {
+                if (msg.length > 20) {
+                    $(this).find('.preview').html(msg.slice(0, 20) + '...');
+                }
+                else {
+                    $(this).find('.preview').html(msg);
+                }
+            }
+        });
+    }
     function appendListMsg(msg, date, className) {
         var codeHtml = '<li class="' + className + '">\
             <div class="msg_cotainer" >'+ msg + ' \
@@ -25,14 +34,22 @@
     chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
         $('.list-msg').html('');
         var jsonMsg = JSON.parse(listMsg);
+        var codeHtml = '';
         for (var i = 0; i < jsonMsg.length; i++) {
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
-                appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend,'cy')
+                codeHtml = codeHtml + '<li class="cy">\
+                            <div class="msg_cotainer" >'+ jsonMsg[i].Msg + ' \
+                            <span class="msg_time">'+ jsonMsg[i].DateSend + '</span>\
+                            </div ></li >';
             }
             else {
-                appendListMsg(jsonMsg[i].Msg, jsonMsg[i].DateSend, 'cm')
+                codeHtml = codeHtml + '<li class="cm">\
+                            <div class="msg_cotainer" >'+ jsonMsg[i].Msg + ' \
+                            <span class="msg_time">'+ jsonMsg[i].DateSend + '</span>\
+                            </div ></li >';
             }
         }
+        $('.list-msg').append(codeHtml);
         $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     }
 
@@ -60,8 +77,20 @@
             }
         });
         $('.left ul').on('click', 'li', function () {
-            var email = $(this).find('.name').text();
-            chatHub.server.loadMsgByEmailOfAdmin(email);
+            if ($(this).hasClass('active') == false) {
+                $('.left ul').children('li').removeClass('active');
+                $(this).addClass('active');
+
+                var name = $(this).find('.name').text();
+                var connectionId = $(this).find('input[name="connectionId"]').val();
+
+                $('#name-chat').html(name);
+                $('input[name="connectionIdActive"').val(connectionId);
+
+                var email = $(this).find('.name').text();
+                chatHub.server.loadMsgByEmailOfAdmin(email);
+            }
+
         });
     })
 })

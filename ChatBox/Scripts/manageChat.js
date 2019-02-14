@@ -1,16 +1,4 @@
 ﻿$(document).ready(function () {
-    $('.left ul').on('click', 'li', function () {
-        if ($(this).hasClass('active') == false) {
-            $('.left ul').children('li').removeClass('active');
-            $(this).addClass('active');
-
-            var name = $(this).find('.name').text();
-            var connectionId = $(this).find('input[name="connectionId"]').val();
-
-            $('#name-chat').html(name);
-            $('input[name="connectionIdActive"').val(connectionId);
-        }
-    });
     var chatHub = $.connection.chatHub;
 
     chatHub.client.onConnected = function (id, email, allUsers) {
@@ -18,8 +6,7 @@
     };
     //OnDisconnected
     chatHub.client.onUserDisconnected = function (email, isOnline, connectionId) {
-        $(".contact").each(function (index) {
-            console.log(index)
+        $(".contact").each(function () {
             if ($(this).find('.name').text() == email) {
                 this.remove();
                 AddUserDisconnected(email, connectionId)
@@ -66,17 +53,5 @@
 
 
     });
-
-    function newMessage() {
-        var message = $("textarea").val();
-        if ($.trim(message) == '') {
-            return false;
-        }
-        var code = '<li class="cm"><div class="msg_cotainer" >' + message + '<span class="msg_time">8:40 AM, Today</span></div ></li >';
-        //$('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendto($('.message ul'));
-        $('textarea').val(null);
-        $('.list-msg').append(code);
-        $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
-    };
 
 });
