@@ -37,10 +37,10 @@ namespace ChatBox.Hubs
                 if (item.ConnectionId != id && item.IsOnline == true)
                 {
                     var a = true;
-                    Clients.Caller.removeOldTab();
+                    Clients.Caller.SendA(a);
                     item.ConnectionId = id;
                     db.SaveChanges();
-                    Clients.Caller.sameEmail(a, id);
+                    Clients.Caller.sameEmail();
                 }
                 item.ConnectionId = id;
                 item.IsOnline = true;

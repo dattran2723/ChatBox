@@ -25,13 +25,12 @@
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     }
-    chatHub.client.sameEmail = function (a,id) {
+    chatHub.client.sendA = function (a) {
         if (a == true) {
             if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                chatHub.client.removeOldTab();
-                console.log(a);
+                Clients.Caller.sameEmail();
             } else {
-                console.log(a);
+                $('.customer-info').show();
             }
         }
     }
