@@ -12,6 +12,8 @@
     position: fixed;
     -webkit-transition: all 600ms cubic-bezier(0.19, 1, 0.22, 1);
     transition: all 600ms cubic-bezier(0.19, 1, 0.22, 1);
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
 .chatbox-tray {
@@ -60,8 +62,8 @@
     padding: 15px;
     overflow-y: auto;
     height: 300px;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
+    /*border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;*/
 }
 
 .chatbox-body-msg li {
@@ -92,7 +94,7 @@
 .chatbox-footer {
     padding: 10px 15px;
     background-color: #fcfcfc;
-    border-top: 1px solid #dddddd30;
+    border-top: 1px solid #fcfcfc;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     border-left: 1px solid #ddd;
@@ -116,3 +118,12 @@
         font-size: 20px;
         padding-top: 3px;
     }
+
+.customer-info {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.form-control {
+    width: 80% !important;
+}

@@ -30,12 +30,11 @@
             }
         var code = '<li class="cm"><div class="msg_cotainer" >' + message + '<span class="msg_time">8:40 AM, Today</span></div ></li >';
         //$('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendto($('.message ul'));
-                $('textarea').val(null);
-                $('.list-msg').append(code);
-        //$('.contact.active .preview').html('<span>you: </span>' + message);
-        $(".list-msg").animate({scrolltop: $('.list-msg').height() }, "fast");
-            };
-        
+        $('textarea').val(null);
+        $('.list-msg').append(code);
+        $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
+    };
+
     $('.send').click(function () {
                     newMessage();
                 });
