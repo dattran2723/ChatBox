@@ -15,7 +15,6 @@
                 $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
             }
             else {
-                console.log(jsonMsg[i].Msg)
                 $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</li >');
             }
         }
@@ -26,7 +25,7 @@
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     }
     $.connection.hub.start().done(function () {
-        
+
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {
