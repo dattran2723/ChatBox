@@ -14,7 +14,7 @@
             @foreach (var item in Model)
             {
                 <li class="contact">
-                    <input type="hidden" name="connectionId" value="id" />
+                    <input type="hidden" name="connectionId" value="@item.ConnectionId" />
                     <div class="wrap row">
                         <div class="col-2 contact-status">
                             @if (item.IsOnline == true)

@@ -3,8 +3,12 @@
         if ($(this).hasClass('active') == false) {
             $('.left ul').children('li').removeClass('active');
             $(this).addClass('active');
+
             var name = $(this).find('.name').text();
+            var connectionId = $(this).find('input[name="connectionId"]').val();
+
             $('#name-chat').html(name);
+            $('input[name="connectionIdActive"').val(connectionId);
         }
     });
     var chatHub = $.connection.chatHub;
