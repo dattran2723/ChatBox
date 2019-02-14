@@ -25,8 +25,18 @@
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     }
+    chatHub.client.sameEmail = function (a,id) {
+        if (a == true) {
+            if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
+                chatHub.client.removeOldTab();
+                console.log(a);
+            } else {
+                console.log(a);
+            }
+        }
+    }
     $.connection.hub.start().done(function () {
-        
+
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {
