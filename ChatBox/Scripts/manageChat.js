@@ -43,15 +43,5 @@
         $('.list-msg').append(code);
         $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
     };
-
-    $('.send').click(function () {
-        newMessage();
-    });
-
-    $(window).on('keydown', function (e) {
-        if (e.which == 13) {
-            newMessage();
-            return false;
-        }
-    });
+    
 });
