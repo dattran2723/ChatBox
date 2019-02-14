@@ -31,6 +31,8 @@
                 Clients.Caller.sameEmail();
             } else {
                 $('.customer-info').show();
+                $('.chatbox-body').hide();
+                $('.chatbox-footer').hide();
             }
         }
     }
