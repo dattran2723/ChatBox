@@ -16,11 +16,18 @@ namespace ChatBox.Hubs
         public ApplicationDbContext db = new ApplicationDbContext();
         MessageDb messageDb = new MessageDb();
         string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
+        /// <summary>
+        /// Hàm kết nối , để tạo mới hoặc đăng nhập vào email để chat
+        /// </summary>
+        /// <param name="email">email nhập vào từ form submit</param>
         public void Connect(string email)
         {
             bool checkExist;
-            var id = Context.ConnectionId;
+            ///id = lấy ra chuỗi kết nối hiện tại của trình duyệt
+            var id = Context.ConnectionId;                                      
+            /// lấy ra tài khoản 
             var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
+            /// chưa có tài khoản , tạo mới
             if (item == null)
             {
                 db.account.Add(new User
@@ -34,13 +41,16 @@ namespace ChatBox.Hubs
                 checkExist = false;
                 Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
             }
+            /// đã có tài khoản
             else
             {
+                ///nếu đang đăng nhập vào trình duyệt cũ , bật một tab mới
                 if (item.ConnectionId != id && item.IsOnline == true)
                 {
                     Clients.Caller.CheckIsOnline();
                 }
                 else
+                ///có tài khoản email rồi và đang offline
                 {
                     item.ConnectionId = id;
                     item.IsOnline = true;
