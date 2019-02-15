@@ -29,7 +29,7 @@
     chatHub.client.checkIsOnline = function () {
         var fromemail = document.getElementById("txtNameEmail").value;
         if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-            chatHub.server.changeTab(fromemail)
+            chatHub.server.changeTab(fromemail);
         } else {
             $('.customer-info').show();
             $('.chatbox-body').hide();
