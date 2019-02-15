@@ -45,7 +45,7 @@
             //formart datetime 
             var DateJson = jsonMsg[i].DateSend
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
-            var formatted = dateFormart.getHours() +
+            var formatted = dateFormart.getHours() + ":" +
                 dateFormart.getMinutes() + " " +
                 ("0" + dateFormart.getDate()).slice(-2) + "-" +
                 ("0" + (dateFormart.getMonth() + 1)).slice(-2) + "-" +
