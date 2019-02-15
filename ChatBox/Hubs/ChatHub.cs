@@ -7,14 +7,15 @@ using System.Web.Script.Serialization;
 using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace ChatBox.Hubs
 {
     public class ChatHub : Hub
     {
         public ApplicationDbContext db = new ApplicationDbContext();
-        static List<User> ConnectedUser = new List<User>();
         MessageDb messageDb = new MessageDb();
+        string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
         public void Connect(string email)
         {
 
@@ -38,21 +39,19 @@ namespace ChatBox.Hubs
                     var a = true;
                     Clients.Caller.SendA(a);
                     item.ConnectionId = id;
-                    Clients.Caller.SendB(id);
-                }
-                else
-                {
-                    item.ConnectionId = id;
-                    item.IsOnline = true;
-                    var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
-                    foreach (var i in itemMsg)
-                    {
-                        i.FromConnectionId = id;
-                    }
                     db.SaveChanges();
+                    Clients.Caller.SameEmail();
                 }
+                item.ConnectionId = id;
+                item.IsOnline = true;
+                var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
+                foreach (var i in itemMsg)
+                {
+                    i.FromConnectionId = id;
+                }
+                db.SaveChanges();
             }
-            Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
+            Clients.User(emailAdmin).onConnected(id, email.ToLower());
         }
 
         /// <summary>
@@ -82,7 +81,6 @@ namespace ChatBox.Hubs
                 var check = true;
                 Clients.All.SendError(check);
             }
-            
         }
 
         public void SendPrivateMessage(string toEmail, string msg, string connectionId)
@@ -106,7 +104,7 @@ namespace ChatBox.Hubs
         {
 
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
-            Clients.User("admin@gmail.com").loadAllMsgByEmailOfAdmin(listMsg);
+            Clients.User(emailAdmin).loadAllMsgByEmailOfAdmin(listMsg);
         }
         /// <summary>
         /// khi co su thay doi ConnectionID cua trinh duyet thi kiem tra
@@ -121,7 +119,7 @@ namespace ChatBox.Hubs
             {
                 item.IsOnline = false;
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").OnUserDisconnected(item.Email.ToLower(), item.IsOnline, item.ConnectionId);
+                Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower());
             }
             return base.OnDisconnected(stopCalled);
         }

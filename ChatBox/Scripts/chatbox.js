@@ -11,9 +11,11 @@
     chatHub.client.loadAllMsgOfClient = function (msg) {
         var jsonMsg = JSON.parse(msg);
         for (var i = 0; i < jsonMsg.length; i++) {
+            //kiem tra for, neu msg do FromEmail khac admin@gmail.com thi append ben trai
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
             }
+            //nguoc lai thi append ben phai
             else {
                 $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</li >');
             }
@@ -27,20 +29,21 @@
     chatHub.client.sendA = function (a) {
         if (a == true) {
             if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                chatHub.client.sendB = function (b) {
-
-                };
+                chatHub.client.sameEmail = function () {}
             } else {
                 $('.customer-info').show();
                 $('.chatbox-body').hide();
                 $('.chatbox-footer').hide();
             }
         }
-        
 
 
     };
-    
+    chatHub.client.sendError = function (b) {
+        if (b == true) {
+            alert("Kết nối đã bị ngắt");
+        }
+    };
 
     $.connection.hub.start().done(function () {
 
