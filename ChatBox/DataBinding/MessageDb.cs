@@ -25,6 +25,11 @@ namespace ChatBox.DataBinding
             db.messages.Add(item);
             db.SaveChanges();
         }
+        /// <summary>
+        /// tao 1 list de chua cac msg  co FromEmail hay ToEmail == email truyen vao do
+        /// </summary>
+        /// <param name="email">email truyen vao</param>
+        /// <returns>list tin nhan da tra ve kieu JSON</returns>
         public string GetMessagesByEmail(string email)
         {
             string listMsg = string.Empty;
