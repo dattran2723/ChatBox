@@ -1,13 +1,19 @@
 ﻿$(function () {
     var chatHub = $.connection.chatHub;
+
+    //Tin nhắn từ client gửi lên cho admin
     chatHub.client.sendMsgForAdmin = function (msg, date, connectionId, email) {
         var connectionIdActive = $('input[name="connectionIdActive"').val();
         if (connectionId == connectionIdActive) {
-            appendListMsg(msg, date, 'cy');
+            var d = new Date(date);
+            var dateSend = d.getHours() + ':' + d.getMinutes() + ' ' + ('0' + d.getDate()).slice(-2) + '-' + ('0' + (d.getUTCMonth() + 1)).slice(-2) + '-' + d.getFullYear();
+            appendListMsg(msg, dateSend, 'cy');
             $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
         }
         addMsgInListContact(email, msg);
     }
+
+    //Code append tin nhắn mới nhất vào dưới email trong list contact
     function addMsgInListContact(email, msg) {
         $(".contact").each(function () {
             if ($(this).find('.name').text() == email) {
@@ -20,14 +26,17 @@
             }
         });
     }
+
+    //Code append a message to list messages
     function appendListMsg(msg, date, className) {
-        var codeHtml = '<li class="' + className + '">\
+        var codeHtml = '<li class="msg ' + className + '">\
             <div class="msg_cotainer" >'+ msg + ' \
             <span class="msg_time d-none">'+ date + '</span>\
             </div ></li >';
         $('.list-msg').append(codeHtml);
     }
 
+    //Load all messeges of email
     chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
         $('.list-msg').html('');
         var jsonMsg = JSON.parse(listMsg);
@@ -55,27 +64,42 @@
 
     $.connection.hub.start().done(function () {
 
-        function sendMessge() {
+        //Send message from admin to client
+        function sendMessge(email, msg) {
+            var connectionId = $('input[name="connectionIdActive"').val();
+            var d = new Date();
+            var dateSend = d.getHours() + ':' + d.getMinutes() + ' ' + ('0' + d.getDate()).slice(-2) + '-' + ('0' + (d.getUTCMonth() + 1)).slice(-2) + '-' + d.getFullYear();
+            appendListMsg(msg, dateSend, 'cm');
+            $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
+            chatHub.server.sendPrivateMessage(email, msg, connectionId);
+            $('textarea').val(null);
+        }
+
+        //event click button send message
+        $('.input-group').on('click', '.send', function () {
             var email = $('#name-chat').text();
             var msg = $('textarea').val();
             if (msg == false) {
                 return false;
             }
-            var connectionId = $('input[name="connectionIdActive"').val();
-            appendListMsg(msg, "11h", 'cm');
-            chatHub.server.sendPrivateMessage(email, msg, connectionId);
-            $('textarea').val(null);
-        }
-
-        $('.input-group').on('click', '.send', function () {
-            sendMessge();
+            sendMessge(email, msg);
+            addMsgInListContact(email, msg);
         });
 
+        //event press enter
         $(window).on('keydown', function (e) {
             if (e.which == 13) {
-                sendMessge();
+                var email = $('#name-chat').text();
+                var msg = $('textarea').val();
+                if (msg == false) {
+                    return false;
+                }
+                sendMessge(email, msg);
+                addMsgInListContact(email, msg);
             }
         });
+
+        //event click a li (a contact) in ul (list contact)
         $('.left ul').on('click', 'li', function () {
             if ($(this).hasClass('active') == false) {
                 $('.left ul').children('li').removeClass('active');
@@ -92,5 +116,15 @@
             }
 
         });
+
+        //event click a li (a message) in ul (list messages)
+        $('.list-msg').on('click', 'li', function () {
+            $(".msg").each(function (index) {
+                if ($(this).find('span').hasClass('d-none') == false) {
+                    $(this).find('span').addClass('d-none');
+                }
+            });
+            $(this).find('span').removeClass('d-none');
+        })
     })
 })
