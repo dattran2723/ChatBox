@@ -27,21 +27,20 @@
     chatHub.client.sendA = function (a) {
         if (a == true) {
             if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                chatHub.client.sameEmail = function () {}
+                chatHub.client.sendB = function (b) {
+
+                };
             } else {
                 $('.customer-info').show();
                 $('.chatbox-body').hide();
                 $('.chatbox-footer').hide();
             }
         }
+        
 
 
     };
-    chatHub.client.sendError = function (b) {
-        if (b == true) {
-            alert("Kết nối đã bị ngắt");
-        }
-    };
+    
 
     $.connection.hub.start().done(function () {
 
