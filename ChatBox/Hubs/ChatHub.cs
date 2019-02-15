@@ -38,17 +38,19 @@ namespace ChatBox.Hubs
                     var a = true;
                     Clients.Caller.SendA(a);
                     item.ConnectionId = id;
-                    db.SaveChanges();
-                    Clients.Caller.SameEmail();
+                    Clients.Caller.SendB(id);
                 }
-                item.ConnectionId = id;
-                item.IsOnline = true;
-                var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
-                foreach (var i in itemMsg)
+                else
                 {
-                    i.FromConnectionId = id;
+                    item.ConnectionId = id;
+                    item.IsOnline = true;
+                    var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
+                    foreach (var i in itemMsg)
+                    {
+                        i.FromConnectionId = id;
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             }
             Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
         }
@@ -80,7 +82,7 @@ namespace ChatBox.Hubs
                 var check = true;
                 Clients.All.SendError(check);
             }
-
+            
         }
 
         public void SendPrivateMessage(string toEmail, string msg, string connectionId)
