@@ -56,12 +56,16 @@ namespace ChatBox.Hubs
         }
 
         /// <summary>
-        /// gui tin nhan cho admin
+        /// 
         /// </summary>
+        /// <param name="fromEmail">tu 1 email nguoi dung nhap vao</param>
+        /// <param name="toEmail">gui den email cua admin</param>
+        /// <param name="msg">tin nhan nguoi dung nhap vao</param>
         public void SendMsg(string fromEmail, string toEmail, string msg)
         {
             var id = Context.ConnectionId;
             var item = db.account.FirstOrDefault(x => x.Email == fromEmail);
+            //kiem tra id ket noi hien tai co dung voi ConnectionId cua 1 email nhap vao khong
             if (id == item.ConnectionId)
             {
                 MessageDb messageDb = new MessageDb();
@@ -72,10 +76,11 @@ namespace ChatBox.Hubs
 
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
             }
+            //truong hoi Id khong dung voi ConnectionId thi tra ve result va 'thong bao ket noi bi ngat'
             else
             {
-                var b = true;
-                Clients.All.SendError(b);
+                var check = true;
+                Clients.All.SendError(check);
             }
 
         }
@@ -87,6 +92,10 @@ namespace ChatBox.Hubs
             messageDb.AddMessage(fromEmail.ToLower(), toEmail.ToLower(), msg, createDate);
             Clients.Client(connectionId).AdminSendMsg(msg);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email">email nguoi dung truyen vao</param>
         public void LoadMsgOfClient(string email)
         {
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
@@ -99,6 +108,12 @@ namespace ChatBox.Hubs
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.User(emailAdmin).loadAllMsgByEmailOfAdmin(listMsg);
         }
+        /// <summary>
+        /// khi co su thay doi ConnectionID cua trinh duyet thi kiem tra
+        /// Neu dung thi gan IsOnline == false de xu ly ben giao dien
+        /// </summary>
+        /// <param name="stopCalled"></param>
+        /// <returns></returns>
         public override Task OnDisconnected(bool stopCalled)
         {
             var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
@@ -108,9 +123,6 @@ namespace ChatBox.Hubs
                 db.SaveChanges();
                 Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower(), item.IsOnline, item.ConnectionId);
             }
-            // Add your own code here.
-            // For example: in a chat application, mark the user as offline, 
-            // delete the association between the current connection id and user name.
             return base.OnDisconnected(stopCalled);
         }
     }
