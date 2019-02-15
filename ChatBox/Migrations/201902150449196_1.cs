@@ -3,7 +3,7 @@ namespace ChatBox.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class init1 : DbMigration
+    public partial class _1 : DbMigration
     {
         public override void Up()
         {
