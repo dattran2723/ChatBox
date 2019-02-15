@@ -1,25 +1,30 @@
 ﻿$(document).ready(function () {
     var chatHub = $.connection.chatHub;
     var item;
-    chatHub.client.onConnected = function (id, email) {
-        $(".contact").each(function () {
-            if ($(this).find('.name').text() == email) {
-                this.remove();
-                item = $(this);
-                console.log(item.parent('li').html());
-                item.find('input').val(id)
-                item.find('span').removeClass('offline')
-                item.find('span').addClass('online')
-                var code = '<li class="contact">' + item.html() + '</li>';
-                //$('.listUser').append(code)
-                var p01 = document.getElementsByClassName("contact");
-                if (p01.length == "0") {
-                    $('.listUser').append(code);
-                } else {
+    chatHub.client.onConnected = function (id, email, checkExist) {
+        if (checkExist == false) {
+            AddUser(email, id);
+        }
+        else {
+            $(".contact").each(function () {
+                var check = $(this).is('.active');
+                if ($(this).find('.name').text() == email) {
+                    this.remove();
+                    item = $(this);
+                    item.find('input').val(id)
+                    item.find('span').removeClass('offline')
+                    item.find('span').addClass('online')
+                    var code;
+                    if (check == true) {
+                        code = '<li class="contact active">' + item.html() + '</li>';
+                    }
+                    else
+                        code = '<li class="contact">' + item.html() + '</li>';
+                    var p01 = document.getElementsByClassName("contact");
                     $(code).insertBefore(p01[0]);
                 }
-            }
-        });
+            });
+        }
         //AddUser(email, id);
     };
     //OnDisconnected

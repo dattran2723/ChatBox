@@ -17,8 +17,8 @@ namespace ChatBox.DataBinding
             var item = new Message
             {
                 Id = Guid.NewGuid().ToString(),
-                FromEmail = fromEmail,
-                ToEmail = toEmail,
+                FromEmail = fromEmail.ToLower(),
+                ToEmail = toEmail.ToLower(),
                 Msg = msg,
                 DateSend = createDate
             };

@@ -26,23 +26,20 @@
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     };
-    chatHub.client.sendA = function (a) {
-        if (a == true) {
+    chatHub.client.checkIsOnline = function (check) {
+        if (check == true) {
+            var fromemail = document.getElementById("txtNameEmail").value;
             if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                chatHub.client.sameEmail = function () {}
+                chatHub.server.changeTab(fromemail)
             } else {
                 $('.customer-info').show();
                 $('.chatbox-body').hide();
                 $('.chatbox-footer').hide();
             }
         }
-
-
     };
-    chatHub.client.sendError = function (b) {
-        if (b == true) {
-            alert("Kết nối đã bị ngắt");
-        }
+    chatHub.client.sendError = function () {
+        alert("Kết nối đã bị ngắt");
     };
 
     $.connection.hub.start().done(function () {
