@@ -39,7 +39,7 @@ namespace ChatBox.Hubs
                     Clients.Caller.SendA(a);
                     item.ConnectionId = id;
                     db.SaveChanges();
-                    Clients.Caller.sameEmail();
+                    Clients.Caller.SameEmail();
                 }
                 item.ConnectionId = id;
                 item.IsOnline = true;
@@ -69,6 +69,11 @@ namespace ChatBox.Hubs
                 var connectionId = Context.ConnectionId;
 
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
+            }
+            else
+            {
+                var b = true;
+                Clients.All.SendError(b);
             }
             
         }

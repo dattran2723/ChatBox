@@ -19,22 +19,30 @@
             }
         }
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
-    }
+    };
 
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
-    }
+    };
     chatHub.client.sendA = function (a) {
         if (a == true) {
             if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                Clients.Caller.sameEmail();
+                chatHub.client.sameEmail = function () {}
             } else {
                 $('.customer-info').show();
                 $('.chatbox-body').hide();
                 $('.chatbox-footer').hide();
             }
         }
-    }
+
+
+    };
+    chatHub.client.sendError = function (b) {
+        if (b == true) {
+            alert("Kết nối đã bị ngắt");
+        }
+    };
+
     $.connection.hub.start().done(function () {
 
         var input = document.getElementById("txtMsg");
