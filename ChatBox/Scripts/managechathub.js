@@ -31,7 +31,7 @@
     function appendListMsg(msg, date, className) {
         var codeHtml = '<li class="msg ' + className + '">\
             <div class="msg_cotainer" >'+ msg + ' \
-            <span class="msg_time">'+ date + '</span>\
+            <span class="msg_time d-none">'+ date + '</span>\
             </div ></li >';
         $('.list-msg').append(codeHtml);
     }
