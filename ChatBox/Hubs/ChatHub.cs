@@ -17,7 +17,6 @@ namespace ChatBox.Hubs
         MessageDb messageDb = new MessageDb();
         public void Connect(string email)
         {
-
             var id = Context.ConnectionId;
             var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
             if (item == null)
@@ -49,6 +48,8 @@ namespace ChatBox.Hubs
                         i.FromConnectionId = id;
                     }
                     db.SaveChanges();
+                    Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
+
                 }
             }
         }
