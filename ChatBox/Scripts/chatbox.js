@@ -24,23 +24,25 @@
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     };
-    chatHub.client.sendA = function (a) {
+    chatHub.client.checkIsOnline = function (a) {
         if (a == true) {
             if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                chatHub.client.sendB = function (b) {
+                var email = document.getElementById("txtNameEmail").value;
+                chatHub.server.changeTab(email);
 
-                };
             } else {
                 $('.customer-info').show();
                 $('.chatbox-body').hide();
                 $('.chatbox-footer').hide();
             }
         }
-        
-
-
     };
-    
+    chatHub.client.sendError = function (check) {
+        if (check == true) {
+            alert("Kết nối đã bị ngắt");
+        }
+    };
+
 
     $.connection.hub.start().done(function () {
 

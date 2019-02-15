@@ -38,9 +38,7 @@ namespace ChatBox.Hubs
                 if (item.ConnectionId != id && item.IsOnline == true)
                 {
                     var a = true;
-                    Clients.Caller.SendA(a);
-                    item.ConnectionId = id;
-                    Clients.Caller.SendB(id);
+                    Clients.Caller.CheckIsOnline(a);                    
                 }
                 else
                 {
@@ -54,6 +52,13 @@ namespace ChatBox.Hubs
                     db.SaveChanges();
                 }
             }
+        }
+        public void ChangeTab(string email)
+        {
+            var id = Context.ConnectionId;
+            var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
+            item.ConnectionId = id;
+            db.SaveChanges();
         }
 
         /// <summary>
@@ -81,7 +86,7 @@ namespace ChatBox.Hubs
             else
             {
                 var check = true;
-                Clients.All.SendError(check);
+                Clients.Client(Context.ConnectionId).SendError(check);
             }
             
         }
