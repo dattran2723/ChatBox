@@ -23,7 +23,7 @@
     function appendListMsg(msg, date, className) {
         var codeHtml = '<li class="' + className + '">\
             <div class="msg_cotainer" >'+ msg + ' \
-            <span class="msg_time d-none">'+ date + '</span>\
+            <span class="msg_time">'+ date + '</span>\
             </div ></li >';
         $('.list-msg').append(codeHtml);
     }
@@ -36,8 +36,8 @@
             //formart datetime 
             var DateJson = jsonMsg[i].DateSend
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
-            var formatted = dateFormart.getHours() + ":" +
-                dateFormart.getMinutes() + 's' + " " +
+            var formatted = dateFormart.getHours() + "h:" +
+                dateFormart.getMinutes() + 'p' + " " +
                 ("0" + dateFormart.getDate()).slice(-2) + "-" +
                 ("0" + (dateFormart.getMonth() + 1)).slice(-2) + "-" +
                 dateFormart.getFullYear();
