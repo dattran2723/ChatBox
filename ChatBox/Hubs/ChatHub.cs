@@ -32,25 +32,26 @@ namespace ChatBox.Hubs
                 });
                 db.SaveChanges();
                 checkExist = false;
+                Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
             }
             else
             {
                 if (item.ConnectionId != id && item.IsOnline == true)
                 {
-                    var check = true;
-                    Clients.Caller.CheckIsOnline(check);
+                    Clients.Caller.CheckIsOnline();
                 }
-                item.ConnectionId = id;
-                item.IsOnline = true;
-                var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
-                foreach (var i in itemMsg)
+                else
                 {
-                    i.FromConnectionId = id;
+                    item.ConnectionId = id;
+                    item.IsOnline = true;
+                    var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
+                    foreach (var itemMsg in ModelMsg)
+                        itemMsg.FromConnectionId = id;
+                    db.SaveChanges();
+                    checkExist = true;
+                    Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
                 }
-                db.SaveChanges();
-                checkExist = true;
             }
-            Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
         }
         public void ChangeTab(string email)
         {

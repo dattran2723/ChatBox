@@ -26,16 +26,14 @@
     chatHub.client.adminSendMsg = function (msg) {
         $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
     };
-    chatHub.client.checkIsOnline = function (check) {
-        if (check == true) {
-            var fromemail = document.getElementById("txtNameEmail").value;
-            if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
-                chatHub.server.changeTab(fromemail)
-            } else {
-                $('.customer-info').show();
-                $('.chatbox-body').hide();
-                $('.chatbox-footer').hide();
-            }
+    chatHub.client.checkIsOnline = function () {
+        var fromemail = document.getElementById("txtNameEmail").value;
+        if (confirm('Bạn có muốn ngắt kết nối ở trình duyệt cũ không ?')) {
+            chatHub.server.changeTab(fromemail)
+        } else {
+            $('.customer-info').show();
+            $('.chatbox-body').hide();
+            $('.chatbox-footer').hide();
         }
     };
     chatHub.client.sendError = function () {
