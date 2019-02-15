@@ -31,7 +31,6 @@ namespace ChatBox.Hubs
                 });
                 db.SaveChanges();
                 Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
-
             }
             else
             {

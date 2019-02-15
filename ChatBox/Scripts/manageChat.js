@@ -14,7 +14,7 @@
         $(".contact").each(function () {
             if ($(this).find('.name').text() == email) {
                 this.remove();
-                AddUserDisconnected(email, connectionId)
+                AddUserDisconnected(email, connectionId);
             }
         });
     }
