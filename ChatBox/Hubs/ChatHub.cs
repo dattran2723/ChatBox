@@ -14,7 +14,6 @@ namespace ChatBox.Hubs
     public class ChatHub : Hub
     {
         public ApplicationDbContext db = new ApplicationDbContext();
-        static List<User> ConnectedUser = new List<User>();
         MessageDb messageDb = new MessageDb();
         string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
         public void Connect(string email)
@@ -52,7 +51,7 @@ namespace ChatBox.Hubs
                 }
                 db.SaveChanges();
             }
-            Clients.User(emailAdmin).onConnected(id, email.ToLower(), "true");
+            Clients.User(emailAdmin).onConnected(id, email.ToLower());
         }
 
         /// <summary>

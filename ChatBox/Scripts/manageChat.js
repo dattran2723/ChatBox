@@ -1,12 +1,13 @@
 ﻿$(document).ready(function () {
     var chatHub = $.connection.chatHub;
     var item;
-    chatHub.client.onConnected = function (id, email, allUsers) {
+    chatHub.client.onConnected = function (id, email) {
         $(".contact").each(function () {
             if ($(this).find('.name').text() == email) {
                 this.remove();
                 item = $(this);
                 console.log(item.parent('li').html());
+                item.find('input').val(id)
                 item.find('span').removeClass('offline')
                 item.find('span').addClass('online')
                 var code = '<li class="contact">' + item.html() + '</li>';
