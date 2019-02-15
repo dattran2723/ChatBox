@@ -30,6 +30,8 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
+                Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
+
             }
             else
             {
@@ -50,7 +52,6 @@ namespace ChatBox.Hubs
                 }
                 db.SaveChanges();
             }
-            Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
         }
 
         /// <summary>
