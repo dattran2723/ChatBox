@@ -1,10 +1,12 @@
 ﻿$(document).ready(function () {
     var chatHub = $.connection.chatHub;
-
+    var item;
     chatHub.client.onConnected = function (id, email, allUsers) {
         $(".contact").each(function () {
             if ($(this).find('.name').text() == email) {
                 this.remove();
+                item = $(this);
+                console.log(item)
             }
         });
         AddUser(email, id);
@@ -28,7 +30,7 @@
                     </div>\
                     <div class="col-10 meta">\
                         <p class="name">'+ email + '</p>\
-                        <small class="preview">hello</small>\
+                        <small class="preview"></small>\
                     </div>\
                 </div>\
             </li >');

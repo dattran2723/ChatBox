@@ -7,6 +7,7 @@ using System.Web.Script.Serialization;
 using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace ChatBox.Hubs
 {
@@ -15,6 +16,7 @@ namespace ChatBox.Hubs
         public ApplicationDbContext db = new ApplicationDbContext();
         static List<User> ConnectedUser = new List<User>();
         MessageDb messageDb = new MessageDb();
+        string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
         public void Connect(string email)
         {
 
@@ -50,7 +52,7 @@ namespace ChatBox.Hubs
                 }
                 db.SaveChanges();
             }
-            Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
+            Clients.User(emailAdmin).onConnected(id, email.ToLower(), "true");
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace ChatBox.Hubs
                 var b = true;
                 Clients.All.SendError(b);
             }
-            
+
         }
 
         public void SendPrivateMessage(string toEmail, string msg, string connectionId)
@@ -95,7 +97,7 @@ namespace ChatBox.Hubs
         {
 
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
-            Clients.User("admin@gmail.com").loadAllMsgByEmailOfAdmin(listMsg);
+            Clients.User(emailAdmin).loadAllMsgByEmailOfAdmin(listMsg);
         }
         public override Task OnDisconnected(bool stopCalled)
         {
@@ -104,7 +106,7 @@ namespace ChatBox.Hubs
             {
                 item.IsOnline = false;
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").OnUserDisconnected(item.Email.ToLower(), item.IsOnline, item.ConnectionId);
+                Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower(), item.IsOnline, item.ConnectionId);
             }
             // Add your own code here.
             // For example: in a chat application, mark the user as offline, 

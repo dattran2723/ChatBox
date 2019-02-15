@@ -11,9 +11,11 @@
     chatHub.client.loadAllMsgOfClient = function (msg) {
         var jsonMsg = JSON.parse(msg);
         for (var i = 0; i < jsonMsg.length; i++) {
+            //kiem tra for, neu msg do FromEmail khac admin@gmail.com thi append ben trai
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg));
             }
+            //nguoc lai thi append ben phai
             else {
                 $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</li >');
             }
