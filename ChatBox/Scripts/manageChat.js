@@ -17,6 +17,7 @@
                     var code;
                     if (check == true) {
                         code = '<li class="contact active">' + item.html() + '</li>';
+                        $('input[name="connectionIdActive"').val(id);
                     }
                     else
                         code = '<li class="contact">' + item.html() + '</li>';
@@ -35,7 +36,11 @@
                 item = $(this);
                 item.find('span').removeClass('online')
                 item.find('span').addClass('offline')
-                var code = '<li class="contact">' + item.html() + '</li>';
+                var code;
+                if (check == true)
+                    code = '<li class="contact active">' + item.html() + '</li>';
+                else
+                    code = '<li class="contact">' + item.html() + '</li>';
                 $('.listUser').append(code)
             }
         });
