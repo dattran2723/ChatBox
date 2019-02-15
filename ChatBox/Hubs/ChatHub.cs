@@ -18,6 +18,7 @@ namespace ChatBox.Hubs
         string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
         public void Connect(string email)
         {
+            bool checkExist;
             var id = Context.ConnectionId;
             var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
             if (item == null)
@@ -30,27 +31,25 @@ namespace ChatBox.Hubs
                     IsOnline = true
                 });
                 db.SaveChanges();
-                Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
+                checkExist = false;
+                Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
             }
             else
             {
                 if (item.ConnectionId != id && item.IsOnline == true)
                 {
-                    var a = true;
-                    Clients.Caller.CheckIsOnline(a);                    
+                    Clients.Caller.CheckIsOnline();
                 }
                 else
                 {
                     item.ConnectionId = id;
                     item.IsOnline = true;
-                    var itemMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
-                    foreach (var i in itemMsg)
-                    {
-                        i.FromConnectionId = id;
-                    }
+                    var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
+                    foreach (var itemMsg in ModelMsg)
+                        itemMsg.FromConnectionId = id;
                     db.SaveChanges();
-                    Clients.User("admin@gmail.com").onConnected(id, email.ToLower(), "true");
-
+                    checkExist = true;
+                    Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
                 }
             }
         }
@@ -60,8 +59,8 @@ namespace ChatBox.Hubs
             var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
             item.ConnectionId = id;
             db.SaveChanges();
+            Clients.User(emailAdmin).onConnected(item.ConnectionId, email.ToLower());
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -78,16 +77,13 @@ namespace ChatBox.Hubs
                 MessageDb messageDb = new MessageDb();
                 var createDate = DateTime.Now;
                 messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
-
                 var connectionId = Context.ConnectionId;
-
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
             }
             //truong hoi Id khong dung voi ConnectionId thi tra ve result va 'thong bao ket noi bi ngat'
             else
             {
-                var check = true;
-                Clients.Client(Context.ConnectionId).SendError(check);
+                Clients.Client(Context.ConnectionId).SendError();
             }
         }
 
