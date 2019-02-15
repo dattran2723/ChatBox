@@ -9,28 +9,29 @@ using System.Web.Mvc;
 
 namespace ChatBox.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ApplicationDbContext db = new ApplicationDbContext();
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
-
         public ActionResult ManageChat()
         {
             var user = db.account.OrderByDescending(x => x.IsOnline).ToList();

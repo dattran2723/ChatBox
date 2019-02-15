@@ -20,10 +20,6 @@
     background: white;
     height: 550px;
 }
-/*.left ul{
-    list-style: none;
-}*/
-
 
 .contact {
     position: relative;
@@ -69,6 +65,10 @@
     margin-left: -20px;
 }
 
+.preview {
+    font-style: italic;
+}
+
 .chat {
     padding: 0;
 }
@@ -82,7 +82,6 @@
         .chat ul li {
             display: block;
             margin-bottom: 5px;
-            max-width: 400px;
             clear: both;
             padding: 1% 5%;
             cursor: pointer;
@@ -91,19 +90,23 @@
 .cm {
     float: right;
     margin-right: 20px;
+    margin-left: 20%;
 }
 
 .cy {
     float: left;
     margin-left: 20px;
+    margin-right: 20%;
 }
 
 textarea {
     width: 90%;
 }
-.input-group{
+
+.input-group {
     bottom: -8px;
 }
+
 .send {
     width: 10%;
     color: #47338d;
