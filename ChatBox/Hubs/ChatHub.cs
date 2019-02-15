@@ -82,7 +82,6 @@ namespace ChatBox.Hubs
                 var check = true;
                 Clients.All.SendError(check);
             }
-
         }
 
         public void SendPrivateMessage(string toEmail, string msg, string connectionId)
@@ -121,7 +120,7 @@ namespace ChatBox.Hubs
             {
                 item.IsOnline = false;
                 db.SaveChanges();
-                Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower(), item.IsOnline, item.ConnectionId);
+                Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower());
             }
             return base.OnDisconnected(stopCalled);
         }
