@@ -86,7 +86,13 @@ namespace ChatBox.Hubs
                 Clients.Client(Context.ConnectionId).SendError();
             }
         }
-
+        /// <summary>
+        /// Admin gửi mail cho client
+        /// lưu vào cơ sở dữ liệu và gửi đến cho client
+        /// </summary>
+        /// <param name="toEmail">email nhận tin nhắn</param>
+        /// <param name="msg">nội dung tin nhắn</param>
+        /// <param name="connectionId">connectionId nhận tin nhắn</param>
         public void SendPrivateMessage(string toEmail, string msg, string connectionId)
         {
             var createDate = DateTime.Now;
@@ -104,6 +110,10 @@ namespace ChatBox.Hubs
             Clients.Caller.LoadAllMsgOfClient(listMsg);
         }
 
+        /// <summary>
+        /// Load tất cả các danh sách tin nhắn của email truyền vào và gửi về cho admin
+        /// </summary>
+        /// <param name="email"></param>
         public void LoadMsgByEmailOfAdmin(string email)
         {
 

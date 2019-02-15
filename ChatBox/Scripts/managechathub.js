@@ -110,6 +110,7 @@
 
                 $('#name-chat').html(name);
                 $('input[name="connectionIdActive"').val(connectionId);
+                $('.input-group').removeClass('d-none');
 
                 var email = $(this).find('.name').text();
                 chatHub.server.loadMsgByEmailOfAdmin(email);
