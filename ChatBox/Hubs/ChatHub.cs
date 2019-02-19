@@ -24,7 +24,7 @@ namespace ChatBox.Hubs
         {
             bool checkExist;
             ///id = lấy ra chuỗi kết nối hiện tại của trình duyệt
-            var id = Context.ConnectionId;                                      
+            var id = Context.ConnectionId;
             /// lấy ra tài khoản 
             var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
             /// chưa có tài khoản , tạo mới
@@ -112,21 +112,19 @@ namespace ChatBox.Hubs
         }
         /// <summary>
         /// 
-        /// </summary>
+        /// </summary>          
         /// <param name="email">email nguoi dung truyen vao</param>
         public void LoadMsgOfClient(string email)
         {
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.Caller.LoadAllMsgOfClient(listMsg);
         }
-
         /// <summary>
         /// Load tất cả các danh sách tin nhắn của email truyền vào và gửi về cho admin
         /// </summary>
         /// <param name="email"></param>
         public void LoadMsgByEmailOfAdmin(string email)
         {
-
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.User(emailAdmin).loadAllMsgByEmailOfAdmin(listMsg);
         }

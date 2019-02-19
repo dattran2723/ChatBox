@@ -11,9 +11,9 @@
                 if ($(this).find('.name').text() == email) {
                     this.remove();
                     item = $(this);
-                    item.find('input').val(id)
-                    item.find('span').removeClass('offline')
-                    item.find('span').addClass('online')
+                    item.find('input').val(id);
+                    item.find('span').removeClass('offline');
+                    item.find('span').addClass('online');
                     var code;
                     if (check == true) {
                         code = '<li class="contact active">' + item.html() + '</li>';
@@ -35,18 +35,19 @@
             if ($(this).find('.name').text() == email) {
                 this.remove();
                 item = $(this);
-                item.find('span').removeClass('online')
-                item.find('span').addClass('offline')
+                item.find('span').removeClass('online');
+                item.find('span').addClass('offline');
                 var code;
                 if (check == true)
                     code = '<li class="contact active">' + item.html() + '</li>';
                 else
                     code = '<li class="contact">' + item.html() + '</li>';
-                console.log(code)
-                $('.listUser').append(code)
+                console.log(code);
+                $('.listUser').append(code);
             }
         });
-    }
+    };
+
     function AddUser(email, connectionId) {
         var code = $('<li class="contact">\
                 <input type = "hidden" name = "connectionId" value = "'+ connectionId + '" />\
@@ -77,7 +78,7 @@
             $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
         }
         addMsgInListContact(email, msg);
-    }
+    };
 
     //Code append tin nhắn mới nhất vào dưới email trong list contact
     function addMsgInListContact(email, msg) {
@@ -109,14 +110,13 @@
         var codeHtml = '';
         for (var i = 0; i < jsonMsg.length; i++) {
             //formart datetime 
-            var DateJson = jsonMsg[i].DateSend
+            var DateJson = jsonMsg[i].DateSend;
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
             var formatted = dateFormart.getHours() + ":" +
                 dateFormart.getMinutes() + " " +
                 ("0" + dateFormart.getDate()).slice(-2) + "-" +
                 ("0" + (dateFormart.getMonth() + 1)).slice(-2) + "-" +
                 dateFormart.getFullYear();
-
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 appendListMsg(jsonMsg[i].Msg, formatted, 'cy');
             }
