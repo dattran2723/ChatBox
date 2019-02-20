@@ -5,3 +5,24 @@
 <h3>@ViewBag.Message</h3>
 
 <p>Use this area to provide additional information.</p>
+@section scripts{
+    <script>
+        $.chat({
+            // your user information
+            user: {
+            Id: 3,
+            Name: 'John Silver',
+            ProfilePictureUrl: 'http://www.foo.com/avatar/123'
+            },
+            // text displayed when the other user is typing
+            typingText: ' is typing...',
+            // the title for the user's list window
+            titleText: 'ChatJS demo chat',
+            // text displayed when there's no other users in the room
+            emptyRoomText: "There's no one around here.",
+            // the adapter you are using. There are 2 implementations out of the box:
+            // SignalRAdapter and LongPollingAdapter (server independent).
+            adapter: new SignalRAdapter()
+        });
+    </script>
+}

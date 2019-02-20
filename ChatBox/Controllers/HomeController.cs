@@ -34,10 +34,12 @@ namespace ChatBox.Controllers
         }
         public ActionResult ManageChat()
         {
-            var user = db.account.OrderByDescending(x => x.IsOnline).ToList();
+            //var user = db.account.OrderByDescending(x => x.IsOnline).ToList();
+            Chater chater = new Chater();
+            List<User> list = chater.GetAllUser();
             List<UserViewModel> listUser = new List<UserViewModel>();
             MessageDb messageDb = new MessageDb();
-            foreach (var item in user)
+            foreach (var item in list)
             {
                 UserViewModel userView = new UserViewModel();
                 userView.ConnectionId = item.ConnectionId;
