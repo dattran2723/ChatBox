@@ -15,7 +15,7 @@ namespace ChatBox.Hubs
     {
         public ApplicationDbContext db = new ApplicationDbContext();
         MessageDb messageDb = new MessageDb();
-        string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
+        string emailAdmin = WebConfigurationManager.AppSettings["EmailAdmin"];
         /// <summary>
         /// Hàm kết nối , để tạo mới hoặc đăng nhập vào email để chat
         /// </summary>

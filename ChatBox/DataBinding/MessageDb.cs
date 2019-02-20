@@ -11,7 +11,7 @@ namespace ChatBox.DataBinding
     {
 
         public ApplicationDbContext db = new ApplicationDbContext();
-        
+
         public void AddMessage(string fromEmail, string toEmail, string msg, DateTime createDate)
         {
             var item = new Message
@@ -26,7 +26,7 @@ namespace ChatBox.DataBinding
             db.SaveChanges();
         }
         /// <summary>
-        /// tao 1 list de chua cac msg  co FromEmail hay ToEmail == email truyen vao do
+        /// tao 1 list de chua cac msg co FromEmail hay ToEmail == email truyen vao do
         /// </summary>
         /// <param name="email">email truyen vao</param>
         /// <returns>list tin nhan da tra ve kieu JSON</returns>
@@ -36,7 +36,9 @@ namespace ChatBox.DataBinding
             var item = db.account.FirstOrDefault(x => x.Email == email);
             if (item != null)
             {
-                var msg = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x=>x.DateSend);
+                var msg = db.messages.ToList()
+                    .Where(x => x.FromEmail == email || x.ToEmail == email)
+                    .OrderBy(x => x.DateSend);
                 listMsg = new JavaScriptSerializer().Serialize(msg);
             }
             return listMsg;
@@ -44,12 +46,15 @@ namespace ChatBox.DataBinding
 
         public string GetLastMessageByEmail(string email)
         {
-            var message = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
+            var message = db.messages.ToList()
+                .Where(x => x.FromEmail == email || x.ToEmail == email)
+                .OrderBy(x => x.DateSend);
             var last = message.LastOrDefault();
             var msg = "";
             if (last != null)
                 msg = last.Msg;
             return msg;
         }
+        
     }
 }

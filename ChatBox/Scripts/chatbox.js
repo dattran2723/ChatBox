@@ -41,7 +41,6 @@
         alert("Kết nối đã bị ngắt");
     };
 
-
     $.connection.hub.start().done(function () {
         var input = document.getElementById("txtMsg");
         input.addEventListener("keyup", function (event) {
@@ -50,17 +49,17 @@
                     var fromemail = document.getElementById("txtNameEmail").value;
                     var toemail = 'admin@gmail.com';
                     $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
-                    chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val())
+                    chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                     $('#txtMsg').val('').focus();
                     $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
                 }
             }
         });
+
         $('.chatbox-footer-content').on('click', '#btn-Send', function () {
             if ($('#txtMsg').val() != false) {
                 var fromemail = 'long@gmail.com';
                 var toemail = 'admin@gmail.com';
-                var codeImg = '<img src="/Imgs/avatar5.png"/>';
                 $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val()));
                 chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                 $('#txtMsg').val('').focus();
@@ -78,6 +77,7 @@
             $('.customer-info').hide();
             $('.chatbox-body').show();
             $('.chatbox-footer').show();
+            
             //chatHub.connection.connect(email);
         });
     });

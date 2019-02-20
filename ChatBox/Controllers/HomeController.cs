@@ -46,6 +46,11 @@ namespace ChatBox.Controllers
             }
             return View(listUser);
         }
+        [AllowAnonymous]
+        public ActionResult Test()
+        {
+            return View();
+        }
 
     }
 }
