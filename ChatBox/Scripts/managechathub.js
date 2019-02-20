@@ -43,14 +43,13 @@
         var codeHtml = '';
         for (var i = 0; i < jsonMsg.length; i++) {
             //formart datetime 
-            var DateJson = jsonMsg[i].DateSend
+            var DateJson = jsonMsg[i].DateSend;
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
             var formatted = dateFormart.getHours() + ":" +
                 dateFormart.getMinutes() + " " +
                 ("0" + dateFormart.getDate()).slice(-2) + "-" +
                 ("0" + (dateFormart.getMonth() + 1)).slice(-2) + "-" +
                 dateFormart.getFullYear();
-
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 appendListMsg(jsonMsg[i].Msg, formatted, 'cy');
             }
@@ -63,7 +62,6 @@
     }
 
     $.connection.hub.start().done(function () {
-
         //Send message from admin to client
         function sendMessge(email, msg) {
             var connectionId = $('input[name="connectionIdActive"').val();
@@ -73,8 +71,8 @@
             $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
             chatHub.server.sendPrivateMessage(email, msg, connectionId);
             $('textarea').val(null);
-        }
 
+        }
         //event click button send message
         $('.input-group').on('click', '.send', function () {
             var email = $('#name-chat').text();
