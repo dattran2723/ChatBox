@@ -51,5 +51,9 @@ namespace ChatBox.Controllers
             return View(listUser);
         }
 
+        public ActionResult Chat()
+        {
+            return View();
+        }
     }
 }
