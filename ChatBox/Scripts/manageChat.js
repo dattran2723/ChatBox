@@ -2,6 +2,7 @@
     var chatHub = $.connection.chatHub;
     var item;
     chatHub.client.onConnected = function (id, email, checkExist) {
+        debugger
         if (checkExist == false) {
             AddUser(email, id);
         }
@@ -30,6 +31,7 @@
     };
     //OnDisconnected
     chatHub.client.onUserDisconnected = function (email) {
+        console.log(email)
         $(".contact").each(function () {
             var check = $(this).is('.active');
             if ($(this).find('.name').text() == email) {
@@ -107,6 +109,7 @@
     chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
         $('.list-msg').html('');
         var jsonMsg = JSON.parse(listMsg);
+        console.log(jsonMsg);
         var codeHtml = '';
         for (var i = 0; i < jsonMsg.length; i++) {
             //formart datetime 

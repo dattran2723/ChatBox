@@ -14,12 +14,11 @@ namespace ChatBox.Hubs
     public class ChatHub : Hub
     {
         public ApplicationDbContext db = new ApplicationDbContext();
+        //public static List<User> listUser = new List<User>();
         MessageDb messageDb = new MessageDb();
-        string emailAdmin = WebConfigurationManager.AppSettings["EmailAdmin"];
-        /// <summary>
-        /// Hàm kết nối , để tạo mới hoặc đăng nhập vào email để chat
-        /// </summary>
-        /// <param name="email">email nhập vào từ form submit</param>
+        Chater chater = new Chater();
+        string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
+
         public void Connect(string email)
         {
             bool checkExist;
@@ -30,14 +29,14 @@ namespace ChatBox.Hubs
             /// chưa có tài khoản , tạo mới
             if (item == null)
             {
-                db.account.Add(new User
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ConnectionId = id,
-                    Email = email.ToLower(),
-                    IsOnline = true
-                });
-                db.SaveChanges();
+                //listUser.Add(new User
+                //{
+                //    Id = Guid.NewGuid().ToString(),
+                //    ConnectionId = id,
+                //    Email = email.ToLower(),
+                //    IsOnline = true
+                //});
+                chater.AddUser(email, id);
                 checkExist = false;
                 Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
             }
@@ -52,23 +51,59 @@ namespace ChatBox.Hubs
                 else
                 ///có tài khoản email rồi và đang offline
                 {
-                    item.ConnectionId = id;
-                    item.IsOnline = true;
-                    var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
-                    foreach (var itemMsg in ModelMsg)
-                        itemMsg.FromConnectionId = id;
-                    db.SaveChanges();
+                    chater.UpdateConnectionId(email, id);
+                    chater.UpdateIsOnlineOfUser(email, true);
+                    //user.ConnectionId = id;
+                    //user.IsOnline = true;
+                    //var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
+                    //foreach (var itemMsg in ModelMsg)
+                    //    itemMsg.FromConnectionId = id;
+                    messageDb.UpdateFromConnectionId(email, id);
                     checkExist = true;
                     Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
                 }
             }
+            //var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
+            //if (item == null)
+            //{
+            //    db.account.Add(new User
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        ConnectionId = id,
+            //        Email = email.ToLower(),
+            //        IsOnline = true
+            //    });
+            //    db.SaveChanges();
+            //    checkExist = false;
+            //    Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
+            //}
+            //else
+            //{
+            //    if (item.ConnectionId != id && item.IsOnline == true)
+            //    {
+            //        Clients.Caller.CheckIsOnline();
+            //    }
+            //    else
+            //    {
+            //        item.ConnectionId = id;
+            //        item.IsOnline = true;
+            //        var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
+            //        foreach (var itemMsg in ModelMsg)
+            //            itemMsg.FromConnectionId = id;
+            //        db.SaveChanges();
+            //        checkExist = true;
+            //        Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
+            //    }
+            //}
         }
         public void ChangeTab(string email)
         {
             var id = Context.ConnectionId;
-            var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
-            item.ConnectionId = id;
-            db.SaveChanges();
+            var item = chater.GetUser(email);
+            //var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
+            //item.ConnectionId = id;
+            chater.UpdateConnectionId(email, id);
+            //db.SaveChanges();
             Clients.User(emailAdmin).onConnected(item.ConnectionId, email.ToLower());
         }
         /// <summary>
@@ -80,13 +115,15 @@ namespace ChatBox.Hubs
         public void SendMsg(string fromEmail, string toEmail, string msg)
         {
             var id = Context.ConnectionId;
-            var item = db.account.FirstOrDefault(x => x.Email == fromEmail);
+            var item = chater.GetUser(fromEmail);
+            //var item = listUser.FirstOrDefault(x => x.Email == fromEmail);
+            //var item = db.account.FirstOrDefault(x => x.Email == fromEmail);
             //kiem tra id ket noi hien tai co dung voi ConnectionId cua 1 email nhap vao khong
             if (id == item.ConnectionId)
             {
                 MessageDb messageDb = new MessageDb();
                 var createDate = DateTime.Now;
-                messageDb.AddMessage(fromEmail, toEmail, msg, createDate);
+                messageDb.AddMessage(fromEmail, toEmail, msg, id, createDate);
                 var connectionId = Context.ConnectionId;
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
             }
@@ -107,7 +144,7 @@ namespace ChatBox.Hubs
         {
             var createDate = DateTime.Now;
             var fromEmail = "admin@gmail.com";
-            messageDb.AddMessage(fromEmail.ToLower(), toEmail.ToLower(), msg, createDate);
+            messageDb.AddMessage(fromEmail.ToLower(), toEmail.ToLower(), msg, connectionId, createDate);
             Clients.Client(connectionId).AdminSendMsg(msg);
         }
         /// <summary>
@@ -136,11 +173,15 @@ namespace ChatBox.Hubs
         /// <returns></returns>
         public override Task OnDisconnected(bool stopCalled)
         {
-            var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+            //var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+
+            //var item = listUser.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+            var item = chater.GetUserByConnectionId(Context.ConnectionId);
             if (item != null)
             {
-                item.IsOnline = false;
-                db.SaveChanges();
+                messageDb.AddListMessageIntoDb(item.Email);
+                //item.IsOnline = false;
+                chater.UpdateIsOnlineOfUser(item.Email, false);
                 Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower());
             }
             return base.OnDisconnected(stopCalled);
