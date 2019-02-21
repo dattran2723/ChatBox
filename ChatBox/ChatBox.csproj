@@ -1597,6 +1597,7 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Imgs\avatar3.png" />
     <Content Include="Imgs\avatar5.png" />
+    <Content Include="Imgs\Group 41.1.png" />
     <Content Include="Imgs\icon.png" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />

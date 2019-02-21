@@ -25,12 +25,15 @@
 }
 
 .chatbox-title {
-    background-color: #1f2836;
+    position:absolute;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     min-height: 50px;
 }
-
+    .chatbox-title img {
+        width: 57px;
+        height: 57px;
+    }
     .chatbox-title a {
         color: #fff;
         height: 50px;
