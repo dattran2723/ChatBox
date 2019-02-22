@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<ChatBox.ViewModel.UserViewModel>
 @{
     ViewBag.Title = "Chat";
     Layout = null;
@@ -10,8 +11,183 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - ChatBox</title>
     <link href="~/Imgs/icon.png" type="image/png" rel="shortcut icon" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/fontawesome-free-5.7.1-web/css/all.css" rel="stylesheet" />
+    <link href="~/Content/chat.css" rel="stylesheet" />
 </head>
 <body>
+    <div class="wrapper">
+        <div class="header row">
+            <div class="title left col-4">
+                <p>Messages</p>
+            </div>
+            <div class="avatar right col-8">
+                <div class="dropdown float-right">
+                    <div class="d-flex bd-highlight dropdown-toggle" data-toggle="dropdown">
+                        <div class="img_cont">
+                            <img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img">
+                            <span class="online"></span>
+                        </div>
+                        <div class="user_info">
+                            <span>@User.Identity.GetUserName()</span>
+                            <p>Administrator</p>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Link 1</a>
+                        <a class="dropdown-item" href="#">Link 2</a>
+                        <a class="dropdown-item-text" href="#">Text Link</a>
+                        <span class="dropdown-item-text">Just Text</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content row">
+            <div class="content-left col-4">
+                <div class="box-item content-title total-contact">
+                    <p>
+                        <i class="far fa-user"></i> 11 <span>members</span> <br />
+                        <i class="fas fa-circle"></i> 5 <span>online</span>
+                    </p>
+                </div>
+                <div class="box-item box-search">
+                    <input type="text" name="search" value="" placeholder="Search" class="form-control search" />
+                </div>
+                <ul class="list-contacts p-0">
+                    @foreach (var item in Model)
+                    {
+                        <li class="box-item contact">
+                            <div class="d-flex bd-highlight w-100">
+                                <div class="img_cont">
+                                    <img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img">
+                                    <span class="@(item.IsOnline == true ? "online": "")"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span class="user-name">@item.Email</span>
+                                    <input type="hidden" name="connectionId" value="@item.ConnectionId" />
+                                    <p>@item.LastMsg </p>
+                                </div>
+                                <div class="time">
+                                    <p>Yesterday</p>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="content-right col-8">
+                <div class="content-title chat-header row">
+                    <div class="col-6">
+                        <b class="user-active">Bessi Berry</b>
+                        <i class="fas fa-circle"></i>
+                        <input type="hidden" name="connectionIdActive" value="" />
+                    </div>
+                    <div class="col-6 text-right">
+                        <div class="">
+                            <button type="button" class="btn btn-outline-dark"><i class="fas fa-upload"></i></button>
+                            <button type="button" class="btn btn-outline-dark"><i class="far fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-content">
+                    <ul class="list-messages">
+                        <li class="message row">
+                            <div class="img-user float-left ml-4">
+                                <img src="~/Content/images/Avatar.png" />
+                            </div>
+                            <div class="msg-user col-9">
+                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                <p class="msg-content">
+                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                </p>
+                            </div>
+                        </li>
+                        <li class="message row">
+                            <div class="img-user float-left ml-4">
+                                <img src="~/Content/images/Avatar.png" />
+                            </div>
+                            <div class="msg-user col-9">
+                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                <p class="msg-content">
+                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                </p>
+                            </div>
+                        </li>
+                        <li class="space row">
+                            <div class="dash float-left ml-0"></div><span class="date">Yesterday</span><div class="dash float-right mr-0"></div>
+                        </li>
+                        <li class="message row">
+                            <div class="img-user float-left ml-4">
+                                <img src="~/Content/images/Avatar.png" />
+                            </div>
+                            <div class="msg-user col-9">
+                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                <p class="msg-content">
+                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                </p>
+                            </div>
+                        </li>
+                        <li class="message row">
+                            <div class="img-user float-left ml-4">
+                                <img src="~/Content/images/Avatar.png" />
+                            </div>
+                            <div class="msg-user col-9">
+                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                <p class="msg-content">
+                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                </p>
+                            </div>
+                        </li>
+                        <li class="message row">
+                            <div class="img-user float-left ml-4">
+                                <img src="~/Content/images/Avatar.png" />
+                            </div>
+                            <div class="msg-user col-9">
+                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                <p class="msg-content">
+                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="input-group box-group">
+                        <div class="input-group-prepend">
+                            <button class="btn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                        <textarea  class="form-control" placeholder="Nhập nội dung tin nhắn"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/testManage.js"></script>
+    <script>
+        $(document).ready(function () {
+            if (window.matchMedia('(max-width: 1000px)').matches) {
+                $(".contact").each(function () {
+                    var name = $(this).find('.user_info span').text();
+                    var img = $(this).find('img');
+                    img.attr('data-toggle', 'tooltip');
+                    img.attr('title', name);
+                });
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+        })
+    </script>
 </body>
 </html>
