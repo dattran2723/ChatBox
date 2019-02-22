@@ -9,7 +9,6 @@ using System.Web.Mvc;
 
 namespace ChatBox.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         public ApplicationDbContext db = new ApplicationDbContext();
@@ -53,7 +52,20 @@ namespace ChatBox.Controllers
 
         public ActionResult Chat()
         {
-            return View();
+            Chater chater = new Chater();
+            List<User> list = chater.GetAllUser();
+            List<UserViewModel> listUser = new List<UserViewModel>();
+            MessageDb messageDb = new MessageDb();
+            foreach (var item in list)
+            {
+                UserViewModel userView = new UserViewModel();
+                userView.ConnectionId = item.ConnectionId;
+                userView.Email = item.Email;
+                userView.IsOnline = item.IsOnline;
+                userView.LastMsg = messageDb.GetLastMessageByEmail(item.Email);
+                listUser.Add(userView);
+            }
+            return View(listUser);
         }
     }
 }

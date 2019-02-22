@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     var chatHub = $.connection.chatHub;
     var item;
+
     chatHub.client.onConnected = function (id, email, checkExist) {
         debugger
         if (checkExist == false) {
