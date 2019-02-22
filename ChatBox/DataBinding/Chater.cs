@@ -9,6 +9,8 @@ namespace ChatBox.DataBinding
     public class Chater
     {
         public static List<User> listUser = new List<User>();
+        public ApplicationDbContext db = new ApplicationDbContext();
+
 
         public void AddUser(string email, string id)
         {
@@ -20,6 +22,9 @@ namespace ChatBox.DataBinding
                 IsOnline = true
             };
             listUser.Add(user);
+            db.account.Add(user);
+            db.SaveChanges();
+
         }
 
         public List<User> GetAllUser()
@@ -30,7 +35,7 @@ namespace ChatBox.DataBinding
 
         public User GetUser(string email)
         {
-            var user = listUser.FirstOrDefault(x=>x.Email == email);
+            var user = listUser.FirstOrDefault(x => x.Email == email.ToLower());
             return user;
         }
 
@@ -44,6 +49,8 @@ namespace ChatBox.DataBinding
         {
             var user = GetUser(email);
             user.ConnectionId = id;
+
+            
         }
 
         public User GetUserByConnectionId(string id)

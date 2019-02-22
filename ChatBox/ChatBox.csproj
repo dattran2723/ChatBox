@@ -196,13 +196,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Migrations\201902210959242_1.cs" />
-    <Compile Include="Migrations\201902210959242_1.Designer.cs">
-      <DependentUpon>201902210959242_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902220308424_init-2.cs" />
-    <Compile Include="Migrations\201902220308424_init-2.Designer.cs">
-      <DependentUpon>201902220308424_init-2.cs</DependentUpon>
+    <Compile Include="Migrations\201902220756332_1.cs" />
+    <Compile Include="Migrations\201902220756332_1.Designer.cs">
+      <DependentUpon>201902220756332_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1695,11 +1691,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902210959242_1.resx">
-      <DependentUpon>201902210959242_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902220308424_init-2.resx">
-      <DependentUpon>201902220308424_init-2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902220756332_1.resx">
+      <DependentUpon>201902220756332_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

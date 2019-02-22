@@ -8,6 +8,7 @@ using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using System.Threading;
 
 namespace ChatBox.Hubs
 {
@@ -25,7 +26,7 @@ namespace ChatBox.Hubs
             /// id = lấy ra chuỗi kết nối hiện tại của trình duyệt
             var id = Context.ConnectionId;
             /// lấy ra tài khoản 
-            var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
+            var item = listUser.FirstOrDefault(x => x.Email == email.ToLower()); 
             /// chưa có tài khoản , tạo mới
             if (item == null)
             {
@@ -60,6 +61,7 @@ namespace ChatBox.Hubs
                     //    itemMsg.FromConnectionId = id;
                     messageDb.UpdateFromConnectionId(email, id);
                     checkExist = true;
+                    //db.SaveChanges();
                     Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
                 }
             }
@@ -174,7 +176,6 @@ namespace ChatBox.Hubs
         public override Task OnDisconnected(bool stopCalled)
         {
             //var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
-
             //var item = listUser.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
             var item = chater.GetUserByConnectionId(Context.ConnectionId);
             if (item != null)
