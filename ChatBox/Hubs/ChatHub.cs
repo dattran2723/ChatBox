@@ -22,7 +22,7 @@ namespace ChatBox.Hubs
         public void Connect(string email)
         {
             bool checkExist;
-            ///id = lấy ra chuỗi kết nối hiện tại của trình duyệt
+            /// id = lấy ra chuỗi kết nối hiện tại của trình duyệt
             var id = Context.ConnectionId;
             /// lấy ra tài khoản 
             var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());

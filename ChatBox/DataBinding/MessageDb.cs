@@ -9,12 +9,11 @@ namespace ChatBox.DataBinding
 {
     public class MessageDb
     {
-
         public ApplicationDbContext db = new ApplicationDbContext();
         public static List<Message> listMessages = new List<Message>();
         public Chater chater = new Chater();
 
-        public void AddMessage(string fromEmail, string toEmail, string msg,string id, DateTime createDate)
+        public void AddMessage(string fromEmail, string toEmail, string msg, string id, DateTime createDate)
         {
             var item = new Message
             {
@@ -23,7 +22,8 @@ namespace ChatBox.DataBinding
                 FromEmail = fromEmail.ToLower(),
                 ToEmail = toEmail.ToLower(),
                 Msg = msg,
-                DateSend = createDate
+                DateSend = createDate,
+                IsRead = false
             };
             listMessages.Add(item);
             //db.messages.Add(item);
@@ -74,7 +74,7 @@ namespace ChatBox.DataBinding
                     }
                 }
             }
-            
+
             return new JavaScriptSerializer().Serialize(listMsg);
         }
 
@@ -128,6 +128,6 @@ namespace ChatBox.DataBinding
             }
             db.SaveChanges();
         }
-        
+
     }
 }

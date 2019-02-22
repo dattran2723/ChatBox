@@ -13,7 +13,7 @@ namespace ChatBox.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201902150449196_1"; }
+            get { return "201902210959242_1"; }
         }
         
         string IMigrationMetadata.Source

@@ -15,5 +15,7 @@ namespace ChatBox.Models
         public string ToEmail { get; set; }
         public string Msg { get; set; }
         public DateTime DateSend { get; set; }
+        public bool IsRead { get; set; }
+        public string RealTime { get; set; }
     }
 }

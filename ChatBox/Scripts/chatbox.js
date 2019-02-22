@@ -4,11 +4,12 @@
     $('.chatbox-button').click(function () {
         $('.chatbox').toggleClass('chatbox-tray');
         $('.chatbox-button').toggleClass('rotated');
-        var src = ($('.chatbox-button img').attr('src') === '~/Imgs/Group 42.png')
-            ? '~/Imgs/Group 41.png'
-            : '~/Imgs/Group 42.png';
-        $('.lazo-button img').attr('src', src);
-
+        var src = $('.chatbox-button img').attr('src');
+        //if ($('.chatbox-button img').attr('src') === src) {
+        //    $('.chatbox-button img').attr('src', '~/Imgs/Group 41.png');
+        //} else {
+        //    $('.chatbox-button img').attr('src', src);
+        //}
     });
     $('.chatbox-close').click(function () {
         $('.chatbox').addClass('chatbox-closed');
@@ -80,6 +81,7 @@
                 chatHub.server.loadMsgOfClient(email);
                 document.getElementById("txtNameEmail").value = email;
             }
+            $('.chatbox-title span').text(email);
             $('.customer-info').hide();
             $('.chatbox-body').show();
             $('.chatbox-footer').show();
