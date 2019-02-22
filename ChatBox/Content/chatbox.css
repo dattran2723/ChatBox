@@ -216,3 +216,23 @@
 .btn-send {
     background-image: url('../Imgs/send.png');
 }
+.message-time {
+    width: 51px;
+    height: 19px;
+    font-family: SourceSansPro-Light;
+    line-height: 19px;
+    font-size: 10px;
+    color: #FFFFFF;
+    float: right;
+    margin-right: -50%;
+}
+.message-time-admin {
+    width: 51px;
+    height: 19px;
+    font-family: SourceSansPro-Light;
+    line-height: 19px;
+    font-size: 10px;
+    color: #9AA7B0;
+    float: left;
+    
+}
