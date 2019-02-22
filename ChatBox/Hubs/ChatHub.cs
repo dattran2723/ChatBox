@@ -14,7 +14,7 @@ namespace ChatBox.Hubs
     public class ChatHub : Hub
     {
         public ApplicationDbContext db = new ApplicationDbContext();
-        //public static List<User> listUser = new List<User>();
+        public static List<User> listUser = new List<User>();
         MessageDb messageDb = new MessageDb();
         Chater chater = new Chater();
         string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
@@ -29,13 +29,13 @@ namespace ChatBox.Hubs
             /// chưa có tài khoản , tạo mới
             if (item == null)
             {
-                //listUser.Add(new User
-                //{
-                //    Id = Guid.NewGuid().ToString(),
-                //    ConnectionId = id,
-                //    Email = email.ToLower(),
-                //    IsOnline = true
-                //});
+                listUser.Add(new User
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ConnectionId = id,
+                    Email = email.ToLower(),
+                    IsOnline = true
+                });
                 chater.AddUser(email, id);
                 checkExist = false;
                 Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
