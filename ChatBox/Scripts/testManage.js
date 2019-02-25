@@ -1,19 +1,8 @@
 ﻿$(document).ready(function () {
-    $('.list-contacts').hover(function () {
-
-    });
-    $('.list-contacts').on('click', 'li', function () {
-        if ($(this).hasClass('active') == false) {
-            $('.list-contacts').children('li').removeClass('active');
-            $(this).addClass('active');
-
-            var name = $(this).find('.user-name').text();
-            var connectionId = $(this).find('input[name="connectionId"]').val();
-
-            $('.user-active').text(name);
-            $('input[name="connectionIdActive"]').val(connectionId);
-        }
-    });
+    var numberMembers = $('.list-contacts').find('li').length;
+    var numberOnlines = $('.list-contacts').find('li .online').length;
+    $('member').html(numberMembers);
+    $('online').html(numberOnlines);
 
     function UpdateContact(codeHtml, active, isConnect) {
         var isOnline = codeHtml.find('.img_cont span').hasClass('online');
@@ -44,10 +33,12 @@
     var item;
 
     chatHub.client.onConnected = function (id, email, checkExist) {
-        debugger
-        console.log(email == "y@gmail.com" ? "yes" : "no");
         if (checkExist == false) {
             AddUser(email, id);
+            numberMembers += 1;
+            numberOnlines += 1;
+            $('member').html(numberMembers);
+            $('online').html(numberOnlines);
         }
         else {
             $(".contact").each(function () {
@@ -59,21 +50,22 @@
                     UpdateContact(item, check == true ? 'active' : '', true);
                 }
             });
+            numberOnlines += 1;
+            $('online').html(numberOnlines);
         }
     };
     //OnDisconnected
     chatHub.client.onUserDisconnected = function (email) {
-        console.log(email)
         $(".contact").each(function () {
             var check = $(this).is('.active');
-            console.log($(this).find('.user_info .user-name').text());
             if ($(this).find('.user_info .user-name').text() == email) {
                 item = $(this);
                 this.remove();
-                console.log(item);
                 UpdateContact(item, check == true ? 'active' : '', false);
             }
         });
+        numberOnlines -= 1;
+        $('online').html(numberOnlines);
     }
     function AddUser(email, connectionId) {
         var code = '<li class="box-item contact">\
@@ -105,6 +97,7 @@
         if (connectionId == connectionIdActive) {
             var d = new Date(date);
             var dateSend = d.getHours() + ':' + d.getMinutes() + ' ' + ('0' + d.getDate()).slice(-2) + '-' + ('0' + (d.getUTCMonth() + 1)).slice(-2) + '-' + d.getFullYear();
+
             appendListMsg(msg, dateSend, 'cy');
             $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
         }
@@ -114,12 +107,12 @@
     //Code append tin nhắn mới nhất vào dưới email trong list contact
     function addMsgInListContact(email, msg) {
         $(".contact").each(function () {
-            if ($(this).find('.name').text() == email) {
+            if ($(this).find('.user_info .user-name').text() == email) {
                 if (msg.length > 20) {
-                    $(this).find('.preview').html(msg.slice(0, 20) + '...');
+                    $(this).find('.user_info p').html(msg.slice(0, 20) + '...');
                 }
                 else {
-                    $(this).find('.preview').html(msg);
+                    $(this).find('.user_info p').html(msg);
                 }
             }
         });
@@ -129,7 +122,7 @@
     function appendListMsg(msg, email, date) {
         var codeHtml = '<li class="message row">\
                             <div class="img-user float-left ml-4" >\
-                                <img src="~/Content/images/Avatar.png" />\
+                                <img src="/Content/images/Avatar.png" />\
                             </div >\
                             <div class="msg-user col-9">\
                                 <span class="user-name">'+ email + '</span> <small>' + date + '</small>\
@@ -138,43 +131,127 @@
                         </li >';
         $('.list-messages').append(codeHtml);
     }
+    function appendListMsgClient(msg, email, date) {
+        var showDate = date.getHours() < 13 ? date.getHours() + ':' + date.getMinutes() + ' AM' : (date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
+        var codeHtml = '<li class="message row cl">\
+                            <div class= "img-user float-left ml-4" >\
+                                <img src="/Content/images/Avatar.png" />\
+                            <input type="hidden" name="date" value = "'+ date + '" />\
+                                        </div>\
+                            <div class="msg-user col-9">\
+                                <span class="user-name">'+ email + '</span> <small>' + showDate + '</small>\
+                                <ul class="list-msg-content p-0">\
+                                    <li class="msg-content">'+ msg + '</li>\
+                                </ul>\
+                            </div>\
+                        </li>';
+        $('.list-messages').append(codeHtml);
+    }
+    function appendListMsgAdmin(msg, date) {
+        var showDate = date.getHours() < 13 ? date.getHours() + ':' + date.getMinutes() + ' AM' : (date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
+        var codeHtml = '<li class="message row ad">\
+                            <input type="hidden" name="date" value = "'+ date + '" />\
+                            <div class="msg-user col-9" >\
+                                <small>'+ showDate + '</small> <br />\
+                                <ul class="list-msg-content p-0">\
+                                    <li class="msg-content">'+ msg + '</li>\
+                                </ul>\
+                            </div >\
+                            <div class="img-user float-right">\
+                                <img src="/Content/images/Avatar.png" />\
+                            </div>\
+                        </li >';
+        $('.list-messages').append(codeHtml);
+    }
+    function appendGroupMsg(msg) {
+        $('.list-messages li:last-child').find('.list-msg-content').append('<li class="msg-content">' + msg + '</li>');
+    }
 
-    //Load all messeges of email
-    chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
-        $('.list-msg').html('');
-        var jsonMsg = JSON.parse(listMsg);
-        console.log(jsonMsg);
-        var codeHtml = '';
-        for (var i = 0; i < jsonMsg.length; i++) {
-            //formart datetime 
-            var DateJson = jsonMsg[i].DateSend
-            var dateFormart = new Date(parseInt(DateJson.substr(6)));
-            var formatted = dateFormart.getHours() + ":" +
-                dateFormart.getMinutes() + " " +
-                ("0" + dateFormart.getDate()).slice(-2) + "-" +
-                ("0" + (dateFormart.getMonth() + 1)).slice(-2) + "-" +
-                dateFormart.getFullYear();
+    function diffDays(date, nextDate) {
+        var timeDiff = Math.abs(nextDate.getTime() - date.getTime());
+        var diff = Math.round(timeDiff / (1000 * 3600 * 24));
+        console.log(nextDate + ' ===== ' + date + " = " + diff);
+        return diff;
+    }
 
-            if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
-                appendListMsg(jsonMsg[i].Msg, formatted, 'cy');
-            }
-            else {
-                appendListMsg(jsonMsg[i].Msg, formatted, 'cm');
+    function diffTimes(date, nextDate) {
+        var timeDiff = Math.abs(nextDate.getTime() - date.getTime());
+        var diff = Math.round(timeDiff / (1000 * 60));
+        return diff;
+    }
+
+    function addDateIntoListMessages(date) {
+        var now = new Date();
+        var showDay;
+        var diffday = diffDays(date, now);
+
+        if (diffday <= 7) {
+            switch (diffday) {
+                case 0: showDay = "Hôm nay"; break;
+                case 1: showDay = "Hôm qua"; break;
+                default: showDay = date.getDay == 7 ? "Chủ nhật" : "Thứ " + (date.getDay() + 1);
             }
         }
-        $('.list-msg').append(codeHtml);
-        $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
+        else {
+            showDay = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+        }
+        var codeHtml = '<li class="space row">\
+                         <div class= "dash float-left ml-0" ></div > <span class="date">'+
+            showDay + '</span> <div class="dash float-right mr-0"></div>\
+                         </li >';
+        $('.list-messages').append(codeHtml);
+    }
+    //Load all messeges of email
+    chatHub.client.loadAllMsgByEmailOfAdmin = function (listMsg) {
+        $('.list-messages').html('');
+        var email = $('.user-active').text();
+        var jsonMsg = JSON.parse(listMsg);
+        for (var i = 0; i < jsonMsg.length; i++) {
+            //formart datetime 
+            var DateJson = jsonMsg[i].DateSend;
+            var dateFormart = new Date(parseInt(DateJson.substr(6)));
+            if (i == 0) {
+                addDateIntoListMessages(dateFormart);
+            }
+
+            if (email == jsonMsg[i].FromEmail) {
+                if (i > 0 && jsonMsg[i - 1].FromEmail == email && diffTimes(new Date(parseInt(jsonMsg[i - 1].DateSend.substr(6))), dateFormart) < 30)
+                    appendGroupMsg(jsonMsg[i].Msg);
+                else
+                    appendListMsgClient(jsonMsg[i].Msg, jsonMsg[i].FromEmail, dateFormart)
+            }
+            else {
+                if (i > 0 && jsonMsg[i - 1].FromEmail != email && diffTimes(new Date(parseInt(jsonMsg[i - 1].DateSend.substr(6))), dateFormart) < 30)
+                    appendGroupMsg(jsonMsg[i].Msg);
+                else
+                    appendListMsgAdmin(jsonMsg[i].Msg, dateFormart);
+            }
+
+            if (i < jsonMsg.length - 1) {
+                var nextDate = new Date(parseInt(jsonMsg[i + 1].DateSend.substr(6)));
+                if (nextDate.getDate() != dateFormart.getDate() || nextDate.getMonth() != nextDate.getMonth() || nextDate.getFullYear() != nextDate.getFullYear()) {
+                    addDateIntoListMessages(nextDate);
+                }
+            }
+        }
+        $(".list-messages").animate({ scrollTop: $('.list-messages').prop('scrollHeight') });
     }
     $.connection.hub.start().done(function () {
         //Send message from admin to client
         function sendMessge(email, msg) {
             var connectionId = $('input[name="connectionIdActive"').val();
-            var d = new Date();
-            var dateSend = d.getHours() + ':' + d.getMinutes() + ' ' + ('0' + d.getDate()).slice(-2) + '-' + ('0' + (d.getUTCMonth() + 1)).slice(-2) + '-' + d.getFullYear();
-            appendListMsg(msg, dateSend, 'cm');
-            $(".list-msg").animate({ scrollTop: $('.list-msg').prop('scrollHeight') });
+            var dateSend = new Date();
+            var emailLiLast = $('.list-messages li:last-child').find('.user-name').text();
+            var dateLiLast = $('.list-messages li:last-child').find('input[name="date"]').val();
+            var date = new Date(dateLiLast);
+            if (email != emailLiLast && diffTimes(date, dateSend) < 30) {
+                appendGroupMsg(msg);
+            } else {
+                appendListMsgAdmin(msg, dateSend);
+            }
+            $(".list-messages").animate({ scrollTop: $('.list-messages').prop('scrollHeight') });
             chatHub.server.sendPrivateMessage(email, msg, connectionId);
-            $('textarea').val(null);
+            $('textarea').val('').focus();
         }
 
         //event click button send message
@@ -191,7 +268,7 @@
         //event press enter
         $(window).on('keydown', function (e) {
             if (e.which == 13) {
-                var email = $('#name-chat').text();
+                var email = $('.user-active').text();
                 var msg = $('textarea').val();
                 if (msg == false) {
                     return false;
@@ -202,23 +279,39 @@
         });
 
         //event click a li (a contact) in ul (list contact)
-        $('.left ul').on('click', 'li', function () {
+        $('.list-contacts').on('click', 'li', function () {
             if ($(this).hasClass('active') == false) {
-                $('.left ul').children('li').removeClass('active');
+                $('.list-contacts').children('li').removeClass('active');
                 $(this).addClass('active');
 
-                var name = $(this).find('.name').text();
+                var name = $(this).find('.user-name').text();
                 var connectionId = $(this).find('input[name="connectionId"]').val();
 
-                $('#name-chat').html(name);
-                $('input[name="connectionIdActive"').val(connectionId);
-                $('.input-group').removeClass('d-none');
+                $('.user-active').text(name);
+                $('input[name="connectionIdActive"]').val(connectionId);
 
-                var email = $(this).find('.name').text();
+                var email = $(this).find('.user_info .user-name').text();
                 chatHub.server.loadMsgByEmailOfAdmin(email);
             }
-
         });
+
+        //$('.left ul').on('click', 'li', function () {
+        //    if ($(this).hasClass('active') == false) {
+        //        $('.left ul').children('li').removeClass('active');
+        //        $(this).addClass('active');
+
+        //        var name = $(this).find('.name').text();
+        //        var connectionId = $(this).find('input[name="connectionId"]').val();
+
+        //        $('#name-chat').html(name);
+        //        $('input[name="connectionIdActive"').val(connectionId);
+        //        $('.input-group').removeClass('d-none');
+
+        //        var email = $(this).find('.name').text();
+        //        chatHub.server.loadMsgByEmailOfAdmin(email);
+        //    }
+
+        //});
 
         //event click a li (a message) in ul (list messages) show datetime
         $('.list-msg').on('click', 'li', function () {

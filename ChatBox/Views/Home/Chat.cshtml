@@ -19,7 +19,7 @@
     <div class="wrapper">
         <div class="header row">
             <div class="title left col-4">
-                <p>Messages</p>
+                <p>Tin nhắn</p>
             </div>
             <div class="avatar right col-8">
                 <div class="dropdown float-right">
@@ -30,14 +30,15 @@
                         </div>
                         <div class="user_info">
                             <span>@User.Identity.GetUserName()</span>
-                            <p>Administrator</p>
+                            <p>Quản trị viên</p>
                         </div>
                     </div>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Link 1</a>
-                        <a class="dropdown-item" href="#">Link 2</a>
-                        <a class="dropdown-item-text" href="#">Text Link</a>
-                        <span class="dropdown-item-text">Just Text</span>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Đăng xuất</a>
+                        }
                     </div>
                 </div>
             </div>
@@ -46,8 +47,8 @@
             <div class="content-left col-4">
                 <div class="box-item content-title total-contact">
                     <p>
-                        <i class="far fa-user"></i> 11 <span>members</span> <br />
-                        <i class="fas fa-circle"></i> 5 <span>online</span>
+                        <i class="far fa-user"></i> <member></member> <span>Người sử dụng</span> <br />
+                        <i class="fas fa-circle"></i> <online></online>  <span>Đang hoạt động</span>
                     </p>
                 </div>
                 <div class="box-item box-search">
@@ -65,7 +66,7 @@
                                 <div class="user_info">
                                     <span class="user-name">@item.Email</span>
                                     <input type="hidden" name="connectionId" value="@item.ConnectionId" />
-                                    <p>@item.LastMsg </p>
+                                    <p>@(item.LastMsg.Length > 20 ? item.LastMsg.Substring(0, 20) + "..." : item.LastMsg) </p>
                                 </div>
                                 <div class="time">
                                     <p>Yesterday</p>
@@ -78,7 +79,7 @@
             <div class="content-right col-8">
                 <div class="content-title chat-header row">
                     <div class="col-6">
-                        <b class="user-active">Bessi Berry</b>
+                        <span class="user-active"></span>
                         <i class="fas fa-circle"></i>
                         <input type="hidden" name="connectionIdActive" value="" />
                     </div>
@@ -91,80 +92,107 @@
                 </div>
                 <div class="chat-content">
                     <ul class="list-messages">
-                        <li class="message row">
+                        <li class="message row cl">
                             <div class="img-user float-left ml-4">
                                 <img src="~/Content/images/Avatar.png" />
+                                <input type="hidden" name="date-json" value="" />
                             </div>
                             <div class="msg-user col-9">
                                 <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
-                                <p class="msg-content">
-                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
-                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
-                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
-                                </p>
+                                <ul class="list-msg-content p-0">
+                                    <li class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                        it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                        example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                    </li>
+                                </ul>
                             </div>
                         </li>
-                        <li class="message row">
-                            <div class="img-user float-left ml-4">
+                        <li class="message row ad">
+                            <div class="msg-user col-9">
+                                <small>8:45 AM</small> <br />
+                                <ul class="list-msg-content p-0">
+                                    <li class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                        it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                        example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                    </li>
+                                    <li class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet.
+                                    </li>
+                                    <li class="msg-content">
+                                        Hi guys Ive
+                                    </li>
+                                    <li class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet.
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="img-user float-right">
                                 <img src="~/Content/images/Avatar.png" />
                             </div>
-                            <div class="msg-user col-9">
-                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
-                                <p class="msg-content">
-                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
-                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
-                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
-                                </p>
-                            </div>
                         </li>
-                        <li class="space row">
-                            <div class="dash float-left ml-0"></div><span class="date">Yesterday</span><div class="dash float-right mr-0"></div>
-                        </li>
-                        <li class="message row">
-                            <div class="img-user float-left ml-4">
-                                <img src="~/Content/images/Avatar.png" />
-                            </div>
-                            <div class="msg-user col-9">
-                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
-                                <p class="msg-content">
-                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
-                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
-                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
-                                </p>
-                            </div>
-                        </li>
-                        <li class="message row">
-                            <div class="img-user float-left ml-4">
-                                <img src="~/Content/images/Avatar.png" />
-                            </div>
-                            <div class="msg-user col-9">
-                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
-                                <p class="msg-content">
-                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
-                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
-                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
-                                </p>
-                            </div>
-                        </li>
-                        <li class="message row">
-                            <div class="img-user float-left ml-4">
-                                <img src="~/Content/images/Avatar.png" />
-                            </div>
-                            <div class="msg-user col-9">
-                                <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
-                                <p class="msg-content">
-                                    Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
-                                    it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
-                                    example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
-                                </p>
-                            </div>
-                        </li>
+                        @*<li class="message row">
+                                <div class="img-user float-left ml-4">
+                                    <img src="~/Content/images/Avatar.png" />
+                                </div>
+                                <div class="msg-user col-9">
+                                    <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                    <p class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                        it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                        example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="space row">
+                                <div class="dash float-left ml-0"></div><span class="date">Yesterday</span><div class="dash float-right mr-0"></div>
+                            </li>
+                            <li class="message row">
+                                <div class="img-user float-left ml-4">
+                                    <img src="~/Content/images/Avatar.png" />
+                                </div>
+                                <div class="msg-user col-9">
+                                    <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                    <p class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                        it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                        example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="message row">
+                                <div class="img-user float-left ml-4">
+                                    <img src="~/Content/images/Avatar.png" />
+                                </div>
+                                <div class="msg-user col-9">
+                                    <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                    <p class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                        it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                        example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="message row">
+                                <div class="img-user float-left ml-4">
+                                    <img src="~/Content/images/Avatar.png" />
+                                </div>
+                                <div class="msg-user col-9">
+                                    <span class="user-name">Bessie Berry</span> <small>8:45 AM</small>
+                                    <p class="msg-content">
+                                        Hi guys Ive got the O2 package and have really slow internet. A speed check online said i can get 3mbps but
+                                        it seems more like 0.5 these days, just freezing and taking ages to open pages and open audio files for
+                                        example. I have decided to switch to the UPC package which offers 10mbps but do you think i will get it?
+                                    </p>
+                                </div>
+                            </li>*@
                     </ul>
                     <div class="input-group box-group">
                         <div class="input-group-prepend">
                             <button class="btn"><i class="fas fa-paper-plane"></i></button>
                         </div>
-                        <textarea  class="form-control" placeholder="Nhập nội dung tin nhắn"></textarea>
+                        <textarea class="form-control" placeholder="Nhập nội dung tin nhắn"></textarea>
                     </div>
                 </div>
             </div>

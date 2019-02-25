@@ -1,4 +1,8 @@
-﻿.row {
+﻿@font-face {
+    font-family: 'SourceSansPro';
+    src: url('../fonts/SourceSansPro-Regular.otf') format('opentype');
+}
+.row {
     margin: 0;
 }
 
@@ -54,13 +58,16 @@
 }
 
     .user_info span {
-        font-size: 20px;
+        font-size: 16px;
         color: black;
+        font-weight: 600;
+        font-family: 'SourceSansPro';
     }
 
     .user_info p {
-        font-size: 12px;
-        color: black;
+        font-size: 14px;
+        color: #7F8FA4;
+        font-family: 'SourceSansPro';
     }
 
 .dropdown-toggle::after {
@@ -183,6 +190,12 @@ input.search {
     padding-left: 9%;
     padding-right: 2%;
 }
+.user-active {
+    font-family: 'SourceSansPro';
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+}
 
 .list-messages {
     height: 450px;
@@ -191,21 +204,46 @@ input.search {
     padding: 1% 8%;
 }
 
+.ad .msg-user {
+    margin-left: 17%;
+}
+.ad small{
+    float: right;
+}
+.message .user-name {
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+    font-family: 'SourceSansPro';
+}
 .msg-content {
     font-size: 14px;
+    color: #354052;
+    font-family: 'SourceSansPro';
+    border-radius: 12px;
+    padding: 1% 2%;
+    display: table;
+    margin-bottom: 5px;
 }
-
-.message .user-name {
-    font-size: 20px;
-    color: black;
-    font-weight: 500;
+.cl .msg-content {
+    background: #e4e4e4;
+    border-top-left-radius: 0;
 }
-
+.ad .msg-content {
+    background: linear-gradient(90deg, #5DA2F1 0%, #4975E5 100%);
+    color: #f1efef;
+    border-top-right-radius: 0;
+    float: right;
+    clear: both;
+}
 .box-group {
-    padding: 1% 10%;
+    padding: 0 10%;
 }
-    .box-group textarea{
+    .box-group textarea {
         height: 40px;
+        border-radius: 10px;
+        overflow: hidden;
+        outline-style: none !important;
     }
     .space {
         margin-top: 1%;
