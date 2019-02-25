@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -12,7 +13,14 @@ namespace ChatBox.DataBinding
         public ApplicationDbContext db = new ApplicationDbContext();
         public static List<Message> listMessages = new List<Message>();
         public Chater chater = new Chater();
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fromEmail"></param>
+        /// <param name="toEmail"></param>
+        /// <param name="msg"></param>
+        /// <param name="id"></param>
+        /// <param name="createDate"></param>
         public void AddMessage(string fromEmail, string toEmail, string msg, string id, DateTime createDate)
         {
             var item = new Message
@@ -28,7 +36,7 @@ namespace ChatBox.DataBinding
             listMessages.Add(item);
             //db.messages.Add(item);
             //db.SaveChanges();
-        }
+        }        
         /// <summary>
         /// tao 1 list de chua cac msg co FromEmail hay ToEmail == email truyen vao do
         /// </summary>
@@ -103,6 +111,7 @@ namespace ChatBox.DataBinding
 
         public void AddListMessageIntoDb(string email)
         {
+            Thread.Sleep(5000);
             List<Message> list = new List<Message>();
             foreach (var item in listMessages)
             {
@@ -117,7 +126,6 @@ namespace ChatBox.DataBinding
             {
                 listMessages.Remove(item);
             }
-
         }
         public void UpdateFromConnectionId(string email, string id)
         {

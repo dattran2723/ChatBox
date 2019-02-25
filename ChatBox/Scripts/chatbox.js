@@ -11,26 +11,40 @@
         //    $('.chatbox-button img').attr('src', src);
         //}
     });
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    };
     $('.chatbox-close').click(function () {
         $('.chatbox').addClass('chatbox-closed');
     });
+
     var chatHub = $.connection.chatHub;
     chatHub.client.loadAllMsgOfClient = function (msg) {
         var jsonMsg = JSON.parse(msg);
         for (var i = 0; i < jsonMsg.length; i++) {
+
             var DateJson = jsonMsg[i].DateSend;
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
             var formatted = dateFormart.getHours() + ":" +
                 dateFormart.getMinutes();
-            //kiem tra for, neu msg do FromEmail khac admin@gmail.com thi append ben trai
+            var formatted2 = formatAMPM(dateFormart);
+            console.log(dateFormart)
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
-                $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg, formatted));
+                $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg, formatted2));
             }
             //nguoc lai thi append ben phai
             else {
-                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted + '</div></li>');
+                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted2 + '</div></li>');
             }
         }
+
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };
 
@@ -60,8 +74,9 @@
                     var fromemail = document.getElementById("txtNameEmail").value;
                     var toemail = 'admin@gmail.com';
                     var time = new Date();
-                    var timeformated = time.getHours() + ":" + time.getMinutes();
-                    $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val(), timeformated));
+                    //var timeformated = time.getHours() + ":" + time.getMinutes();
+                    var timeformated2 = formatAMPM(time);
+                    $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val(), timeformated2));
                     chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                     $('#txtMsg').val('').focus();
                     $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
@@ -74,9 +89,9 @@
                 var fromemail = 'long@gmail.com';
                 var toemail = 'admin@gmail.com';
                 var time = new Date();
-                var timeformated = time.getHours() + ":" + time.getMinutes();
-                console.log(timeformated);
-                $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val(), timeformated));
+                var timeformated2 = formatAMPM(time);
+
+                $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val(), timeformated2));
                 chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
                 $('#txtMsg').val('').focus();
                 $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });

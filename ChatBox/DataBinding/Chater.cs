@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 
 namespace ChatBox.DataBinding
@@ -22,9 +23,7 @@ namespace ChatBox.DataBinding
                 IsOnline = true
             };
             listUser.Add(user);
-            db.account.Add(user);
-            db.SaveChanges();
-
+          
         }
 
         public List<User> GetAllUser()
@@ -49,14 +48,31 @@ namespace ChatBox.DataBinding
         {
             var user = GetUser(email);
             user.ConnectionId = id;
-
-            
         }
 
         public User GetUserByConnectionId(string id)
         {
             var user = listUser.FirstOrDefault(x => x.ConnectionId == id);
             return user;
+        }
+        public void AddUserToDb(string email)
+        {
+            Thread.Sleep(5000);
+            List<User> list = new List<User>();
+            var checkItem = db.account.FirstOrDefault(x => x.Email == email);
+            if (checkItem == null)
+            {
+                foreach (var item in listUser)
+                {
+                    db.account.Add(item);
+                    db.SaveChanges();
+                    list.Add(item);
+                }
+            }
+            foreach (var item in list)
+            {
+                listUser.Remove(item);
+            }
         }
     }
 }
