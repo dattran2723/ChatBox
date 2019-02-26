@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -9,12 +10,18 @@ namespace ChatBox.DataBinding
 {
     public class MessageDb
     {
-
         public ApplicationDbContext db = new ApplicationDbContext();
         public static List<Message> listMessages = new List<Message>();
         public Chater chater = new Chater();
-
-        public void AddMessage(string fromEmail, string toEmail, string msg,string id, DateTime createDate)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fromEmail"></param>
+        /// <param name="toEmail"></param>
+        /// <param name="msg"></param>
+        /// <param name="id"></param>
+        /// <param name="createDate"></param>
+        public void AddMessage(string fromEmail, string toEmail, string msg, string id, DateTime createDate)
         {
             var item = new Message
             {
@@ -23,14 +30,15 @@ namespace ChatBox.DataBinding
                 FromEmail = fromEmail.ToLower(),
                 ToEmail = toEmail.ToLower(),
                 Msg = msg,
-                DateSend = createDate
+                DateSend = createDate,
+                IsRead = false
             };
             listMessages.Add(item);
             //db.messages.Add(item);
             //db.SaveChanges();
         }
         /// <summary>
-        /// tao 1 list de chua cac msg  co FromEmail hay ToEmail == email truyen vao do
+        /// tao 1 list de chua cac msg co FromEmail hay ToEmail == email truyen vao do
         /// </summary>
         /// <param name="email">email truyen vao</param>
         /// <returns>list tin nhan da tra ve kieu JSON</returns>
@@ -60,7 +68,7 @@ namespace ChatBox.DataBinding
                 if (Msgs.Count() > 0)
                 {
                     foreach (var message in Msgs)
-                    {
+                    {                        
                         listMsg.Add(message);
                     }
                 }
@@ -69,12 +77,12 @@ namespace ChatBox.DataBinding
                 if (messages.Count() > 0)
                 {
                     foreach (var message in messages)
-                    {
+                    {                        
                         listMsg.Add(message);
                     }
                 }
             }
-            
+
             return new JavaScriptSerializer().Serialize(listMsg);
         }
 
@@ -103,6 +111,7 @@ namespace ChatBox.DataBinding
 
         public void AddListMessageIntoDb(string email)
         {
+            Thread.Sleep(5000);
             List<Message> list = new List<Message>();
             foreach (var item in listMessages)
             {
@@ -117,7 +126,6 @@ namespace ChatBox.DataBinding
             {
                 listMessages.Remove(item);
             }
-
         }
         public void UpdateFromConnectionId(string email, string id)
         {
