@@ -8,43 +8,49 @@ using ChatBox.Models;
 using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using System.Threading;
+using System.Diagnostics;
 
 namespace ChatBox.Hubs
 {
     public class ChatHub : Hub
     {
         public ApplicationDbContext db = new ApplicationDbContext();
-        //public static List<User> listUser = new List<User>();
+        public static List<User> listUser = new List<User>();
         MessageDb messageDb = new MessageDb();
         Chater chater = new Chater();
         string emailAdmin = WebConfigurationManager.AppSettings["EmaillAdmin"];
-
         public void Connect(string email)
         {
             bool checkExist;
+            /// id = lấy ra chuỗi kết nối hiện tại của trình duyệt
             var id = Context.ConnectionId;
-            //var user = listUser.FirstOrDefault(x => x.Email == email.ToLower());
-            var user = chater.GetUser(email);
-            if (user == null)
+            /// lấy ra tài khoản 
+            var item = listUser.FirstOrDefault(x => x.Email == email.ToLower());
+            /// chưa có tài khoản , tạo mới
+            if (item == null)
             {
-                //listUser.Add(new User
-                //{
-                //    Id = Guid.NewGuid().ToString(),
-                //    ConnectionId = id,
-                //    Email = email.ToLower(),
-                //    IsOnline = true
-                //});
+                listUser.Add(new User
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ConnectionId = id,
+                    Email = email.ToLower(),
+                    IsOnline = true
+                });
                 chater.AddUser(email, id);
                 checkExist = false;
                 Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
             }
+            /// đã có tài khoản
             else
             {
-                if(user.ConnectionId != id & user.IsOnline == true)
+                ///nếu đang đăng nhập vào trình duyệt cũ , bật một tab mới
+                if (item.ConnectionId != id && item.IsOnline == true)
                 {
                     Clients.Caller.CheckIsOnline();
                 }
                 else
+                ///có tài khoản email rồi và đang offline
                 {
                     chater.UpdateConnectionId(email, id);
                     chater.UpdateIsOnlineOfUser(email, true);
@@ -52,45 +58,15 @@ namespace ChatBox.Hubs
                     //user.IsOnline = true;
                     //var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
                     //foreach (var itemMsg in ModelMsg)
-                    //    itemMsg.FromConnectionId = id;
+                    //itemMsg.FromConnectionId = id;
                     messageDb.UpdateFromConnectionId(email, id);
                     checkExist = true;
+                    //db.SaveChanges();
                     Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
                 }
             }
-            //var item = db.account.FirstOrDefault(x => x.Email == email.ToLower());
-            //if (item == null)
-            //{
-            //    db.account.Add(new User
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        ConnectionId = id,
-            //        Email = email.ToLower(),
-            //        IsOnline = true
-            //    });
-            //    db.SaveChanges();
-            //    checkExist = false;
-            //    Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
-            //}
-            //else
-            //{
-            //    if (item.ConnectionId != id && item.IsOnline == true)
-            //    {
-            //        Clients.Caller.CheckIsOnline();
-            //    }
-            //    else
-            //    {
-            //        item.ConnectionId = id;
-            //        item.IsOnline = true;
-            //        var ModelMsg = db.messages.ToList().Where(x => x.FromEmail == email.ToLower());
-            //        foreach (var itemMsg in ModelMsg)
-            //            itemMsg.FromConnectionId = id;
-            //        db.SaveChanges();
-            //        checkExist = true;
-            //        Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
-            //    }
-            //}
         }
+
         public void ChangeTab(string email)
         {
             var id = Context.ConnectionId;
@@ -117,7 +93,7 @@ namespace ChatBox.Hubs
             if (id == item.ConnectionId)
             {
                 MessageDb messageDb = new MessageDb();
-                var createDate = DateTime.Now;
+                var createDate = DateTime.Now;                
                 messageDb.AddMessage(fromEmail, toEmail, msg, id, createDate);
                 var connectionId = Context.ConnectionId;
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
@@ -144,14 +120,13 @@ namespace ChatBox.Hubs
         }
         /// <summary>
         /// 
-        /// </summary>
+        /// </summary>          
         /// <param name="email">email nguoi dung truyen vao</param>
         public void LoadMsgOfClient(string email)
         {
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.Caller.LoadAllMsgOfClient(listMsg);
         }
-
         /// <summary>
         /// Load tất cả các danh sách tin nhắn của email truyền vào và gửi về cho admin
         /// </summary>
@@ -180,15 +155,15 @@ namespace ChatBox.Hubs
         public override Task OnDisconnected(bool stopCalled)
         {
             //var item = db.account.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
-
             //var item = listUser.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
             var item = chater.GetUserByConnectionId(Context.ConnectionId);
             if (item != null)
             {
+                Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower());
+                chater.AddUserToDb(item.Email);
                 messageDb.AddListMessageIntoDb(item.Email);
                 //item.IsOnline = false;
                 chater.UpdateIsOnlineOfUser(item.Email, false);
-                Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower());
             }
             return base.OnDisconnected(stopCalled);
         }

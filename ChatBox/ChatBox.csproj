@@ -195,9 +195,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Migrations\201902250835332_init-db.cs" />
-    <Compile Include="Migrations\201902250835332_init-db.Designer.cs">
-      <DependentUpon>201902250835332_init-db.cs</DependentUpon>
+    <Compile Include="Migrations\201902140307125_init-1.cs" />
+    <Compile Include="Migrations\201902140307125_init-1.Designer.cs">
+      <DependentUpon>201902140307125_init-1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1603,25 +1603,20 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Imgs\Avatar%402x.png" />
     <Content Include="Imgs\avatar3.png" />
     <Content Include="Imgs\avatar5.png" />
+    <Content Include="Imgs\Base.png" />
+    <Content Include="Imgs\Group 41.1.png" />
+    <Content Include="Imgs\Group 41.png" />
+    <Content Include="Imgs\Group 42.png" />
     <Content Include="Imgs\icon.png" />
+    <Content Include="Imgs\Rectangle 3.png" />
+    <Content Include="Imgs\send.png" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="fonts\SourceSansPro-Black.otf" />
-    <Content Include="fonts\SourceSansPro-BlackIt.otf" />
-    <Content Include="fonts\SourceSansPro-Bold.otf" />
-    <Content Include="fonts\SourceSansPro-BoldIt.otf" />
-    <Content Include="fonts\SourceSansPro-ExtraLight.otf" />
-    <Content Include="fonts\SourceSansPro-ExtraLightIt.otf" />
-    <Content Include="fonts\SourceSansPro-It.otf" />
-    <Content Include="fonts\SourceSansPro-Light.otf" />
-    <Content Include="fonts\SourceSansPro-LightIt.otf" />
-    <Content Include="fonts\SourceSansPro-Regular.otf" />
-    <Content Include="fonts\SourceSansPro-Semibold.otf" />
-    <Content Include="fonts\SourceSansPro-SemiboldIt.otf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -1694,8 +1689,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902250835332_init-db.resx">
-      <DependentUpon>201902250835332_init-db.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902140307125_init-1.resx">
+      <DependentUpon>201902140307125_init-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
