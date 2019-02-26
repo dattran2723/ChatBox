@@ -161,6 +161,16 @@ namespace ChatBox.Hubs
             string listMsg = messageDb.GetMessagesByEmail(email.ToLower());
             Clients.User(emailAdmin).loadAllMsgByEmailOfAdmin(listMsg);
         }
+
+        public void UpdateIsReadMessage(string connectionId, string email, bool adRead)
+        {
+            messageDb.UpdateIsReadMessage(email, adRead);
+            if (adRead == true)
+                Clients.Client(connectionId).AdminReaded();
+            else
+                Clients.User(emailAdmin).ClientReaded();
+
+        }
         /// <summary>
         /// khi co su thay doi ConnectionID cua trinh duyet thi kiem tra
         /// Neu dung thi gan IsOnline == false de xu ly ben giao dien

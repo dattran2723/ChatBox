@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ChatBox.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ApplicationDbContext db = new ApplicationDbContext();

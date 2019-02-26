@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -15,5 +16,9 @@ namespace ChatBox.Models
         public string ToEmail { get; set; }
         public string Msg { get; set; }
         public DateTime DateSend { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsRead { get; set; }
+        public DateTime? DateRead { get; set; }
     }
 }

@@ -15,6 +15,10 @@
 .title {
     padding-left: 3%;
 }
+.title p{
+    font-size: 24px;
+    font-family: SourceSansPro;
+}
 
 .user_img {
     height: 50px;
@@ -83,7 +87,7 @@
 
 /*begin content*/
 .content {
-    height: 580px;
+    height: 90vh;
 }
 
 .content-left {
@@ -109,6 +113,13 @@
     align-items: center;
     display: flex;
     border-bottom: 1px solid #E6EAEE;
+}
+.total-contact p{
+    font-size: 14px;
+    font-family: SourceSansPro;
+}
+.total-contact p i{
+    margin-right: 5px;
 }
 
 .box-item {
@@ -153,13 +164,40 @@ input.search {
     text-align: right;
     width: 20%;
 }
+.new-msg {
+    position: relative;
+    -webkit-animation: mymove 1s infinite; /* Safari 4.0 - 8.0 */
+    animation: mymove 2s infinite;
+}
 
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes mymove {
+    from {
+        font-weight: 300;
+    }
+
+    to {
+        font-weight: 700;
+        color: black;
+    }
+}
+
+@keyframes mymove {
+    from {
+        font-weight: 300;
+    }
+
+    to {
+        font-weight: 700;
+        color: black;
+    }
+}
 .user_info {
     width: 55%;
 }
 
 .list-contacts {
-    height: 440px;
+    height: 70vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -198,7 +236,7 @@ input.search {
 }
 
 .list-messages {
-    height: 450px;
+    height: 70vh;
     overflow-x: hidden;
     overflow-y: auto;
     padding: 1% 8%;
