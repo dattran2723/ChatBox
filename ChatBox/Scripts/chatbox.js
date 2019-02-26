@@ -35,15 +35,29 @@
             var formatted = dateFormart.getHours() + ":" +
                 dateFormart.getMinutes();
             var formatted2 = formatAMPM(dateFormart);
-            console.log(dateFormart)
+            //console.log(dateFormart);
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg, formatted2));
+
             }
             //nguoc lai thi append ben phai
             else {
                 $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted2 + '</div></li>');
             }
+
         }
+        var lastMsg = jsonMsg.pop();
+        console.log(lastMsg);
+        if (lastMsg.FromEmail != 'admin@gmail.com' && lastMsg.IsRead == true) {
+            var DateJsonLastMsg = lastMsg.RealTime;
+            var dateLastMsgForMat = new Date(parseInt(DateJsonLastMsg.substr(6)));
+            var formattedLastMsg = formatAMPM(dateLastMsgForMat);
+            console.log(formattedLastMsg);
+            $('.chatbox-body-msg').append('<li class="float-right"><i class="fas fa-check"></i><span>Seen' + formattedLastMsg + '</span></li>');
+
+
+        }
+
 
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };

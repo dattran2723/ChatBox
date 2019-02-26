@@ -65,7 +65,6 @@ namespace ChatBox.Hubs
                     Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
                 }
             }
-
         }
 
         public void ChangeTab(string email)
@@ -94,7 +93,7 @@ namespace ChatBox.Hubs
             if (id == item.ConnectionId)
             {
                 MessageDb messageDb = new MessageDb();
-                var createDate = DateTime.Now;
+                var createDate = DateTime.Now;                
                 messageDb.AddMessage(fromEmail, toEmail, msg, id, createDate);
                 var connectionId = Context.ConnectionId;
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);

@@ -7,14 +7,12 @@ namespace ChatBox.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Messages", "IsRead", c => c.Boolean(nullable: false));
-            AddColumn("dbo.Messages", "RealTime", c => c.String());
+            AlterColumn("dbo.Messages", "RealTime", c => c.DateTime());
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Messages", "RealTime");
-            DropColumn("dbo.Messages", "IsRead");
+            AlterColumn("dbo.Messages", "RealTime", c => c.String());
         }
     }
 }

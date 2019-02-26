@@ -36,7 +36,7 @@ namespace ChatBox.DataBinding
             listMessages.Add(item);
             //db.messages.Add(item);
             //db.SaveChanges();
-        }        
+        }
         /// <summary>
         /// tao 1 list de chua cac msg co FromEmail hay ToEmail == email truyen vao do
         /// </summary>
@@ -68,7 +68,7 @@ namespace ChatBox.DataBinding
                 if (Msgs.Count() > 0)
                 {
                     foreach (var message in Msgs)
-                    {
+                    {                        
                         listMsg.Add(message);
                     }
                 }
@@ -77,7 +77,7 @@ namespace ChatBox.DataBinding
                 if (messages.Count() > 0)
                 {
                     foreach (var message in messages)
-                    {
+                    {                        
                         listMsg.Add(message);
                     }
                 }
@@ -136,6 +136,14 @@ namespace ChatBox.DataBinding
             }
             db.SaveChanges();
         }
+        public void IsReadMessage(string email)
+        {
+            var message = listMessages.FirstOrDefault(x => x.FromEmail == email);
+            message.IsRead = true;
+            message.RealTime = DateTime.Now;
 
+
+
+        }
     }
 }

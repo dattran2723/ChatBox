@@ -16,6 +16,6 @@ namespace ChatBox.Models
         public string Msg { get; set; }
         public DateTime DateSend { get; set; }
         public bool IsRead { get; set; }
-        public string RealTime { get; set; }
+        public DateTime? RealTime { get; set; }
     }
 }
