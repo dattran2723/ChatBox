@@ -132,24 +132,23 @@ namespace ChatBox.DataBinding
         public void UpdateIsReadMessage(string email, bool adRead)
         {
             //update in database
-            IEnumerable<Message> messagesInDb;
+            IEnumerable<Message> messages;
             if(adRead == true)
-                messagesInDb = db.messages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
+                messages = db.messages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
-                messagesInDb = db.messages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
-            foreach (var item in messagesInDb)
+                messages = db.messages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
+            foreach (var item in messages)
             {
                 item.IsRead = true;
                 item.DateRead = DateTime.Now;
             }
             db.SaveChanges();
             //update in list messages
-            IEnumerable<Message> messagesInList;
             if (adRead == true)
-                messagesInList = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
+                messages = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
-                messagesInList = listMessages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
-            foreach (var item in messagesInList)
+                messages = listMessages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
+            foreach (var item in messages)
             {
                 item.IsRead = true;
                 item.DateRead = DateTime.Now;
