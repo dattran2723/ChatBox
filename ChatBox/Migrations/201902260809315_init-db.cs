@@ -3,18 +3,18 @@ namespace ChatBox.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _1 : DbMigration
+    public partial class initdb : DbMigration
     {
         public override void Up()
         {
+            AddColumn("dbo.Messages", "IsRead", c => c.Boolean(nullable: false));
             AddColumn("dbo.Messages", "DateRead", c => c.DateTime());
-            DropColumn("dbo.Messages", "RealTime");
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Messages", "RealTime", c => c.DateTime());
             DropColumn("dbo.Messages", "DateRead");
+            DropColumn("dbo.Messages", "IsRead");
         }
     }
 }
