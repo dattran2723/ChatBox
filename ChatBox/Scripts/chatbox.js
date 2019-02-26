@@ -3,13 +3,7 @@
     $('.chatbox-footer').hide();
     $('.chatbox-button').click(function () {
         $('.chatbox').toggleClass('chatbox-tray');
-        $('.chatbox-button').toggleClass('rotated');
-        var src = $('.chatbox-button img').attr('src');
-        //if ($('.chatbox-button img').attr('src') === src) {
-        //    $('.chatbox-button img').attr('src', '~/Imgs/Group 41.png');
-        //} else {
-        //    $('.chatbox-button img').attr('src', src);
-        //}
+        $('.chatbox-button').toggleClass('rotated');       
     });
     function formatAMPM(date) {
         var hours = date.getHours();
@@ -29,36 +23,25 @@
     chatHub.client.loadAllMsgOfClient = function (msg) {
         var jsonMsg = JSON.parse(msg);
         for (var i = 0; i < jsonMsg.length; i++) {
-
             var DateJson = jsonMsg[i].DateSend;
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
-            var formatted = dateFormart.getHours() + ":" +
-                dateFormart.getMinutes();
+            var DateReadJson = jsonMsg[i].DateRead;
+            var dateReadFormart = new Date(parseInt(DateReadJson.substr(6)));
+            var dateReadFormarted = formatAMPM(dateReadFormart);
+           
             var formatted2 = formatAMPM(dateFormart);
             //console.log(dateFormart);
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
                 $('.chatbox-body-msg').append(AddMsgOfClient(jsonMsg[i].Msg, formatted2));
-
             }
             //nguoc lai thi append ben phai
             else {
-                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted2 + '</div></li>');
+                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted2 + '</div></li>' + '</br>' + dateReadFormarted);
             }
-
         }
         var lastMsg = jsonMsg.pop();
         console.log(lastMsg);
-        if (lastMsg.FromEmail != 'admin@gmail.com' && lastMsg.IsRead == true) {
-            var DateJsonLastMsg = lastMsg.RealTime;
-            var dateLastMsgForMat = new Date(parseInt(DateJsonLastMsg.substr(6)));
-            var formattedLastMsg = formatAMPM(dateLastMsgForMat);
-            console.log(formattedLastMsg);
-            $('.chatbox-body-msg').append('<li class="float-right"><i class="fas fa-check"></i><span>Seen' + formattedLastMsg + '</span></li>');
-
-
-        }
-
-
+        
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };
 
@@ -79,9 +62,14 @@
     chatHub.client.sendError = function () {
         alert("Kết nối đã bị ngắt");
     };
+    chatHub.client.adminReaded = function () {        
+        $('.chatbox-body-msg').append('<li class="float-left"><p>Seen</p></li>');
+        console.log('abc');
 
+    };
     $.connection.hub.start().done(function () {
         var input = document.getElementById("txtMsg");
+        var email;
         input.addEventListener("keyup", function (event) {
             if (event.keyCode == 13) {
                 if ($('#txtMsg').val() != false) {
@@ -95,6 +83,11 @@
                     $('#txtMsg').val('').focus();
                     $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
                 }
+            }
+        }); 
+        $('.chatbox').one('click', function (e) {
+            if (email != null) {                
+                chatHub.server.updateIsReadMessage('', email, true);
             }
         });
 
@@ -113,8 +106,9 @@
         });
         $('.customer-info').submit(function (e) {
             e.preventDefault();
-            var email = $('.customer-info input').val();
-            if (email.length > 0) {
+            var startEmail = $('.customer-info input').val();
+            if (startEmail.length > 0) {
+                email = startEmail;
                 chatHub.server.connect(email);
                 chatHub.server.loadMsgOfClient(email);
                 document.getElementById("txtNameEmail").value = email;

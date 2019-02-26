@@ -68,7 +68,7 @@ namespace ChatBox.DataBinding
                 if (Msgs.Count() > 0)
                 {
                     foreach (var message in Msgs)
-                    {                        
+                    {
                         listMsg.Add(message);
                     }
                 }
@@ -77,7 +77,7 @@ namespace ChatBox.DataBinding
                 if (messages.Count() > 0)
                 {
                     foreach (var message in messages)
-                    {                        
+                    {
                         listMsg.Add(message);
                     }
                 }
@@ -141,7 +141,7 @@ namespace ChatBox.DataBinding
         {
             //update in database
             IEnumerable<Message> messagesInDb;
-            if(adRead == true)
+            if (adRead == true)
                 messagesInDb = db.messages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
                 messagesInDb = db.messages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
@@ -151,7 +151,7 @@ namespace ChatBox.DataBinding
                 item.DateRead = DateTime.Now;
             }
             db.SaveChanges();
-            //update in list messages
+            //update in list messages 
             IEnumerable<Message> messagesInList;
             if (adRead == true)
                 messagesInList = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);

@@ -139,12 +139,12 @@ namespace ChatBox.Hubs
 
         public void UpdateIsReadMessage(string connectionId, string email, bool adRead)
         {
+            connectionId = Context.ConnectionId;
             messageDb.UpdateIsReadMessage(email, adRead);
             if (adRead == true)
                 Clients.Client(connectionId).AdminReaded();
             else
                 Clients.User(emailAdmin).ClientReaded();
-
         }
         /// <summary>
         /// khi co su thay doi ConnectionID cua trinh duyet thi kiem tra
