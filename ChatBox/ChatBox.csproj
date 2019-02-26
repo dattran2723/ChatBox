@@ -195,9 +195,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Migrations\201902140307125_init-1.cs" />
-    <Compile Include="Migrations\201902140307125_init-1.Designer.cs">
-      <DependentUpon>201902140307125_init-1.cs</DependentUpon>
+    <Compile Include="Migrations\201902260432564_1.cs" />
+    <Compile Include="Migrations\201902260432564_1.Designer.cs">
+      <DependentUpon>201902260432564_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1639,7 +1639,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\testManage.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1689,8 +1691,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902140307125_init-1.resx">
-      <DependentUpon>201902140307125_init-1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902260432564_1.resx">
+      <DependentUpon>201902260432564_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
