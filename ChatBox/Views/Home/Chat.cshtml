@@ -66,8 +66,14 @@
                                 <div class="user_info">
                                     <span class="user-name">@item.Email</span>
                                     <input type="hidden" name="connectionId" value="@item.ConnectionId" />
-                                    <p>@(item.LastMsg.Length > 20 ? item.LastMsg.Substring(0, 20) + "..." : item.LastMsg) </p>
+                                    <p>
+                                        @if (item.LastMsg.Length > 0)
+                                        {
+                                            @(item.LastMsg.Length > 20 ? item.LastMsg.Substring(0, 20) + "..." : item.LastMsg)
+                                        }
+                                    </p>
                                 </div>
+
                                 <div class="time">
                                     <p>Yesterday</p>
                                 </div>
@@ -80,7 +86,7 @@
                 <div class="content-title chat-header row">
                     <div class="col-6">
                         <span class="user-active"></span>
-                        <i class="fas fa-circle"></i>
+                        <i class="onl fas"></i>
                         <input type="hidden" name="connectionIdActive" value="" />
                     </div>
                     <div class="col-6 text-right">
@@ -91,8 +97,7 @@
                     </div>
                 </div>
                 <div class="chat-content">
-                    <ul class="list-messages">
-                    </ul>
+                    <ul class="list-messages"></ul>
                     <div class="input-group box-group">
                         <div class="input-group-prepend">
                             <button class="btn"><i class="fas fa-paper-plane"></i></button>

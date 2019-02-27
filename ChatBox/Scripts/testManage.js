@@ -213,7 +213,7 @@
             }
 
             if (email == jsonMsg[i].FromEmail) {
-                console.log(jsonMsg[i].IsRead)
+                //console.log(jsonMsg[i].IsRead)
                 if (i > 0 && jsonMsg[i - 1].FromEmail == email && diffTimes(new Date(parseInt(jsonMsg[i - 1].DateSend.substr(6))), dateFormart) < 30)
                     appendGroupMsg(jsonMsg[i].Msg, jsonMsg[i].IsRead);
                 else
@@ -238,7 +238,7 @@
 
     chatHub.client.ClientReaded = function () {
         var lastLi = $('.list-messages .message:last-child');
-        if (lastLi.find('.user-name').text() == ''){
+        if (lastLi.find('.user-name').text() == '') {
             var codeHtml = '<small class="seen">Đã xem vào lúc</small>';
             lastLi.find('.msg-user').append(codeHtml);
         }
@@ -291,7 +291,10 @@
         start.addClass('active');
         var emailStart = start.find('.user_info .user-name').text();
         var connectionIdStart = start.find('input[name="connectionId"]').val();
-        console.log(emailStart + '   ---  ' + connectionIdStart)
+        //console.log(start.find('.img_cont span').hasClass('online'));
+        if (start.find('.img_cont span').hasClass('online') == true)
+            $('.chat-header .onl').addClass('fa-circle');
+        console.log($('.chat-header i.onl').html())
         $('input[name="connectionIdActive"]').val(connectionIdStart);
         $('.chat-header .user-active').html(emailStart);
         chatHub.server.loadMsgByEmailOfAdmin(emailStart);
