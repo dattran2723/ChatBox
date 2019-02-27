@@ -140,7 +140,6 @@ namespace ChatBox.Hubs
 
         public void UpdateIsReadMessage(string connectionId, string email, bool adRead)
         {
-            connectionId = Context.ConnectionId;
             messageDb.UpdateIsReadMessage(email, adRead);
             if (adRead == true)
                 Clients.Client(connectionId).AdminReaded();

@@ -66,11 +66,11 @@
     //    }
     //};
     chatHub.client.adminReaded = function () {
+        console.log("213");
         var lastLi = $('.chatbox-body-msg li:last-child');
-        //console.log(lastLi.hasClass('float-left'));
-        if (lastLi.hasClass('float-right'))
-            console.log("123");
-            $('.chatbox-body-msg').append('<span class="message-seen"><i class="fas fa-check">Seen</i></span>');
+        lastLi.append('<span class="message-seen"><i class="fas fa-check">Seen</i></span>');
+
+
     };
 
 
@@ -94,7 +94,12 @@
         });
         $('.chatbox').on('click', function () {
             if (email != null) {
-                chatHub.server.updateIsReadMessage('', email, false);
+                var lastLi = $('.chatbox-body-msg li:last-child');
+                console.log(lastLi.hasClass('float-left'));
+                if (lastLi.hasClass('float-right')) {
+                    chatHub.server.updateIsReadMessage('', email, false);
+
+                }
             }
         });
 
