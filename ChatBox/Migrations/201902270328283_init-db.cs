@@ -7,12 +7,10 @@ namespace ChatBox.Migrations
     {
         public override void Up()
         {
-            AlterColumn("dbo.Messages", "DateRead", c => c.DateTime());
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.Messages", "DateRead", c => c.DateTime(nullable: false));
         }
     }
 }

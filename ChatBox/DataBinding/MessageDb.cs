@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Script.Serialization;
 
 namespace ChatBox.DataBinding
@@ -34,8 +36,8 @@ namespace ChatBox.DataBinding
                 IsRead = false
             };
             listMessages.Add(item);
-            //db.messages.Add(item);
-            //db.SaveChanges();
+            if(listMessages.Count() == 1)
+                HostingEnvironment.QueueBackgroundWorkItem(ct => AddListMessageIntoDb());
         }
         /// <summary>
         /// tao 1 list de chua cac msg co FromEmail hay ToEmail == email truyen vao do
@@ -44,22 +46,6 @@ namespace ChatBox.DataBinding
         /// <returns>list tin nhan da tra ve kieu JSON</returns>
         public string GetMessagesByEmail(string email)
         {
-            //string listMsg = string.Empty;
-            ////var item = db.account.FirstOrDefault(x => x.Email == email);
-            //var item = chater.GetUser(email);
-            //List<Message> messages = new List<Message>();
-            //if (item != null)
-            //{
-            //    var msg = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
-            //    listMsg = new JavaScriptSerializer().Serialize(msg);
-            //    foreach (var ms in msg)
-            //    {
-            //        messages.Add(ms);
-            //    }
-            //}
-            //var m = listMessages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
-            //listMsg += new JavaScriptSerializer().Serialize(m);
-            //return listMsg;
             List<Message> listMsg = new List<Message>();
             var user = chater.GetUser(email);
             if (user != null)
@@ -88,12 +74,6 @@ namespace ChatBox.DataBinding
 
         public string GetLastMessageByEmail(string email)
         {
-            //var message = db.messages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
-            //var last = message.LastOrDefault();
-            //var msg = "";
-            //if (last != null)
-            //    msg = last.Msg;
-            //return msg;
             Message message = new Message();
             var messages = listMessages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
             if (messages.Count() > 0)
@@ -109,22 +89,16 @@ namespace ChatBox.DataBinding
             return message.Msg;
         }
 
-        public void AddListMessageIntoDb(string email)
+        public void AddListMessageIntoDb()
         {
-            Thread.Sleep(5000);
-            List<Message> list = new List<Message>();
-            foreach (var item in listMessages)
-            {
-                if (item.FromEmail == email || item.ToEmail == email)
-                {
-                    var d = db.messages.Add(item);
-                    db.SaveChanges();
-                    list.Add(item);
-                }
-            }
+            Thread.Sleep(30000);
+            List<Message> list = listMessages;
+            listMessages = new List<Message>();
+
             foreach (var item in list)
             {
-                listMessages.Remove(item);
+                    db.messages.Add(item);
+                    db.SaveChanges();
             }
         }
         public void UpdateFromConnectionId(string email, string id)
@@ -140,24 +114,24 @@ namespace ChatBox.DataBinding
         public void UpdateIsReadMessage(string email, bool adRead)
         {
             //update in database
-            IEnumerable<Message> messagesInDb;
-            if (adRead == true)
-                messagesInDb = db.messages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
+            IEnumerable<Message> messages;
+            if(adRead == true)
+                messages = db.messages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
-                messagesInDb = db.messages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
-            foreach (var item in messagesInDb)
+                messages = db.messages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
+            foreach (var item in messages)
             {
                 item.IsRead = true;
                 item.DateRead = DateTime.Now;
             }
             db.SaveChanges();
-            //update in list messages 
+            //update in list messages
             IEnumerable<Message> messagesInList;
             if (adRead == true)
-                messagesInList = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
+                messages = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
-                messagesInList = listMessages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
-            foreach (var item in messagesInList)
+                messages = listMessages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
+            foreach (var item in messages)
             {
                 item.IsRead = true;
                 item.DateRead = DateTime.Now;

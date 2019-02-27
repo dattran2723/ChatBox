@@ -26,7 +26,7 @@ namespace ChatBox.Hubs
             /// id = lấy ra chuỗi kết nối hiện tại của trình duyệt
             var id = Context.ConnectionId;
             /// lấy ra tài khoản 
-            var item = listUser.FirstOrDefault(x => x.Email == email.ToLower());
+            var item = chater.GetUser(email);
             /// chưa có tài khoản , tạo mới
             if (item == null)
             {
@@ -104,6 +104,7 @@ namespace ChatBox.Hubs
                 Clients.Client(Context.ConnectionId).SendError();
             }
         }
+
         /// <summary>
         /// Admin gửi mail cho client
         /// lưu vào cơ sở dữ liệu và gửi đến cho client
@@ -160,8 +161,6 @@ namespace ChatBox.Hubs
             if (item != null)
             {
                 Clients.User(emailAdmin).OnUserDisconnected(item.Email.ToLower());
-                chater.AddUserToDb(item.Email);
-                messageDb.AddListMessageIntoDb(item.Email);
                 //item.IsOnline = false;
                 chater.UpdateIsOnlineOfUser(item.Email, false);
             }

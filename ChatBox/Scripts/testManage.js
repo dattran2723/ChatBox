@@ -107,14 +107,15 @@
             }
             $(".list-messages").animate({ scrollTop: $('.list-messages').prop('scrollHeight') });
         }
-        addMsgInListContact(email, msg);
+        addMsgInListContact(email, msg, false);
     }
 
     //Code append tin nhắn mới nhất vào dưới email trong list contact
-    function addMsgInListContact(email, msg) {
+    function addMsgInListContact(email, msg, isAdmin) {
+        var isNew = isAdmin == false ? 'new-msg' : '';
         $(".contact").each(function () {
             if ($(this).find('.user_info .user-name').text() == email) {
-                $(this).find('.user_info p').addClass('new-msg');
+                $(this).find('.user_info p').addClass(isNew);
                 if (msg.length > 20) {
                     $(this).find('.user_info p').html(msg.slice(0, 20) + '...');
                 }
@@ -125,19 +126,6 @@
         });
     }
 
-    //Code append a message to list messages
-    //function appendListMsg(msg, email, date) {
-    //    var codeHtml = '<li class="message row">\
-    //                        <div class="img-user float-left ml-4" >\
-    //                            <img src="/Content/images/Avatar.png" />\
-    //                        </div >\
-    //                        <div class="msg-user col-9">\
-    //                            <span class="user-name">'+ email + '</span> <small>' + date + '</small>\
-    //                            <p class="msg-content">'+ msg + '</p>\
-    //                        </div>\
-    //                    </li >';
-    //    $('.list-messages').append(codeHtml);
-    //}
     function appendListMsgClient(msg, email, date, isRead) {
         var status = isRead == false ? 'new' : '';
         var showDate = date.getHours() < 13 ? date.getHours() + ':' + date.getMinutes() + ' AM' : (date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
@@ -225,7 +213,7 @@
             }
 
             if (email == jsonMsg[i].FromEmail) {
-                console.log(jsonMsg[i].IsRead)
+                //console.log(jsonMsg[i].IsRead)
                 if (i > 0 && jsonMsg[i - 1].FromEmail == email && diffTimes(new Date(parseInt(jsonMsg[i - 1].DateSend.substr(6))), dateFormart) < 30)
                     appendGroupMsg(jsonMsg[i].Msg, jsonMsg[i].IsRead);
                 else
@@ -247,6 +235,15 @@
         }
         $(".list-messages").animate({ scrollTop: $('.list-messages').prop('scrollHeight') });
     }
+
+    chatHub.client.ClientReaded = function () {
+        var lastLi = $('.list-messages .message:last-child');
+        if (lastLi.find('.user-name').text() == '') {
+            var codeHtml = '<small class="seen">Đã xem vào lúc</small>';
+            lastLi.find('.msg-user').append(codeHtml);
+        }
+    }
+
     $.connection.hub.start().done(function () {
         //Send message from admin to client
         function sendMessge(email, msg) {
@@ -273,7 +270,7 @@
                 return false;
             }
             sendMessge(email, msg);
-            addMsgInListContact(email, msg);
+            addMsgInListContact(email, msg, true);
         });
 
         //event press enter
@@ -285,7 +282,7 @@
                     return false;
                 }
                 sendMessge(email, msg);
-                addMsgInListContact(email, msg);
+                addMsgInListContact(email, msg, true);
             }
         });
 
@@ -294,30 +291,34 @@
         start.addClass('active');
         var emailStart = start.find('.user_info .user-name').text();
         var connectionIdStart = start.find('input[name="connectionId"]').val();
-        console.log(emailStart + '   ---  ' + connectionIdStart)
+        //console.log(start.find('.img_cont span').hasClass('online'));
+        if (start.find('.img_cont span').hasClass('online') == true)
+            $('.chat-header .onl').addClass('fa-circle');
+        console.log($('.chat-header i.onl').html())
         $('input[name="connectionIdActive"]').val(connectionIdStart);
         $('.chat-header .user-active').html(emailStart);
         chatHub.server.loadMsgByEmailOfAdmin(emailStart);
 
         //event click a li (a contact) in ul (list contact)
         $('.list-contacts').on('click', 'li', function () {
-            var name = $(this).find('.user-name').text();
+            var email = $(this).find('.user_info .user-name').text();
             var connectionId = $(this).find('input[name="connectionId"]').val();
+
+
+            if ($(this).find('.user_info p').hasClass('new-msg') == true) {
+                $(this).find('.user_info p').removeClass('new-msg');
+                chatHub.server.updateIsReadMessage(connectionId, email, true);
+            }
 
             if ($(this).hasClass('active') == false) {
                 $('.list-contacts').children('li').removeClass('active');
                 $(this).addClass('active');
 
-                $('.user-active').text(name);
+                $('.user-active').text(email);
                 $('input[name="connectionIdActive"]').val(connectionId);
 
-                var email = $(this).find('.user_info .user-name').text();
+                //var email = $(this).find('.user_info .user-name').text();
                 chatHub.server.loadMsgByEmailOfAdmin(email);
-            }
-
-            if ($(this).find('.user_info p').hasClass('new-msg') == true) {
-                $(this).find('.user_info p').removeClass('new-msg');
-                //chatHub.server.updateIsReadMessage(connectionId, email, true);
             }
 
         });
@@ -331,7 +332,6 @@
             if (lastLi.find('.msg-user .user-name').text() == email) {
                 lastLi.find('.msg-user .list-msg-content li').each(function () {
                     if ($(this).is('.new') == true) {
-                        console.log('yes')
                         $(this).removeClass('new');
                         chatHub.server.updateIsReadMessage(connectionId, email, true);
                     }
@@ -350,84 +350,4 @@
             $(this).find('span').removeClass('d-none');
         })
     });
-    //function AddUser(email, connectionId) {
-    //    var code = $('<li class="box-item contact">\
-    //            <div class="d-flex bd-highlight w-100" >\
-    //                <div class="img_cont">\
-    //                    <img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img">\
-    //                        <span class="online"></span>\
-    //                        </div>\
-    //                    <div class="user_info">\
-    //                        <span class="user-name">'+ email + '</span>\
-    //                            <input type="hidden" name="connectionId" value="'+ connectionId + '" />\
-    //                        <p>18 Messages</p>\
-    //                    </div>\
-    //                    <div class="time">\
-    //                        <p>8m</p>\
-    //                    </div>\
-    //                </div>\
-    //                </li >');
-    //    var p01 = document.getElementsByClassName("contact");
-    //    if (p01.length == "0") {
-    //        $('.list-contacts').append(code);
-    //    } else {
-    //        $(code).insertBefore(p01[0]);
-    //    }
-    //};
-
-    //function UpdateContact(codeHtml, isActive, isConnect) {
-    //    var isOnline = codeHtml.find('.img_cont span').hasClass('online');
-    //    if (isConnect == true) {
-    //        if (isOnline == false)
-    //            codeHtml.find('.img_cont span').addClass('online');
-    //    }
-    //    else {
-    //        if (isOnline == true)
-    //            codeHtml.find('.img_cont span').removeClass('online');
-    //    }
-
-    //    var code = $('<li class="box-item contact ' + isActive == true ? 'online' : '' + '" >' + codeHtml.html() + '</li >');
-
-    //    if (isConnect == true) {
-    //        var p01 = document.getElementsByClassName("contact");
-    //        $(code).insertBefore(p01[0]);
-    //    }
-    //    else {
-    //        $('.list-contacts').append(code);
-    //    }
-
-    //};
-
-    //var chatHub = $.connection.chatHub;
-
-    //chatHub.client.onConnected = function (id, email, checkExist) {
-    //    if (checkExist == false) {
-    //        AddUser(email, id);
-    //    }
-    //    else {
-    //        $(".contact").each(function () {
-    //            var check = $(this).is('.active');
-    //            if ($(this).find('.name').text() == email) {
-    //                this.remove();
-    //                item = $(this);
-    //                item.find('input').val(id);
-    //                UpdateContact(item, check, true);
-    //            }
-    //        });
-    //    }
-    //};
-    //chatHub.client.onUserDisconnected = function (email) {
-    //    $(".contact").each(function () {
-    //        var check = $(this).is('.active');
-    //        if ($(this).find('.name').text() == email) {
-    //            $(this).find('span').removeClass('online');
-    //            this.remove();
-    //            item = $(this);
-    //            UpdateContact(item, check, false);
-    //        }
-    //    });
-    //}
-
-    //$.connection.hub.start().done(function () {
-    //});
 });
