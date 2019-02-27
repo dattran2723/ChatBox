@@ -264,7 +264,7 @@
             chatHub.server.sendPrivateMessage(email, msg, connectionId);
             $('textarea').val('').focus();
         }
-
+       
         //event click button send message
         $('.input-group').on('click', '.send', function () {
             var email = $('.user-active').text();

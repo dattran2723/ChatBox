@@ -1,9 +1,10 @@
 ﻿$(function () {
+    var check = false;
     $('.chatbox-body').hide();
     $('.chatbox-footer').hide();
     $('.chatbox-button').click(function () {
         $('.chatbox').toggleClass('chatbox-tray');
-        $('.chatbox-button').toggleClass('rotated');       
+        $('.chatbox-button').toggleClass('rotated');
     });
     function formatAMPM(date) {
         var hours = date.getHours();
@@ -25,10 +26,7 @@
         for (var i = 0; i < jsonMsg.length; i++) {
             var DateJson = jsonMsg[i].DateSend;
             var dateFormart = new Date(parseInt(DateJson.substr(6)));
-            var DateReadJson = jsonMsg[i].DateRead;
-            var dateReadFormart = new Date(parseInt(DateReadJson.substr(6)));
-            var dateReadFormarted = formatAMPM(dateReadFormart);
-           
+
             var formatted2 = formatAMPM(dateFormart);
             //console.log(dateFormart);
             if (jsonMsg[i].FromEmail != 'admin@gmail.com') {
@@ -36,17 +34,17 @@
             }
             //nguoc lai thi append ben phai
             else {
-                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted2 + '</div></li>' + '</br>' + dateReadFormarted);
+                $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + jsonMsg[i].Msg + '</br><div class="message-time-admin">' + formatted2 + '</div></li>');
             }
         }
         var lastMsg = jsonMsg.pop();
         console.log(lastMsg);
-        
+
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };
 
     chatHub.client.adminSendMsg = function (msg) {
-        $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left">' + msg + '</li >');
+        $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left new-message">' + msg + '</li >');
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };
     chatHub.client.checkIsOnline = function () {
@@ -62,11 +60,20 @@
     chatHub.client.sendError = function () {
         alert("Kết nối đã bị ngắt");
     };
-    chatHub.client.adminReaded = function () {        
-        $('.chatbox-body-msg').append('<li class="float-left"><p>Seen</p></li>');
-        console.log('abc');
-
+    //chatHub.client.ClientReaded = function () {
+    //    if ($('li:last-child').hasClass('new-message') && $('li:last-child').) {
+    //        console.log("123");
+    //    }
+    //};
+    chatHub.client.adminReaded = function () {
+        var lastLi = $('.chatbox-body-msg li:last-child');
+        //console.log(lastLi.hasClass('float-left'));
+        if (lastLi.hasClass('float-right'))
+            $('.chatbox-body-msg').append('<span class="message-seen"><i class="fas fa-check">Seen</i></span>');
     };
+
+
+
     $.connection.hub.start().done(function () {
         var input = document.getElementById("txtMsg");
         var email;
@@ -76,7 +83,6 @@
                     var fromemail = document.getElementById("txtNameEmail").value;
                     var toemail = 'admin@gmail.com';
                     var time = new Date();
-                    //var timeformated = time.getHours() + ":" + time.getMinutes();
                     var timeformated2 = formatAMPM(time);
                     $('.chatbox-body-msg').append(AddMsgOfClient($('#txtMsg').val(), timeformated2));
                     chatHub.server.sendMsg(fromemail, toemail, $('#txtMsg').val());
@@ -84,10 +90,10 @@
                     $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
                 }
             }
-        }); 
-        $('.chatbox').one('click', function (e) {
-            if (email != null) {                
-                chatHub.server.updateIsReadMessage('', email, true);
+        });
+        $('.chatbox').on('click', function () {
+            if (email != null) {
+                chatHub.server.updateIsReadMessage('', email, false);
             }
         });
 
