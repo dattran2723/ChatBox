@@ -36,7 +36,7 @@ namespace ChatBox.DataBinding
                 IsRead = false
             };
             listMessages.Add(item);
-            if(listMessages.Count() == 1)
+            if (listMessages.Count() == 1)
                 HostingEnvironment.QueueBackgroundWorkItem(ct => AddListMessageIntoDb());
         }
         /// <summary>
@@ -97,8 +97,8 @@ namespace ChatBox.DataBinding
 
             foreach (var item in list)
             {
-                    db.messages.Add(item);
-                    db.SaveChanges();
+                db.messages.Add(item);
+                db.SaveChanges();
             }
         }
         public void UpdateFromConnectionId(string email, string id)
@@ -115,7 +115,7 @@ namespace ChatBox.DataBinding
         {
             //update in database
             IEnumerable<Message> messages;
-            if(adRead == true)
+            if (adRead == true)
                 messages = db.messages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
                 messages = db.messages.ToList().Where(x => x.ToEmail == email && x.IsRead == false);
@@ -125,6 +125,7 @@ namespace ChatBox.DataBinding
                 item.DateRead = DateTime.Now;
             }
             db.SaveChanges();
+            //update in list messages
             if (adRead == true)
                 messages = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
