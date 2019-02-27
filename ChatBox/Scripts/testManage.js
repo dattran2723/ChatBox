@@ -321,8 +321,7 @@
                 chatHub.server.loadMsgByEmailOfAdmin(email);
             }
 
-        });
-
+        });        
         $('.chat-content').on('click', function () {
             var email = $('.chat-header .user-active').text();
             var connectionId = $('input[name="connectionIdActive"]').val();

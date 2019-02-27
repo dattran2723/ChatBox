@@ -67,7 +67,7 @@
                                     <span class="user-name">@item.Email</span>
                                     <input type="hidden" name="connectionId" value="@item.ConnectionId" />
                                     <p>
-                                        @if (item.LastMsg.Length > 0)
+                                        @if (item.LastMsg != null)
                                         {
                                             @(item.LastMsg.Length > 20 ? item.LastMsg.Substring(0, 20) + "..." : item.LastMsg)
                                         }
