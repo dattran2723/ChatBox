@@ -72,6 +72,11 @@ namespace ChatBox.DataBinding
             return new JavaScriptSerializer().Serialize(listMsg);
         }
 
+        /// <summary>
+        /// lấy tin nhắn cuối cùng của email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public string GetLastMessageByEmail(string email)
         {
             Message message = new Message();
