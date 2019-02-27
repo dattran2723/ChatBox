@@ -125,8 +125,6 @@ namespace ChatBox.DataBinding
                 item.DateRead = DateTime.Now;
             }
             db.SaveChanges();
-            //update in list messages
-            IEnumerable<Message> messagesInList;
             if (adRead == true)
                 messages = listMessages.ToList().Where(x => x.FromEmail == email && x.IsRead == false);
             else
