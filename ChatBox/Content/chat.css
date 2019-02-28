@@ -3,7 +3,7 @@
     src: url('../fonts/SourceSansPro-Regular.otf') format('opentype');
 }
 body{
-    overflow: hidden
+    /*overflow: hidden*/
 }
 .row {
     margin: 0;
@@ -250,7 +250,7 @@ input.search {
 }
 
 .list-messages {
-    height: 70vh;
+    height: 72vh;
     overflow-x: hidden;
     overflow-y: auto;
     padding: 1% 8%;

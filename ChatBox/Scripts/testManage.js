@@ -247,7 +247,7 @@
     function AppendSeenToMessage(date) {
         var lastLi = $('.list-messages .message:last-child');
         var showTime = ShowTime(date);
-        var codeHtml = '<small class="seen">Đã xem ' + showTime + '</small>';
+        var codeHtml = '<small class="seen"><i class="fas fa-check"></i> Đã xem ' + showTime + '</small>';
         lastLi.find('.msg-user').append(codeHtml);
         $(".list-messages").animate({ scrollTop: $('.list-messages').prop('scrollHeight') });
     }
