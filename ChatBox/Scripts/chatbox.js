@@ -44,7 +44,7 @@
     };
 
     chatHub.client.adminSendMsg = function (msg) {
-        $('.chatbox-body-msg').append('<li class="float-left mt-1 chatbox-body-msg-left new-message">' + msg + '</li >');
+        $('.chatbox-body-msg').append('<li class="float-left mt-1 new-message chatbox-body-msg-left ">' + msg + '</li >');
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };
     chatHub.client.checkIsOnline = function () {
@@ -66,13 +66,20 @@
     //    }
     //};
     chatHub.client.adminReaded = function () {
-        console.log("213");
+        var lastLi2 = $('.float-right mt-1 chatbox-body-msg-right').val();
+        console.log(lastLi2+"asd")
         var lastLi = $('.chatbox-body-msg li:last-child');
-        lastLi.append('<span class="message-seen"><i class="fas fa-check">Seen</i></span>');
+        if (lastLi.hasClass('new-message')) {
+            lastLi.append('<small class="message-seen"><i class="fas fa-check">Seen</i></span>');
+        }
+        console.log(lastLi);
 
 
     };
-
+    chatHub.client.sendConnection = function (id, email) {
+        $('.chatbox-title').attr('value', id);
+        console.log(id);
+    }
 
 
     $.connection.hub.start().done(function () {
@@ -96,9 +103,10 @@
             if (email != null) {
                 var lastLi = $('.chatbox-body-msg li:last-child');
                 console.log(lastLi.hasClass('float-left'));
-                if (lastLi.hasClass('float-right')) {
-                    chatHub.server.updateIsReadMessage('', email, false);
-
+                if (lastLi.hasClass('new-message')) {
+                    var connectionId = $('.chatbox-title').val().value;
+                    chatHub.server.updateIsReadMessage(connectionId, email, false);
+                    lastLi.removeClass('new-message');
                 }
             }
         });

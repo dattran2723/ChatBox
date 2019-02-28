@@ -239,6 +239,7 @@
     chatHub.client.ClientReaded = function () {
         var lastLi = $('.list-messages .message:last-child');
         if (lastLi.find('.user-name').text() == '') {
+            console.log("123");
             var codeHtml = '<small class="seen">Đã xem vào lúc</small>';
             lastLi.find('.msg-user').append(codeHtml);
         }

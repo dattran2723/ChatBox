@@ -40,6 +40,8 @@ namespace ChatBox.Hubs
                 chater.AddUser(email, id);
                 checkExist = false;
                 Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
+                Clients.Client(Context.ConnectionId).SendConnection(id, email.ToLower());
+
             }
             /// đã có tài khoản
             else
@@ -63,6 +65,7 @@ namespace ChatBox.Hubs
                     checkExist = true;
                     //db.SaveChanges();
                     Clients.User(emailAdmin).onConnected(id, email.ToLower(), checkExist);
+                    Clients.Client(Context.ConnectionId).SendConnection(id, email.ToLower());
                 }
             }
         }
