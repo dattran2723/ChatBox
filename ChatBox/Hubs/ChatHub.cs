@@ -93,7 +93,7 @@ namespace ChatBox.Hubs
             if (id == item.ConnectionId)
             {
                 MessageDb messageDb = new MessageDb();
-                var createDate = DateTime.Now;                
+                var createDate = DateTime.Now;
                 messageDb.AddMessage(fromEmail, toEmail, msg, id, createDate);
                 var connectionId = Context.ConnectionId;
                 Clients.User("admin@gmail.com").SendMsgForAdmin(msg, createDate, connectionId, fromEmail);
@@ -141,11 +141,12 @@ namespace ChatBox.Hubs
         public void UpdateIsReadMessage(string connectionId, string email, bool adRead)
         {
             connectionId = Context.ConnectionId;
-            messageDb.UpdateIsReadMessage(email, adRead);
+            var date = DateTime.Now;
+            messageDb.UpdateIsReadMessage(email, adRead, date);
             if (adRead == true)
-                Clients.Client(connectionId).AdminReaded();
+                Clients.Client(connectionId).AdminReaded(date);
             else
-                Clients.User(emailAdmin).ClientReaded();
+                Clients.User(emailAdmin).ClientReaded(date);
         }
         /// <summary>
         /// khi co su thay doi ConnectionID cua trinh duyet thi kiem tra

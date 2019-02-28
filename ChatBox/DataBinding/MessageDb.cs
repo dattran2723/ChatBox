@@ -77,7 +77,7 @@ namespace ChatBox.DataBinding
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public string GetLastMessageByEmail(string email)
+        public Message GetLastMessageByEmail(string email)
         {
             Message message = new Message();
             var messages = listMessages.ToList().Where(x => x.FromEmail == email || x.ToEmail == email).OrderBy(x => x.DateSend);
@@ -91,9 +91,36 @@ namespace ChatBox.DataBinding
                 if (msgs.Count() > 0)
                     message = msgs.LastOrDefault();
             }
-            return message.Msg;
+            return message;
         }
 
+        public string GetStringDateOfLastMessage(Message msg)
+        {
+            string strDate = string.Empty;
+            if (msg.Id != null)
+            {
+                var now = DateTime.Now;
+                var date = msg.DateSend;
+                int result = (int)(now.Date - date.Date).TotalDays;
+                if (result < 7)
+                {
+                    switch (result)
+                    {
+                        case 0: strDate = date.Hour > 12 ? (date.Hour - 12) + ":" + date.Minute + " PM" : date.Hour + ":" + date.Minute + " AM"; break;
+                        case 1: strDate = "Hôm qua"; break;
+                        default:
+                            strDate = (int)date.DayOfWeek == 7 ? "Chủ nhật" : "Thứ " + (int)date.DayOfWeek;
+                            break;
+                    }
+                }
+                else
+                {
+                    strDate = date.Day + "-" + date.Month + "-" + date.Year;
+                }
+            }
+
+            return strDate;
+        }
         public void AddListMessageIntoDb()
         {
             Thread.Sleep(30000);
@@ -116,7 +143,7 @@ namespace ChatBox.DataBinding
             db.SaveChanges();
         }
 
-        public void UpdateIsReadMessage(string email, bool adRead)
+        public void UpdateIsReadMessage(string email, bool adRead, DateTime date)
         {
             //update in database
             IEnumerable<Message> messages;
@@ -127,7 +154,7 @@ namespace ChatBox.DataBinding
             foreach (var item in messages)
             {
                 item.IsRead = true;
-                item.DateRead = DateTime.Now;
+                item.DateRead = date;
             }
             db.SaveChanges();
             //update in list messages
@@ -138,7 +165,7 @@ namespace ChatBox.DataBinding
             foreach (var item in messages)
             {
                 item.IsRead = true;
-                item.DateRead = DateTime.Now;
+                item.DateRead = date;
             }
 
         }
