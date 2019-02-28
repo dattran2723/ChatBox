@@ -43,7 +43,7 @@ namespace ChatBox.Controllers
                 userView.ConnectionId = item.ConnectionId;
                 userView.Email = item.Email;
                 userView.IsOnline = item.IsOnline;
-                userView.LastMsg = messageDb.GetLastMessageByEmail(item.Email);
+                userView.LastMsg = messageDb.GetLastMessageByEmail(item.Email).Msg;
                 listUser.Add(userView);
             }
             return View(listUser);
@@ -63,10 +63,14 @@ namespace ChatBox.Controllers
             foreach (var item in list)
             {
                 UserViewModel userView = new UserViewModel();
+                Message message = messageDb.GetLastMessageByEmail(item.Email);
+
                 userView.ConnectionId = item.ConnectionId;
                 userView.Email = item.Email;
                 userView.IsOnline = item.IsOnline;
-                userView.LastMsg = messageDb.GetLastMessageByEmail(item.Email);
+                userView.LastMsg = message.Msg;
+                userView.DateSend = messageDb.GetStringDateOfLastMessage(message);
+                userView.IsRead = message.IsRead;
                 listUser.Add(userView);
             }
             return View(listUser);

@@ -25,7 +25,7 @@
                 <div class="dropdown float-right">
                     <div class="d-flex bd-highlight dropdown-toggle" data-toggle="dropdown">
                         <div class="img_cont">
-                            <img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img">
+                            <img src="~/Content/images/administrator.png" class="rounded-circle user_img" style="background: none" />
                             <span class="online"></span>
                         </div>
                         <div class="user_info">
@@ -60,22 +60,26 @@
                         <li class="box-item contact">
                             <div class="d-flex bd-highlight w-100">
                                 <div class="img_cont">
-                                    <img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img">
+                                    <div class="rounded-circle user_img">@item.Email.Substring(0,2).ToUpper()</div>
                                     <span class="@(item.IsOnline == true ? "online": "")"></span>
                                 </div>
                                 <div class="user_info">
                                     <span class="user-name">@item.Email</span>
                                     <input type="hidden" name="connectionId" value="@item.ConnectionId" />
-                                    <p>
+                                    <p class="@(item.IsRead == false? "new": "")">
                                         @if (item.LastMsg != null)
                                         {
                                             @(item.LastMsg.Length > 20 ? item.LastMsg.Substring(0, 20) + "..." : item.LastMsg)
                                         }
                                     </p>
-                                </div>
+                                    </div>
 
                                 <div class="time">
-                                    <p>Yesterday</p>
+                                    <p>
+                                        @if (item.DateSend != null)
+                                        {
+                                            @item.DateSend}
+                                    </p>
                                 </div>
                             </div>
                         </li>
@@ -90,10 +94,10 @@
                         <input type="hidden" name="connectionIdActive" value="" />
                     </div>
                     <div class="col-6 text-right">
-                        <div class="">
+                        @*<div class="">
                             <button type="button" class="btn btn-outline-dark"><i class="fas fa-upload"></i></button>
                             <button type="button" class="btn btn-outline-dark"><i class="far fa-trash-alt"></i></button>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="chat-content">
