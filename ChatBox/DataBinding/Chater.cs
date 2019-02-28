@@ -46,13 +46,13 @@ namespace ChatBox.DataBinding
         public List<User> GetAllUser()
         {
             List<User> users = new List<User>();
-            var listFromList = listUser.ToList().OrderByDescending(x => x.DateOnline);
+            var listFromList = listUser.OrderByDescending(x => x.DateOnline).ToList();
             if (listFromList.Count() > 0)
                 foreach (var item in listFromList)
                 {
                     users.Add(item);
                 }
-            var listFromDb = db.account.ToList().OrderByDescending(x => x.DateOnline);
+            var listFromDb = db.account.ToList().OrderByDescending(x => x.IsOnline).ThenByDescending(x=>x.DateOnline).ToList();
             if (listFromDb.Count() > 0)
                 foreach (var item in listFromDb)
                 {
