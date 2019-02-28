@@ -44,6 +44,7 @@
     };
 
     chatHub.client.adminSendMsg = function (msg) {
+        DeleteOldSeen();
         $('.chatbox-body-msg').append('<li class="float-left mt-1 new-message chatbox-body-msg-left ">' + msg + '</li >');
         $('.chatbox-body').animate({ scrollTop: $('.chatbox-body').prop('scrollHeight') });
     };
@@ -66,10 +67,12 @@
     //    }
     //};
     chatHub.client.adminReaded = function () {
+        var today = new Date();
+        var timeSeen = formatAMPM(today);
         console.log("Nguyen");
         var lastLi = $('.chatbox-body-msg li:last-child');
         if (lastLi.hasClass('new-message')) {
-        var codeHtml = '<li><span class="message-seen"><i class="fas fa-check"></i>Seen</span></li>';
+            var codeHtml = '<li class="seen"><span class="message-seen"><i class="fas fa-check"></i>Đã xem ' + timeSeen + '</span></li>';
             $(codeHtml).insertAfter(lastLi);
             lastLi.removeClass('new-message');
         }
@@ -106,6 +109,8 @@
                     chatHub.server.updateIsReadMessage(connectionId, email, false);
                     lastLi.removeClass('new-message');
                 }
+
+
             }
         });
 
@@ -142,7 +147,12 @@
 
 });
 //code using append when client send message
+function DeleteOldSeen() {
+    $(".chatbox-body-msg .seen:last-child").remove();
+
+}
 function AddMsgOfClient(msg, date) {
+    DeleteOldSeen();
     var code = '<li class="float-right mt-1 new-message chatbox-body-msg-right">' + msg + '</br>' + '<div class="message-time">' + date + '</div>' + '</li>';
     return code;
 }
