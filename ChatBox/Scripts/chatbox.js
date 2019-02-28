@@ -66,16 +66,14 @@
     //    }
     //};
     chatHub.client.adminReaded = function () {
-        var lastLi2 = $('.float-right mt-1 chatbox-body-msg-right').val();
-        console.log(lastLi2+"asd")
+        console.log("Nguyen");
         var lastLi = $('.chatbox-body-msg li:last-child');
         if (lastLi.hasClass('new-message')) {
-            lastLi.append('<small class="message-seen"><i class="fas fa-check">Seen</i></span>');
+        var codeHtml = '<li><span class="message-seen"><i class="fas fa-check"></i>Seen</span></li>';
+            $(codeHtml).insertAfter(lastLi);
+            lastLi.removeClass('new-message');
         }
-        console.log(lastLi);
-
-
-    };
+    }
     chatHub.client.sendConnection = function (id, email) {
         $('.chatbox-title').attr('value', id);
         console.log(id);
@@ -145,6 +143,6 @@
 });
 //code using append when client send message
 function AddMsgOfClient(msg, date) {
-    var code = '<li class="float-right mt-1 chatbox-body-msg-right">' + msg + '</br>' + '<div class="message-time">' + date + '</div>' + '</li>';
+    var code = '<li class="float-right mt-1 new-message chatbox-body-msg-right">' + msg + '</br>' + '<div class="message-time">' + date + '</div>' + '</li>';
     return code;
 }

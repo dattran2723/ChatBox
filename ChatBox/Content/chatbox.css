@@ -245,3 +245,9 @@
     float: left;
     
 }
+.message-seen{
+    float:right;
+    font-size:12px;
+    font-family:SourceSansPro-Light;
+    font-weight:normal;
+}
